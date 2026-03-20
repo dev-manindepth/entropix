@@ -10,8 +10,8 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@entropix/react": "0.1.1",
-    "@entropix/tokens": "0.1.1",
+    "@entropix/react": "workspace:*",
+    "@entropix/tokens": "workspace:*",
     "next": "16.1.5",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"

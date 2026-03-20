@@ -91,6 +91,10 @@ export interface AccessibilityProps {
   orientation?: "horizontal" | "vertical";
   /** Tab ordering */
   tabIndex?: number;
+  /** Whether the element is required */
+  required?: boolean;
+  /** Whether the element is in an invalid state */
+  invalid?: boolean;
   /** Whether element is hidden from accessibility tree */
   hidden?: boolean;
   /** Current value for range widgets */

@@ -27,6 +27,8 @@ const ARIA_MAP: Record<string, string> = {
   valueMin: "aria-valuemin",
   valueMax: "aria-valuemax",
   valueText: "aria-valuetext",
+  required: "aria-required",
+  invalid: "aria-invalid",
 };
 
 /**

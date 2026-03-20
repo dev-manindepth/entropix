@@ -128,6 +128,11 @@ export function mapAccessibilityToRN(
     result.importantForAccessibility = "no-hide-descendants";
   }
 
+  // Required and invalid — no direct RN state equivalents.
+  // Silently dropped (component layers can handle via labels or hints).
+  // required (no RN AccessibilityState equivalent)
+  // invalid (no RN AccessibilityState equivalent)
+
   // Silently dropped — no RN equivalent:
   // modal (handled by <Modal> component)
   // hasPopup, controls, owns (not supported in RN)

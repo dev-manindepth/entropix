@@ -24,11 +24,11 @@ importers:
   apps/demo:
     dependencies:
       '@entropix/react':
-        specifier: 0.1.1
-        version: 0.1.1(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+        specifier: workspace:*
+        version: link:../../packages/react
       '@entropix/tokens':
-        specifier: 0.1.1
-        version: 0.1.1
+        specifier: workspace:*
+        version: link:../../packages/tokens
       next:
         specifier: 16.1.5
         version: 16.1.5(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
@@ -55,11 +55,11 @@ importers:
   apps/demo-mobile:
     dependencies:
       '@entropix/react-native':
-        specifier: 0.1.1
-        version: 0.1.1(react-native@0.83.2(@babel/core@7.29.0)(@types/react@19.2.2)(react@19.2.0))(react@19.2.0)
+        specifier: workspace:*
+        version: link:../../packages/react-native
       '@entropix/tokens':
-        specifier: 0.1.1
-        version: 0.1.1
+        specifier: workspace:*
+        version: link:../../packages/tokens
       '@expo/metro-runtime':
         specifier: ~55.0.6
         version: 55.0.6(@expo/dom-webview@55.0.3)(expo@55.0.8)(react-dom@19.2.0(react@19.2.0))(react-native@0.83.2(@babel/core@7.29.0)(@types/react@19.2.2)(react@19.2.0))(react@19.2.0)
@@ -1286,26 +1286,6 @@ packages:
 
   '@emnapi/runtime@1.7.1':
     resolution: {integrity: sha512-PVtJr5CmLwYAU9PZDMITZoR5iAOShYREoR45EyyLrbntV50mdePTgUn4AmOw90Ifcj+x2kRjdzr1HP3RrNiHGA==}
-
-  '@entropix/core@0.1.1':
-    resolution: {integrity: sha512-PkhhlnHMXA17Vf0aCYLEyp6XfNmU2Ptve4aX5TLbQ+Bbm7OjO20PDZQAUti86b0nMUWJWpBosaa0NV4z2rzCNw==}
-    peerDependencies:
-      react: ^18.0.0 || ^19.0.0
-
-  '@entropix/react-native@0.1.1':
-    resolution: {integrity: sha512-uDMqrSmF+QSjHy4A4ISxWxZCX7Pe8Nk5bDWhaGX7QVSWXQq/iVEuEsl+JD/j1qyATcG1gYIxC8Y7KShyic/cXw==}
-    peerDependencies:
-      react: ^18.0.0 || ^19.0.0
-      react-native: '>=0.72'
-
-  '@entropix/react@0.1.1':
-    resolution: {integrity: sha512-ytRjHJdbd2xHoeo/fJ4aYCHjWOlwlZyOAo8zstJsVUJhmeEBlBSpU7ZwvmYpsMIKAel9AxFLJ/9AtJKAhRllVA==}
-    peerDependencies:
-      react: ^18.0.0 || ^19.0.0
-      react-dom: ^18.0.0 || ^19.0.0
-
-  '@entropix/tokens@0.1.1':
-    resolution: {integrity: sha512-3rBfPb90XbBsKH1eCK37eTPD5SBnTYPqvdG/1XaqFnY+1c8kDWNG5weeGrYVjrmaZPhkcpLDGoSr0me3XmuXRA==}
 
   '@esbuild/aix-ppc64@0.27.4':
     resolution: {integrity: sha512-cQPwL2mp2nSmHHJlCyoXgHGhbEPMrEEU5xhkcy3Hs/O7nGZqEpZ2sUtLaL9MORLtDfRvVl2/3PAuEkYZH0Ty8Q==}
@@ -7718,25 +7698,6 @@ snapshots:
     dependencies:
       tslib: 2.8.1
     optional: true
-
-  '@entropix/core@0.1.1(react@19.2.0)':
-    dependencies:
-      react: 19.2.0
-
-  '@entropix/react-native@0.1.1(react-native@0.83.2(@babel/core@7.29.0)(@types/react@19.2.2)(react@19.2.0))(react@19.2.0)':
-    dependencies:
-      '@entropix/core': 0.1.1(react@19.2.0)
-      '@entropix/tokens': 0.1.1
-      react: 19.2.0
-      react-native: 0.83.2(@babel/core@7.29.0)(@types/react@19.2.2)(react@19.2.0)
-
-  '@entropix/react@0.1.1(react-dom@19.2.0(react@19.2.0))(react@19.2.0)':
-    dependencies:
-      '@entropix/core': 0.1.1(react@19.2.0)
-      react: 19.2.0
-      react-dom: 19.2.0(react@19.2.0)
-
-  '@entropix/tokens@0.1.1': {}
 
   '@esbuild/aix-ppc64@0.27.4':
     optional: true

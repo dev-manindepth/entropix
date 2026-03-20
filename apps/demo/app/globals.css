@@ -301,6 +301,19 @@ body {
   user-select: none;
 }
 
+/* --- Demo Grid (Forms) --- */
+.demo-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .demo-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
 @media (max-width: 767px) {
   .hero {
     padding: 3rem 0 2.5rem;

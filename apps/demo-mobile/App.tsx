@@ -26,6 +26,15 @@ import {
   Stack,
   Inline,
   Divider,
+  Input,
+  Textarea,
+  Checkbox,
+  RadioGroup,
+  RadioItem,
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectOption,
 } from "@entropix/react-native";
 
 export default function App() {
@@ -49,6 +58,9 @@ function LandingPage({
   onToggleTheme: () => void;
 }) {
   const { tokens: t, baseTokens: bt } = useTheme();
+
+  const [plan, setPlan] = useState("startup");
+  const [framework, setFramework] = useState("");
 
   const textPrimary = t.entropixColorTextPrimary as string;
   const textSecondary = t.entropixColorTextSecondary as string;
@@ -125,8 +137,8 @@ function LandingPage({
                 maxWidth: 360,
               }}
             >
-              This app is built using @entropix/react-native@0.1.0 and
-              @entropix/tokens@0.1.0 installed from the npm registry.
+              This app is built using @entropix/react-native@0.1.1 and
+              @entropix/tokens@0.1.1 installed from the npm registry.
               No workspace references.
             </Text>
 
@@ -254,7 +266,7 @@ function LandingPage({
                 All from npm
               </Text>
               <Text style={{ fontSize: 14, color: textSecondary, lineHeight: 20 }}>
-                Every component below is imported from the published @entropix/react-native@0.1.0.
+                Every component below is imported from the published @entropix/react-native@0.1.1.
               </Text>
             </Stack>
 
@@ -263,6 +275,7 @@ function LandingPage({
                 <Tab value="buttons">Buttons</Tab>
                 <Tab value="controls">Controls</Tab>
                 <Tab value="dialogs">Dialogs</Tab>
+                <Tab value="forms">Forms</Tab>
               </TabList>
 
               <TabPanel value="buttons">
@@ -333,6 +346,94 @@ function LandingPage({
                       </Inline>
                     </DialogContent>
                   </Dialog>
+                </Stack>
+              </TabPanel>
+
+              <TabPanel value="forms">
+                <Stack gap="lg">
+                  {/* Inputs */}
+                  <Stack gap="sm">
+                    <Text style={{ fontWeight: "600", color: textPrimary }}>Inputs</Text>
+                    <Input
+                      label="Full Name"
+                      placeholder="Enter your name"
+                      helperText="Your legal name"
+                    />
+                    <Input
+                      label="Email"
+                      type="email"
+                      placeholder="you@example.com"
+                      variant="filled"
+                    />
+                    <Input
+                      label="Username"
+                      errorMessage="This field is required"
+                    />
+                    <Input
+                      label="API Key"
+                      value="sk-***"
+                      disabled
+                    />
+                  </Stack>
+
+                  <Divider />
+
+                  {/* Textarea */}
+                  <Stack gap="sm">
+                    <Text style={{ fontWeight: "600", color: textPrimary }}>Textarea</Text>
+                    <Textarea
+                      label="Bio"
+                      placeholder="Tell us about yourself"
+                      helperText="Max 200 characters"
+                      rows={4}
+                    />
+                  </Stack>
+
+                  <Divider />
+
+                  {/* Checkboxes */}
+                  <Stack gap="sm">
+                    <Text style={{ fontWeight: "600", color: textPrimary }}>Checkboxes</Text>
+                    <Checkbox>Accept terms and conditions</Checkbox>
+                    <Checkbox defaultChecked>Subscribe to newsletter</Checkbox>
+                    <Checkbox disabled>Enable notifications</Checkbox>
+                  </Stack>
+
+                  <Divider />
+
+                  {/* Radio */}
+                  <Stack gap="sm">
+                    <Text style={{ fontWeight: "600", color: textPrimary }}>Radio Group</Text>
+                    <RadioGroup
+                      label="Select a plan"
+                      value={plan}
+                      onChange={setPlan}
+                    >
+                      <RadioItem value="startup">Startup</RadioItem>
+                      <RadioItem value="business">Business</RadioItem>
+                      <RadioItem value="enterprise">Enterprise</RadioItem>
+                    </RadioGroup>
+                  </Stack>
+
+                  <Divider />
+
+                  {/* Select */}
+                  <Stack gap="sm">
+                    <Text style={{ fontWeight: "600", color: textPrimary }}>Select</Text>
+                    <Select
+                      label="Framework"
+                      value={framework}
+                      onChange={setFramework}
+                    >
+                      <SelectTrigger placeholder="Choose a framework" />
+                      <SelectContent>
+                        <SelectOption value="react">React</SelectOption>
+                        <SelectOption value="vue">Vue</SelectOption>
+                        <SelectOption value="angular">Angular</SelectOption>
+                        <SelectOption value="svelte">Svelte</SelectOption>
+                      </SelectContent>
+                    </Select>
+                  </Stack>
                 </Stack>
               </TabPanel>
             </Tabs>
@@ -432,7 +533,7 @@ function LandingPage({
           <Container maxWidth="xl">
             <Inline justify="between" wrap>
               <Text style={{ fontSize: 13, color: textSecondary }}>
-                Built with @entropix/react-native@0.1.0 from npm
+                Built with @entropix/react-native@0.1.1 from npm
               </Text>
               <Text style={{ fontSize: 13, color: textSecondary }}>MIT License</Text>
             </Inline>

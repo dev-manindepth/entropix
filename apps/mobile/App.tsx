@@ -26,6 +26,15 @@ import {
   Stack,
   Inline,
   Divider,
+  Input,
+  Textarea,
+  Checkbox,
+  RadioGroup,
+  RadioItem,
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectOption,
 } from "@entropix/react-native";
 
 export default function App() {
@@ -244,6 +253,7 @@ function LandingPage({
                 <Tab value="buttons">Buttons</Tab>
                 <Tab value="controls">Controls</Tab>
                 <Tab value="dialogs">Dialogs</Tab>
+                <Tab value="forms">Forms</Tab>
               </TabList>
 
               <TabPanel value="buttons">
@@ -276,6 +286,10 @@ function LandingPage({
                   <SwitchRow label="Airplane mode" textColor={textPrimary} />
                   <SwitchRow label="Wi-Fi" defaultChecked textColor={textPrimary} />
                 </Stack>
+              </TabPanel>
+
+              <TabPanel value="forms">
+                <FormsDemo textPrimary={textPrimary} />
               </TabPanel>
 
               <TabPanel value="dialogs">
@@ -464,5 +478,108 @@ function SwitchRow({ label, defaultChecked = false, textColor }: { label: string
       <Switch checked={checked} onChange={setChecked} label={label} />
       <Text style={{ color: textColor, fontSize: 14 }}>{label}</Text>
     </Inline>
+  );
+}
+
+function FormsDemo({ textPrimary }: { textPrimary: string }) {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [bio, setBio] = useState("");
+  const [acceptTerms, setAcceptTerms] = useState(false);
+  const [newsletter, setNewsletter] = useState(true);
+  const [notifications, setNotifications] = useState(false);
+  const [plan, setPlan] = useState("");
+  const [framework, setFramework] = useState("");
+
+  return (
+    <Stack gap="lg">
+      {/* Input section */}
+      <Stack gap="sm">
+        <Text style={{ fontWeight: "600", color: textPrimary }}>Inputs</Text>
+        <Input
+          label="Full Name"
+          placeholder="Enter your name"
+          helperText="Your legal name"
+          value={name}
+          onChange={setName}
+        />
+        <Input
+          label="Email"
+          placeholder="you@example.com"
+          value={email}
+          onChange={setEmail}
+        />
+        <Input
+          label="Username"
+          errorMessage="This field is required"
+          value={username}
+          onChange={setUsername}
+        />
+        <Input
+          label="API Key"
+          value="sk-***"
+          disabled
+        />
+      </Stack>
+
+      {/* Textarea section */}
+      <Stack gap="sm">
+        <Text style={{ fontWeight: "600", color: textPrimary }}>Textarea</Text>
+        <Textarea
+          label="Bio"
+          placeholder="Tell us about yourself"
+          helperText="Max 200 characters"
+          rows={4}
+          value={bio}
+          onChange={setBio}
+        />
+      </Stack>
+
+      {/* Checkbox section */}
+      <Stack gap="sm">
+        <Text style={{ fontWeight: "600", color: textPrimary }}>Checkboxes</Text>
+        <Checkbox
+          label="Accept terms"
+          checked={acceptTerms}
+          onChange={setAcceptTerms}
+        />
+        <Checkbox
+          label="Newsletter"
+          checked={newsletter}
+          onChange={setNewsletter}
+        />
+        <Checkbox
+          label="Notifications"
+          checked={notifications}
+          onChange={setNotifications}
+          disabled
+        />
+      </Stack>
+
+      {/* Radio section */}
+      <Stack gap="sm">
+        <Text style={{ fontWeight: "600", color: textPrimary }}>Radio Group</Text>
+        <RadioGroup value={plan} onChange={setPlan}>
+          <RadioItem value="startup" label="Startup" />
+          <RadioItem value="business" label="Business" />
+          <RadioItem value="enterprise" label="Enterprise" />
+        </RadioGroup>
+      </Stack>
+
+      {/* Select section */}
+      <Stack gap="sm">
+        <Text style={{ fontWeight: "600", color: textPrimary }}>Select</Text>
+        <Select value={framework} onChange={setFramework}>
+          <SelectTrigger placeholder="Choose a framework" />
+          <SelectContent>
+            <SelectOption value="react">React</SelectOption>
+            <SelectOption value="vue">Vue</SelectOption>
+            <SelectOption value="angular">Angular</SelectOption>
+            <SelectOption value="svelte">Svelte</SelectOption>
+          </SelectContent>
+        </Select>
+      </Stack>
+    </Stack>
   );
 }

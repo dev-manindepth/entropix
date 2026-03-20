@@ -24,10 +24,21 @@ import {
   Stack,
   Inline,
   Divider,
+  Input,
+  Textarea,
+  Checkbox,
+  RadioGroup,
+  RadioItem,
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectOption,
 } from "@entropix/react";
 
 export default function DemoLandingPage() {
   const [theme, setTheme] = useState<"light" | "dark">("light");
+  const [plan, setPlan] = useState("startup");
+  const [framework, setFramework] = useState("");
 
   const toggleTheme = () => {
     const next = theme === "light" ? "dark" : "light";
@@ -67,8 +78,8 @@ export default function DemoLandingPage() {
           </h1>
           <p className="hero-sub">
             This entire page is built using{" "}
-            <code className="code-inline">@entropix/react@0.1.0</code> and{" "}
-            <code className="code-inline">@entropix/tokens@0.1.0</code>{" "}
+            <code className="code-inline">@entropix/react@0.1.1</code> and{" "}
+            <code className="code-inline">@entropix/tokens@0.1.1</code>{" "}
             installed from the npm registry. No local workspace references.
           </p>
           <Inline gap="sm" justify="center" wrap>
@@ -133,8 +144,8 @@ export default function DemoLandingPage() {
                 <div className="feature-icon">🧠</div>
                 <h3>@entropix/core</h3>
                 <p>
-                  Headless hooks for Button, Dialog, Tabs, Accordion, Menu, Toggle, Switch.
-                  Platform-agnostic behavior, state, and WAI-ARIA accessibility.
+                  Headless hooks for Button, Dialog, Tabs, Accordion, Menu, Toggle, Switch,
+                  Input, Radio, Select. Platform-agnostic behavior, state, and WAI-ARIA accessibility.
                 </p>
               </div>
               <div className="feature-card">
@@ -193,7 +204,7 @@ export default function DemoLandingPage() {
               <h2 className="section-heading">All from npm — zero local code</h2>
               <p className="section-desc">
                 Every component below is imported from the published{" "}
-                <code className="code-inline">@entropix/react@0.1.0</code> package.
+                <code className="code-inline">@entropix/react@0.1.1</code> package.
                 Fully styled, accessible, and interactive.
               </p>
             </div>
@@ -204,6 +215,7 @@ export default function DemoLandingPage() {
                 <Tab value="controls">Controls</Tab>
                 <Tab value="layout">Layout</Tab>
                 <Tab value="dialogs">Dialogs</Tab>
+                <Tab value="forms">Forms</Tab>
               </TabList>
 
               <TabPanel value="buttons">
@@ -335,6 +347,108 @@ export default function DemoLandingPage() {
                   </Stack>
                 </div>
               </TabPanel>
+
+              <TabPanel value="forms">
+                <div className="demo-box">
+                  <Stack gap="lg">
+                    {/* Inputs */}
+                    <Stack gap="md">
+                      <h4 style={{ fontWeight: 600 }}>Inputs</h4>
+                      <div className="demo-grid">
+                        <Input
+                          label="Full Name"
+                          placeholder="Enter your name"
+                          helperText="Your legal name"
+                        />
+                        <Input
+                          label="Email"
+                          type="email"
+                          placeholder="you@example.com"
+                          variant="filled"
+                        />
+                        <Input
+                          label="Username"
+                          errorMessage="This field is required"
+                        />
+                        <Input
+                          label="API Key"
+                          value="sk-***"
+                          disabled
+                        />
+                      </div>
+                      <h4 style={{ fontWeight: 600, fontSize: "0.875rem", color: "var(--entropix-color-text-secondary)" }}>
+                        Sizes
+                      </h4>
+                      <Inline gap="sm" wrap>
+                        <Input label="Small" size="sm" placeholder="sm" />
+                        <Input label="Medium" size="md" placeholder="md" />
+                        <Input label="Large" size="lg" placeholder="lg" />
+                      </Inline>
+                    </Stack>
+
+                    <Divider />
+
+                    {/* Textarea */}
+                    <Stack gap="md">
+                      <h4 style={{ fontWeight: 600 }}>Textarea</h4>
+                      <Textarea
+                        label="Bio"
+                        placeholder="Tell us about yourself"
+                        helperText="Max 200 characters"
+                        rows={4}
+                      />
+                    </Stack>
+
+                    <Divider />
+
+                    {/* Checkboxes */}
+                    <Stack gap="md">
+                      <h4 style={{ fontWeight: 600 }}>Checkboxes</h4>
+                      <Stack gap="sm">
+                        <Checkbox>Accept terms and conditions</Checkbox>
+                        <Checkbox defaultChecked>Subscribe to newsletter</Checkbox>
+                        <Checkbox disabled>Enable notifications</Checkbox>
+                      </Stack>
+                    </Stack>
+
+                    <Divider />
+
+                    {/* Radio */}
+                    <Stack gap="md">
+                      <h4 style={{ fontWeight: 600 }}>Radio Group</h4>
+                      <RadioGroup
+                        label="Select a plan"
+                        value={plan}
+                        onChange={setPlan}
+                      >
+                        <RadioItem value="startup">Startup</RadioItem>
+                        <RadioItem value="business">Business</RadioItem>
+                        <RadioItem value="enterprise">Enterprise</RadioItem>
+                      </RadioGroup>
+                    </Stack>
+
+                    <Divider />
+
+                    {/* Select */}
+                    <Stack gap="md">
+                      <h4 style={{ fontWeight: 600 }}>Select</h4>
+                      <Select
+                        label="Framework"
+                        value={framework}
+                        onChange={setFramework}
+                      >
+                        <SelectTrigger placeholder="Choose a framework" />
+                        <SelectContent>
+                          <SelectOption value="react">React</SelectOption>
+                          <SelectOption value="vue">Vue</SelectOption>
+                          <SelectOption value="angular">Angular</SelectOption>
+                          <SelectOption value="svelte">Svelte</SelectOption>
+                        </SelectContent>
+                      </Select>
+                    </Stack>
+                  </Stack>
+                </div>
+              </TabPanel>
             </Tabs>
           </Stack>
         </section>
@@ -446,7 +560,7 @@ export default function DemoLandingPage() {
         <Container maxWidth="xl">
           <Inline justify="between" wrap>
             <span>
-              Built with <code className="code-inline">@entropix/react@0.1.0</code> from npm
+              Built with <code className="code-inline">@entropix/react@0.1.1</code> from npm
             </span>
             <span>MIT License</span>
           </Inline>
