@@ -35,11 +35,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build all packages
-        run: pnpm build
+      - name: Build packages
+        run: pnpm turbo run build --filter='./packages/*'
 
       - name: Run tests
-        run: pnpm test
+        run: pnpm turbo run test --filter='./packages/*'
 
       - name: Create Release PR or Publish
         id: changesets

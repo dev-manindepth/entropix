@@ -12,8 +12,10 @@
     "storybook": "turbo run dev --filter=storybook",
     "changeset": "changeset",
     "version-packages": "changeset version",
-    "release": "turbo run build && changeset publish",
-    "publish:dry": "turbo run build && pnpm -r publish --dry-run --no-git-checks"
+    "build:packages": "turbo run build --filter='./packages/*'",
+    "test:packages": "turbo run test --filter='./packages/*'",
+    "release": "turbo run build --filter='./packages/*' && changeset publish",
+    "publish:dry": "turbo run build --filter='./packages/*' && pnpm -r publish --dry-run --no-git-checks"
   },
   "devDependencies": {
     "@changesets/cli": "^2.29.0",
