@@ -1,62 +1,64 @@
 /* Menu — @entropix/react */
 
-.entropix-menu-trigger {
-  /* Inherits button styles if also .entropix-button */
-}
+@layer entropix {
+  .entropix-menu-trigger {
+    /* Inherits button styles if also .entropix-button */
+  }
 
-.entropix-menu-content {
-  min-width: 160px;
-  padding: var(--entropix-spacing-1);
-  background: var(--entropix-color-bg-primary);
-  border: 1px solid var(--entropix-color-border-default);
-  border-radius: var(--entropix-radius-md);
-  box-shadow: var(--entropix-shadow-lg);
-  z-index: 50;
-}
-
-.entropix-menu-item {
-  display: flex;
-  align-items: center;
-  padding: var(--entropix-spacing-2) var(--entropix-spacing-3);
-  border-radius: var(--entropix-radius-sm);
-  font-family: var(--entropix-font-family-sans);
-  font-size: var(--entropix-font-size-sm);
-  color: var(--entropix-color-text-primary);
-  cursor: pointer;
-  user-select: none;
-  transition: background var(--entropix-duration-fast) var(--entropix-easing-default);
-}
-
-.entropix-menu-item:hover {
-  background: var(--entropix-color-action-secondary-default);
-}
-
-.entropix-menu-item[data-state="active"] {
-  background: var(--entropix-color-action-secondary-default);
-}
-
-.entropix-menu-item[data-disabled="true"],
-.entropix-menu-item[aria-disabled="true"] {
-  opacity: 0.5;
-  cursor: not-allowed;
-  pointer-events: none;
-}
-
-.entropix-menu-item:focus-visible {
-  outline: 2px solid var(--entropix-color-border-focus);
-  outline-offset: -2px;
-}
-
-/* === Responsive — Larger touch targets on mobile === */
-
-@media (max-width: 767px) {
   .entropix-menu-content {
-    min-width: 200px;
+    min-width: 160px;
+    padding: var(--entropix-spacing-1);
+    background: var(--entropix-color-bg-primary);
+    border: 1px solid var(--entropix-color-border-default);
+    border-radius: var(--entropix-radius-md);
+    box-shadow: var(--entropix-shadow-lg);
+    z-index: 50;
   }
 
   .entropix-menu-item {
-    padding: var(--entropix-spacing-3) var(--entropix-spacing-4);
-    font-size: var(--entropix-font-size-base);
-    min-height: 44px;
+    display: flex;
+    align-items: center;
+    padding: var(--entropix-spacing-2) var(--entropix-spacing-3);
+    border-radius: var(--entropix-radius-sm);
+    font-family: var(--entropix-font-family-sans);
+    font-size: var(--entropix-font-size-sm);
+    color: var(--entropix-color-text-primary);
+    cursor: pointer;
+    user-select: none;
+    transition: background var(--entropix-duration-fast) var(--entropix-easing-default);
+  }
+
+  .entropix-menu-item:hover {
+    background: var(--entropix-color-action-secondary-default);
+  }
+
+  .entropix-menu-item[data-state="active"] {
+    background: var(--entropix-color-action-secondary-default);
+  }
+
+  .entropix-menu-item[data-disabled="true"],
+  .entropix-menu-item[aria-disabled="true"] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  .entropix-menu-item:focus-visible {
+    outline: 2px solid var(--entropix-color-border-focus);
+    outline-offset: -2px;
+  }
+
+  /* === Responsive — Larger touch targets on mobile === */
+
+  @media (max-width: 767px) {
+    .entropix-menu-content {
+      min-width: 200px;
+    }
+
+    .entropix-menu-item {
+      padding: var(--entropix-spacing-3) var(--entropix-spacing-4);
+      font-size: var(--entropix-font-size-base);
+      min-height: 44px;
+    }
   }
 }

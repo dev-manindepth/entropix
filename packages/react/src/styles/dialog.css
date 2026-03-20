@@ -1,102 +1,104 @@
 /* Dialog — @entropix/react */
 
-.entropix-dialog-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 50;
-}
-
-.entropix-dialog-content {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: var(--entropix-color-bg-primary);
-  border-radius: var(--entropix-radius-lg);
-  box-shadow: var(--entropix-shadow-xl);
-  padding: var(--entropix-spacing-6);
-  z-index: 51;
-  max-width: 480px;
-  width: 90vw;
-  max-height: 85vh;
-  overflow-y: auto;
-}
-
-.entropix-dialog-content:focus {
-  outline: none;
-}
-
-.entropix-dialog-title {
-  margin: 0;
-  margin-bottom: var(--entropix-spacing-2);
-  font-family: var(--entropix-text-heading-md-font-family);
-  font-size: var(--entropix-text-heading-md-font-size);
-  font-weight: var(--entropix-text-heading-md-font-weight);
-  line-height: var(--entropix-text-heading-md-line-height);
-  color: var(--entropix-color-text-primary);
-}
-
-.entropix-dialog-description {
-  margin: 0;
-  margin-bottom: var(--entropix-spacing-4);
-  font-family: var(--entropix-text-body-md-font-family);
-  font-size: var(--entropix-text-body-md-font-size);
-  font-weight: var(--entropix-text-body-md-font-weight);
-  line-height: var(--entropix-text-body-md-line-height);
-  color: var(--entropix-color-text-secondary);
-}
-
-.entropix-dialog-close {
-  position: absolute;
-  top: var(--entropix-spacing-3);
-  right: var(--entropix-spacing-3);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  padding: 0;
-  border: none;
-  border-radius: var(--entropix-radius-sm);
-  background: transparent;
-  color: var(--entropix-color-text-secondary);
-  cursor: pointer;
-  transition: background var(--entropix-duration-fast) var(--entropix-easing-default);
-}
-
-.entropix-dialog-close:hover {
-  background: var(--entropix-color-action-secondary-default);
-}
-
-.entropix-dialog-close:focus-visible {
-  outline: 2px solid var(--entropix-color-border-focus);
-  outline-offset: 2px;
-}
-
-.entropix-dialog-trigger {
-  /* Inherits button styles if also .entropix-button */
-}
-
-/* === Responsive — Full-width bottom sheet on mobile === */
-
-@media (max-width: 767px) {
-  .entropix-dialog-content {
-    top: auto;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    transform: none;
-    width: 100%;
-    max-width: 100%;
-    border-radius: var(--entropix-radius-lg) var(--entropix-radius-lg) 0 0;
-    max-height: 90vh;
-    padding: var(--entropix-spacing-5);
+@layer entropix {
+  .entropix-dialog-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 50;
   }
-}
 
-@media (min-width: 768px) {
   .entropix-dialog-content {
-    max-width: 560px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--entropix-color-bg-primary);
+    border-radius: var(--entropix-radius-lg);
+    box-shadow: var(--entropix-shadow-xl);
+    padding: var(--entropix-spacing-6);
+    z-index: 51;
+    max-width: 480px;
+    width: 90vw;
+    max-height: 85vh;
+    overflow-y: auto;
+  }
+
+  .entropix-dialog-content:focus {
+    outline: none;
+  }
+
+  .entropix-dialog-title {
+    margin: 0;
+    margin-bottom: var(--entropix-spacing-2);
+    font-family: var(--entropix-text-heading-md-font-family);
+    font-size: var(--entropix-text-heading-md-font-size);
+    font-weight: var(--entropix-text-heading-md-font-weight);
+    line-height: var(--entropix-text-heading-md-line-height);
+    color: var(--entropix-color-text-primary);
+  }
+
+  .entropix-dialog-description {
+    margin: 0;
+    margin-bottom: var(--entropix-spacing-4);
+    font-family: var(--entropix-text-body-md-font-family);
+    font-size: var(--entropix-text-body-md-font-size);
+    font-weight: var(--entropix-text-body-md-font-weight);
+    line-height: var(--entropix-text-body-md-line-height);
+    color: var(--entropix-color-text-secondary);
+  }
+
+  .entropix-dialog-close {
+    position: absolute;
+    top: var(--entropix-spacing-3);
+    right: var(--entropix-spacing-3);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: none;
+    border-radius: var(--entropix-radius-sm);
+    background: transparent;
+    color: var(--entropix-color-text-secondary);
+    cursor: pointer;
+    transition: background var(--entropix-duration-fast) var(--entropix-easing-default);
+  }
+
+  .entropix-dialog-close:hover {
+    background: var(--entropix-color-action-secondary-default);
+  }
+
+  .entropix-dialog-close:focus-visible {
+    outline: 2px solid var(--entropix-color-border-focus);
+    outline-offset: 2px;
+  }
+
+  .entropix-dialog-trigger {
+    /* Inherits button styles if also .entropix-button */
+  }
+
+  /* === Responsive — Full-width bottom sheet on mobile === */
+
+  @media (max-width: 767px) {
+    .entropix-dialog-content {
+      top: auto;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      transform: none;
+      width: 100%;
+      max-width: 100%;
+      border-radius: var(--entropix-radius-lg) var(--entropix-radius-lg) 0 0;
+      max-height: 90vh;
+      padding: var(--entropix-spacing-5);
+    }
+  }
+
+  @media (min-width: 768px) {
+    .entropix-dialog-content {
+      max-width: 560px;
+    }
   }
 }

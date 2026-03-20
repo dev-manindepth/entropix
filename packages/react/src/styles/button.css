@@ -1,133 +1,135 @@
 /* Button — @entropix/react */
 
-.entropix-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--entropix-button-gap);
-  border: 1px solid transparent;
-  font-family: var(--entropix-font-family-sans);
-  font-size: var(--entropix-button-font-size);
-  font-weight: var(--entropix-button-font-weight);
-  line-height: var(--entropix-button-line-height);
-  border-radius: var(--entropix-button-border-radius);
-  padding: var(--entropix-button-padding-y) var(--entropix-button-padding-x);
-  cursor: pointer;
-  text-decoration: none;
-  user-select: none;
-  transition:
-    background var(--entropix-duration-fast) var(--entropix-easing-default),
-    color var(--entropix-duration-fast) var(--entropix-easing-default),
-    border-color var(--entropix-duration-fast) var(--entropix-easing-default),
-    box-shadow var(--entropix-duration-fast) var(--entropix-easing-default);
-}
-
-/* === Variants === */
-
-.entropix-button--primary {
-  background: var(--entropix-button-primary-bg);
-  color: var(--entropix-button-primary-text);
-  border-color: var(--entropix-button-primary-border);
-}
-.entropix-button--primary:hover:not(:disabled) {
-  background: var(--entropix-button-primary-bg-hover);
-}
-.entropix-button--primary:active:not(:disabled) {
-  background: var(--entropix-button-primary-bg-active);
-}
-
-.entropix-button--secondary {
-  background: var(--entropix-button-secondary-bg);
-  color: var(--entropix-button-secondary-text);
-  border-color: var(--entropix-button-secondary-border);
-}
-.entropix-button--secondary:hover:not(:disabled) {
-  background: var(--entropix-button-secondary-bg-hover);
-}
-.entropix-button--secondary:active:not(:disabled) {
-  background: var(--entropix-button-secondary-bg-active);
-}
-
-.entropix-button--outline {
-  background: transparent;
-  color: var(--entropix-color-text-primary);
-  border-color: var(--entropix-color-border-default);
-}
-.entropix-button--outline:hover:not(:disabled) {
-  background: var(--entropix-color-action-secondary-hover);
-}
-.entropix-button--outline:active:not(:disabled) {
-  background: var(--entropix-color-action-secondary-active);
-}
-
-.entropix-button--ghost {
-  background: transparent;
-  color: var(--entropix-color-text-primary);
-  border-color: transparent;
-}
-.entropix-button--ghost:hover:not(:disabled) {
-  background: var(--entropix-color-action-secondary-default);
-}
-.entropix-button--ghost:active:not(:disabled) {
-  background: var(--entropix-color-action-secondary-hover);
-}
-
-.entropix-button--danger {
-  background: var(--entropix-button-danger-bg);
-  color: var(--entropix-button-danger-text);
-  border-color: var(--entropix-button-danger-border);
-}
-.entropix-button--danger:hover:not(:disabled) {
-  background: var(--entropix-button-danger-bg-hover);
-}
-.entropix-button--danger:active:not(:disabled) {
-  background: var(--entropix-button-danger-bg-active);
-}
-
-/* === Sizes === */
-
-.entropix-button--sm {
-  padding: var(--entropix-spacing-1) var(--entropix-spacing-3);
-  font-size: var(--entropix-font-size-xs);
-  border-radius: var(--entropix-radius-sm);
-}
-
-.entropix-button--md {
-  padding: var(--entropix-button-padding-y) var(--entropix-button-padding-x);
-  font-size: var(--entropix-button-font-size);
-}
-
-.entropix-button--lg {
-  padding: var(--entropix-spacing-3) var(--entropix-spacing-6);
-  font-size: var(--entropix-font-size-base);
-  border-radius: var(--entropix-radius-lg);
-}
-
-/* === States === */
-
-.entropix-button:disabled,
-.entropix-button[data-state="disabled"],
-.entropix-button[data-state="loading"] {
-  opacity: 0.5;
-  cursor: not-allowed;
-  pointer-events: none;
-}
-
-.entropix-button:focus-visible {
-  outline: 2px solid var(--entropix-color-border-focus);
-  outline-offset: 2px;
-}
-
-/* === Responsive — Touch-friendly sizing on mobile === */
-
-@media (max-width: 767px) {
+@layer entropix {
   .entropix-button {
-    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--entropix-button-gap);
+    border: 1px solid transparent;
+    font-family: var(--entropix-font-family-sans);
+    font-size: var(--entropix-button-font-size);
+    font-weight: var(--entropix-button-font-weight);
+    line-height: var(--entropix-button-line-height);
+    border-radius: var(--entropix-button-border-radius);
+    padding: var(--entropix-button-padding-y) var(--entropix-button-padding-x);
+    cursor: pointer;
+    text-decoration: none;
+    user-select: none;
+    transition:
+      background var(--entropix-duration-fast) var(--entropix-easing-default),
+      color var(--entropix-duration-fast) var(--entropix-easing-default),
+      border-color var(--entropix-duration-fast) var(--entropix-easing-default),
+      box-shadow var(--entropix-duration-fast) var(--entropix-easing-default);
   }
 
+  /* === Variants === */
+
+  .entropix-button--primary {
+    background: var(--entropix-button-primary-bg);
+    color: var(--entropix-button-primary-text);
+    border-color: var(--entropix-button-primary-border);
+  }
+  .entropix-button--primary:hover:not(:disabled) {
+    background: var(--entropix-button-primary-bg-hover);
+  }
+  .entropix-button--primary:active:not(:disabled) {
+    background: var(--entropix-button-primary-bg-active);
+  }
+
+  .entropix-button--secondary {
+    background: var(--entropix-button-secondary-bg);
+    color: var(--entropix-button-secondary-text);
+    border-color: var(--entropix-button-secondary-border);
+  }
+  .entropix-button--secondary:hover:not(:disabled) {
+    background: var(--entropix-button-secondary-bg-hover);
+  }
+  .entropix-button--secondary:active:not(:disabled) {
+    background: var(--entropix-button-secondary-bg-active);
+  }
+
+  .entropix-button--outline {
+    background: transparent;
+    color: var(--entropix-color-text-primary);
+    border-color: var(--entropix-color-border-default);
+  }
+  .entropix-button--outline:hover:not(:disabled) {
+    background: var(--entropix-color-action-secondary-hover);
+  }
+  .entropix-button--outline:active:not(:disabled) {
+    background: var(--entropix-color-action-secondary-active);
+  }
+
+  .entropix-button--ghost {
+    background: transparent;
+    color: var(--entropix-color-text-primary);
+    border-color: transparent;
+  }
+  .entropix-button--ghost:hover:not(:disabled) {
+    background: var(--entropix-color-action-secondary-default);
+  }
+  .entropix-button--ghost:active:not(:disabled) {
+    background: var(--entropix-color-action-secondary-hover);
+  }
+
+  .entropix-button--danger {
+    background: var(--entropix-button-danger-bg);
+    color: var(--entropix-button-danger-text);
+    border-color: var(--entropix-button-danger-border);
+  }
+  .entropix-button--danger:hover:not(:disabled) {
+    background: var(--entropix-button-danger-bg-hover);
+  }
+  .entropix-button--danger:active:not(:disabled) {
+    background: var(--entropix-button-danger-bg-active);
+  }
+
+  /* === Sizes === */
+
   .entropix-button--sm {
-    min-height: 36px;
-    padding: var(--entropix-spacing-2) var(--entropix-spacing-3);
-    font-size: var(--entropix-font-size-sm);
+    padding: var(--entropix-spacing-1) var(--entropix-spacing-3);
+    font-size: var(--entropix-font-size-xs);
+    border-radius: var(--entropix-radius-sm);
+  }
+
+  .entropix-button--md {
+    padding: var(--entropix-button-padding-y) var(--entropix-button-padding-x);
+    font-size: var(--entropix-button-font-size);
+  }
+
+  .entropix-button--lg {
+    padding: var(--entropix-spacing-3) var(--entropix-spacing-6);
+    font-size: var(--entropix-font-size-base);
+    border-radius: var(--entropix-radius-lg);
+  }
+
+  /* === States === */
+
+  .entropix-button:disabled,
+  .entropix-button[data-state="disabled"],
+  .entropix-button[data-state="loading"] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  .entropix-button:focus-visible {
+    outline: 2px solid var(--entropix-color-border-focus);
+    outline-offset: 2px;
+  }
+
+  /* === Responsive — Touch-friendly sizing on mobile === */
+
+  @media (max-width: 767px) {
+    .entropix-button {
+      min-height: 44px;
+    }
+
+    .entropix-button--sm {
+      min-height: 36px;
+      padding: var(--entropix-spacing-2) var(--entropix-spacing-3);
+      font-size: var(--entropix-font-size-sm);
+    }
   }
 }

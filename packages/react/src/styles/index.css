@@ -1,5 +1,7 @@
 /* Entropix Design System — All Component Styles */
 
+@layer entropix;
+
 @import "./button.css";
 @import "./toggle.css";
 @import "./switch.css";
@@ -11,3 +13,4 @@
 @import "./checkbox.css";
 @import "./radio.css";
 @import "./select.css";
+@import "./layout.css";
