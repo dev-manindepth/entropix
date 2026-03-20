@@ -6,8 +6,8 @@ import { cn } from "../../utils/cn.js";
 export interface SelectOptionProps {
   /** The value this option represents */
   value: string;
-  /** The index of this option in the list */
-  index: number;
+  /** The index of this option in the list (auto-assigned by SelectContent if omitted) */
+  index?: number;
   /** Whether this option is disabled */
   disabled?: boolean;
   children: React.ReactNode;
@@ -27,7 +27,7 @@ export function SelectOption({
   className,
 }: SelectOptionProps) {
   const { getOptionProps, selectedValue } = useSelectContext();
-  const propGetterReturn = getOptionProps(value, index, { disabled });
+  const propGetterReturn = getOptionProps(value, index ?? 0, { disabled });
   const ariaProps = mapAccessibilityToAria(propGetterReturn.accessibility);
 
   const isSelected = value === selectedValue;

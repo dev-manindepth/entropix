@@ -15,8 +15,8 @@ export interface SelectOptionProps
   extends Omit<PressableProps, "disabled" | "onPress" | "style" | "children"> {
   /** The value this option represents */
   value: string;
-  /** Index of this option in the list */
-  index: number;
+  /** Index of this option in the list (auto-assigned by SelectContent if omitted) */
+  index?: number;
   /** Whether this option is disabled */
   disabled?: boolean;
   /** Override container style */
@@ -43,7 +43,7 @@ export function SelectOption({
 }: SelectOptionProps) {
   const { tokens: t, baseTokens: bt } = useTheme();
   const { getOptionProps } = useSelectContext();
-  const propGetterReturn = getOptionProps(value, index, { disabled });
+  const propGetterReturn = getOptionProps(value, index ?? 0, { disabled });
   const rnAccessibility = mapAccessibilityToRN(propGetterReturn.accessibility);
   const isSelected = propGetterReturn.accessibility.selected === true;
 
