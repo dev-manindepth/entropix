@@ -1,5 +1,11 @@
 # @entropix/core
 
+## 0.3.0
+
+### Patch Changes
+
+- 2cabd80: Add CSS @layer system with component-level tokens and 93 Storybook stories
+
 ## 0.2.0
 
 ### Minor Changes

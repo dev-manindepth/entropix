@@ -1,5 +1,13 @@
 # demo-mobile
 
+## 1.0.3
+
+### Patch Changes
+
+- Updated dependencies [2cabd80]
+  - @entropix/react-native@0.3.0
+  - @entropix/tokens@0.3.0
+
 ## 1.0.2
 
 ### Patch Changes
