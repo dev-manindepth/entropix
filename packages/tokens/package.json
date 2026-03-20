@@ -1,6 +1,6 @@
 {
   "name": "@entropix/tokens",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "W3C DTCG design tokens for the Entropix design system — CSS variables, JS objects, and theme files",
   "type": "module",
   "license": "MIT",
@@ -47,7 +47,9 @@
       "default": "./dist/native/dark.js"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsx build.ts",
     "clean": "rm -rf dist"

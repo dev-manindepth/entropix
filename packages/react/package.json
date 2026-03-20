@@ -1,6 +1,6 @@
 {
   "name": "@entropix/react",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "React (Web) components for the Entropix design system — styled with CSS custom properties and design tokens",
   "type": "module",
   "license": "MIT",
@@ -27,7 +27,9 @@
     "access": "public",
     "registry": "https://registry.npmjs.org"
   },
-  "sideEffects": ["**/*.css"],
+  "sideEffects": [
+    "**/*.css"
+  ],
   "exports": {
     ".": {
       "import": {
@@ -45,7 +47,9 @@
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",

@@ -1,6 +1,6 @@
 {
   "name": "@entropix/core",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Headless core hooks and utilities for the Entropix design system — platform-agnostic behavior, state, and accessibility",
   "type": "module",
   "license": "MIT",
@@ -41,7 +41,9 @@
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
