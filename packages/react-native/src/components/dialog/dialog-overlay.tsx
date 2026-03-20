@@ -6,7 +6,6 @@ import {
   type ViewStyle,
 } from "react-native";
 import { useDialogContext } from "./dialog-context.js";
-import { mapAccessibilityToRN } from "../../utils/map-accessibility-to-rn.js";
 
 export interface DialogOverlayProps {
   style?: StyleProp<ViewStyle>;

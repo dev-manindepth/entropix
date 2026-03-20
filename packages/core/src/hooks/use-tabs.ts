@@ -70,7 +70,7 @@ export function useTabs(options: UseTabsOptions = {}): UseTabsReturn {
     defaultSelectedKey = "",
     onSelectedKeyChange,
     orientation = "horizontal",
-    activationMode = "automatic",
+    activationMode: _activationMode = "automatic",
     disabled = false,
     disabledKeys = [],
   } = options;

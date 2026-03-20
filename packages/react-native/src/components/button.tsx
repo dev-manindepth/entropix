@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { useButton } from "@entropix/core";
 import { mapAccessibilityToRN } from "../utils/map-accessibility-to-rn.js";
-import { useTheme, type EntropixTheme } from "../theme/theme-context.js";
+import { useTheme } from "../theme/theme-context.js";
 
 export type ButtonVariant = "primary" | "secondary" | "outline" | "ghost" | "danger";
 export type ButtonSize = "sm" | "md" | "lg";

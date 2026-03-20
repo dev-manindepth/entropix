@@ -1,6 +1,6 @@
 import React from "react";
 import { Text, View } from "react-native";
-import { render, fireEvent, act } from "@testing-library/react-native";
+import { render, fireEvent } from "@testing-library/react-native";
 import {
   Dialog,
   DialogTrigger,

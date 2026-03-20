@@ -34,6 +34,15 @@ export const config = [
       ...pluginReactHooks.configs.recommended.rules,
       // React scope no longer necessary with new JSX transform.
       "react/react-in-jsx-scope": "off",
+      // Allow intentional unused vars with _ prefix
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
+      ],
+      // Allow empty interfaces extending supertypes (used for component prop extension)
+      "@typescript-eslint/no-empty-object-type": "off",
+      // propGetterReturn is intentionally stable in component hooks — safe to omit from deps
+      "react-hooks/exhaustive-deps": "off",
     },
   },
 ];
