@@ -1,5 +1,13 @@
 # demo
 
+## 0.1.3
+
+### Patch Changes
+
+- Updated dependencies [2cabd80]
+  - @entropix/react@0.3.0
+  - @entropix/tokens@0.3.0
+
 ## 0.1.2
 
 ### Patch Changes
