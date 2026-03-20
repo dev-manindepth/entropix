@@ -1,0 +1,62 @@
+{
+  "name": "@entropix/tokens",
+  "version": "0.1.0",
+  "description": "W3C DTCG design tokens for the Entropix design system — CSS variables, JS objects, and theme files",
+  "type": "module",
+  "license": "MIT",
+  "author": "Manish <manindepth07@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dev-manindepth/entropix.git",
+    "directory": "packages/tokens"
+  },
+  "bugs": {
+    "url": "https://github.com/dev-manindepth/entropix/issues"
+  },
+  "homepage": "https://github.com/dev-manindepth/entropix/tree/main/packages/tokens",
+  "keywords": [
+    "design-tokens",
+    "w3c-dtcg",
+    "css-variables",
+    "theming",
+    "design-system",
+    "entropix"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "exports": {
+    "./web": {
+      "types": "./dist/web/tokens.d.ts",
+      "default": "./dist/web/tokens.js"
+    },
+    "./native": {
+      "types": "./dist/native/tokens.d.ts",
+      "default": "./dist/native/tokens.js"
+    },
+    "./css": "./dist/web/variables.css",
+    "./themes/light": "./dist/themes/light.css",
+    "./themes/dark": "./dist/themes/dark.css",
+    "./native/light": {
+      "types": "./dist/native/light.d.ts",
+      "default": "./dist/native/light.js"
+    },
+    "./native/dark": {
+      "types": "./dist/native/dark.d.ts",
+      "default": "./dist/native/dark.js"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsx build.ts",
+    "clean": "rm -rf dist",
+    "check-types": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@entropix/typescript-config": "workspace:*",
+    "style-dictionary": "^4.3.0",
+    "tsx": "^4.19.0",
+    "typescript": "5.9.2"
+  }
+}

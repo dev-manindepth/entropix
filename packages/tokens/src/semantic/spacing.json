@@ -1,0 +1,22 @@
+{
+  "space": {
+    "$description": "Semantic spacing tokens — layout-purpose-driven",
+
+    "component": {
+      "padding-xs":  { "$value": "{spacing.1}",  "$type": "dimension", "$description": "Extra-small component padding" },
+      "padding-sm":  { "$value": "{spacing.2}",  "$type": "dimension", "$description": "Small component padding" },
+      "padding-md":  { "$value": "{spacing.3}",  "$type": "dimension", "$description": "Medium component padding" },
+      "padding-lg":  { "$value": "{spacing.4}",  "$type": "dimension", "$description": "Large component padding" },
+      "gap":         { "$value": "{spacing.2}",  "$type": "dimension", "$description": "Default gap between component internals" }
+    },
+
+    "layout": {
+      "section-gap":    { "$value": "{spacing.8}",  "$type": "dimension", "$description": "Gap between page sections" },
+      "page-margin":    { "$value": "{spacing.6}",  "$type": "dimension", "$description": "Page-level horizontal margin (default / mobile)" },
+      "page-margin-md": { "$value": "{spacing.8}",  "$type": "dimension", "$description": "Page-level horizontal margin (tablet+)" },
+      "page-margin-lg": { "$value": "{spacing.10}", "$type": "dimension", "$description": "Page-level horizontal margin (desktop+)" },
+      "stack":          { "$value": "{spacing.4}",  "$type": "dimension", "$description": "Default vertical stack spacing" },
+      "inline":         { "$value": "{spacing.3}",  "$type": "dimension", "$description": "Default inline/horizontal spacing" }
+    }
+  }
+}

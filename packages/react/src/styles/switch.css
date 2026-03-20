@@ -1,0 +1,50 @@
+/* Switch — @entropix/react */
+
+.entropix-switch {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: 44px;
+  height: 24px;
+  padding: 2px;
+  border: none;
+  border-radius: var(--entropix-radius-full);
+  background: var(--entropix-color-gray-300);
+  cursor: pointer;
+  transition: background var(--entropix-duration-fast) var(--entropix-easing-default);
+}
+
+.entropix-switch::after {
+  content: "";
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-radius: var(--entropix-radius-full);
+  background: var(--entropix-color-white);
+  box-shadow: var(--entropix-shadow-sm);
+  transition: transform var(--entropix-duration-fast) var(--entropix-easing-default);
+}
+
+.entropix-switch[data-state="checked"] {
+  background: var(--entropix-color-action-primary-default);
+}
+.entropix-switch[data-state="checked"]::after {
+  transform: translateX(20px);
+}
+
+.entropix-switch:hover:not(:disabled) {
+  background: var(--entropix-color-gray-400);
+}
+.entropix-switch[data-state="checked"]:hover:not(:disabled) {
+  background: var(--entropix-color-action-primary-hover);
+}
+
+.entropix-switch:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.entropix-switch:focus-visible {
+  outline: 2px solid var(--entropix-color-border-focus);
+  outline-offset: 2px;
+}

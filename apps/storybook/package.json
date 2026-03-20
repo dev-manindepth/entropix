@@ -1,0 +1,22 @@
+{
+  "name": "storybook",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "storybook dev -p 6006",
+    "build": "echo 'Storybook uses build-storybook'",
+    "build-storybook": "storybook build -o dist"
+  },
+  "dependencies": {
+    "@entropix/react": "workspace:*",
+    "@entropix/tokens": "workspace:*",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@storybook/react-vite": "^10.3.0",
+    "storybook": "^10.3.0",
+    "typescript": "5.9.2"
+  }
+}

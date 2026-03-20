@@ -1,0 +1,84 @@
+/* Tabs — @entropix/react */
+
+.entropix-tabs {
+  display: flex;
+  flex-direction: column;
+}
+
+.entropix-tablist {
+  display: flex;
+  gap: var(--entropix-spacing-1);
+  border-bottom: 1px solid var(--entropix-color-border-default);
+}
+.entropix-tablist[data-orientation="vertical"] {
+  flex-direction: column;
+  border-bottom: none;
+  border-right: 1px solid var(--entropix-color-border-default);
+}
+
+.entropix-tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--entropix-spacing-2) var(--entropix-spacing-4);
+  border: none;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  font-family: var(--entropix-font-family-sans);
+  font-size: var(--entropix-font-size-sm);
+  font-weight: var(--entropix-font-weight-medium);
+  color: var(--entropix-color-text-secondary);
+  cursor: pointer;
+  transition:
+    color var(--entropix-duration-fast) var(--entropix-easing-default),
+    border-color var(--entropix-duration-fast) var(--entropix-easing-default);
+}
+
+.entropix-tab:hover:not(:disabled) {
+  color: var(--entropix-color-text-primary);
+}
+
+.entropix-tab[data-state="active"] {
+  color: var(--entropix-color-action-primary-default);
+  border-bottom-color: var(--entropix-color-action-primary-default);
+}
+
+.entropix-tab:disabled,
+.entropix-tab[aria-disabled="true"] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.entropix-tab:focus-visible {
+  outline: 2px solid var(--entropix-color-border-focus);
+  outline-offset: -2px;
+  border-radius: var(--entropix-radius-sm);
+}
+
+.entropix-tabpanel {
+  padding: var(--entropix-spacing-4);
+}
+
+/* === Responsive — Scrollable tabs on mobile === */
+
+@media (max-width: 767px) {
+  .entropix-tablist {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .entropix-tablist::-webkit-scrollbar {
+    display: none;
+  }
+
+  .entropix-tab {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .entropix-tabpanel {
+    padding: var(--entropix-spacing-3);
+  }
+}

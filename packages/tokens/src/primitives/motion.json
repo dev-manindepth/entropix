@@ -1,0 +1,20 @@
+{
+  "duration": {
+    "$description": "Animation duration scale",
+
+    "fast":    { "$value": "100ms", "$type": "duration" },
+    "normal":  { "$value": "200ms", "$type": "duration" },
+    "slow":    { "$value": "300ms", "$type": "duration" },
+    "slower":  { "$value": "500ms", "$type": "duration" }
+  },
+
+  "easing": {
+    "$description": "Animation easing curves",
+
+    "default":    { "$value": [0.4, 0, 0.2, 1],   "$type": "cubicBezier" },
+    "in":         { "$value": [0.4, 0, 1, 1],      "$type": "cubicBezier" },
+    "out":        { "$value": [0, 0, 0.2, 1],      "$type": "cubicBezier" },
+    "in-out":     { "$value": [0.4, 0, 0.2, 1],    "$type": "cubicBezier" },
+    "spring":     { "$value": [0.175, 0.885, 0.32, 1.275], "$type": "cubicBezier" }
+  }
+}

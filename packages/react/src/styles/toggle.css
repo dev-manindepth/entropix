@@ -1,0 +1,45 @@
+/* Toggle (checkbox) — @entropix/react */
+
+.entropix-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--entropix-spacing-2) var(--entropix-spacing-3);
+  border: 1px solid var(--entropix-color-border-default);
+  border-radius: var(--entropix-radius-md);
+  background: var(--entropix-color-bg-primary);
+  color: var(--entropix-color-text-primary);
+  font-family: var(--entropix-font-family-sans);
+  font-size: var(--entropix-font-size-sm);
+  font-weight: var(--entropix-font-weight-medium);
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background var(--entropix-duration-fast) var(--entropix-easing-default),
+    border-color var(--entropix-duration-fast) var(--entropix-easing-default),
+    color var(--entropix-duration-fast) var(--entropix-easing-default);
+}
+
+.entropix-toggle:hover:not(:disabled) {
+  background: var(--entropix-color-action-secondary-hover);
+}
+
+.entropix-toggle[data-state="checked"] {
+  background: var(--entropix-color-action-primary-default);
+  color: var(--entropix-color-text-inverse);
+  border-color: transparent;
+}
+.entropix-toggle[data-state="checked"]:hover:not(:disabled) {
+  background: var(--entropix-color-action-primary-hover);
+}
+
+.entropix-toggle:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.entropix-toggle:focus-visible {
+  outline: 2px solid var(--entropix-color-border-focus);
+  outline-offset: 2px;
+}

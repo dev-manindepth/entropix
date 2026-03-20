@@ -1,0 +1,67 @@
+/* Accordion — @entropix/react */
+
+.entropix-accordion {
+  border: 1px solid var(--entropix-color-border-default);
+  border-radius: var(--entropix-radius-lg);
+  overflow: hidden;
+}
+
+.entropix-accordion-item {
+  border-bottom: 1px solid var(--entropix-color-border-default);
+}
+.entropix-accordion-item:last-child {
+  border-bottom: none;
+}
+
+.entropix-accordion-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: var(--entropix-spacing-4);
+  border: none;
+  background: transparent;
+  font-family: var(--entropix-font-family-sans);
+  font-size: var(--entropix-font-size-sm);
+  font-weight: var(--entropix-font-weight-medium);
+  color: var(--entropix-color-text-primary);
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--entropix-duration-fast) var(--entropix-easing-default);
+}
+
+.entropix-accordion-trigger:hover:not(:disabled) {
+  background: var(--entropix-color-bg-secondary);
+}
+
+.entropix-accordion-trigger:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.entropix-accordion-trigger:focus-visible {
+  outline: 2px solid var(--entropix-color-border-focus);
+  outline-offset: -2px;
+}
+
+.entropix-accordion-panel {
+  padding: 0 var(--entropix-spacing-4) var(--entropix-spacing-4);
+  font-family: var(--entropix-font-family-sans);
+  font-size: var(--entropix-font-size-sm);
+  color: var(--entropix-color-text-secondary);
+  line-height: var(--entropix-line-height-normal);
+}
+
+/* === Responsive — Touch-friendly on mobile === */
+
+@media (max-width: 767px) {
+  .entropix-accordion-trigger {
+    padding: var(--entropix-spacing-4) var(--entropix-spacing-3);
+    min-height: 48px;
+    font-size: var(--entropix-font-size-base);
+  }
+
+  .entropix-accordion-panel {
+    padding: 0 var(--entropix-spacing-3) var(--entropix-spacing-3);
+  }
+}

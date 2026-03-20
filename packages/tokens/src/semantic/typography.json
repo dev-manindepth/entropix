@@ -1,0 +1,85 @@
+{
+  "text": {
+    "$description": "Semantic typography tokens — role-based text styles",
+
+    "heading": {
+      "xl": {
+        "fontFamily":    { "$value": "{fontFamily.sans}",      "$type": "fontFamily" },
+        "fontSize":      { "$value": "{fontSize.4xl}",         "$type": "dimension" },
+        "fontWeight":    { "$value": "{fontWeight.bold}",       "$type": "fontWeight" },
+        "lineHeight":    { "$value": "{lineHeight.tight}",     "$type": "number" },
+        "letterSpacing": { "$value": "{letterSpacing.tight}",  "$type": "dimension" }
+      },
+      "lg": {
+        "fontFamily":    { "$value": "{fontFamily.sans}",      "$type": "fontFamily" },
+        "fontSize":      { "$value": "{fontSize.3xl}",         "$type": "dimension" },
+        "fontWeight":    { "$value": "{fontWeight.bold}",       "$type": "fontWeight" },
+        "lineHeight":    { "$value": "{lineHeight.tight}",     "$type": "number" },
+        "letterSpacing": { "$value": "{letterSpacing.tight}",  "$type": "dimension" }
+      },
+      "md": {
+        "fontFamily":    { "$value": "{fontFamily.sans}",      "$type": "fontFamily" },
+        "fontSize":      { "$value": "{fontSize.xl}",          "$type": "dimension" },
+        "fontWeight":    { "$value": "{fontWeight.semibold}",   "$type": "fontWeight" },
+        "lineHeight":    { "$value": "{lineHeight.tight}",     "$type": "number" },
+        "letterSpacing": { "$value": "{letterSpacing.normal}",  "$type": "dimension" }
+      },
+      "sm": {
+        "fontFamily":    { "$value": "{fontFamily.sans}",      "$type": "fontFamily" },
+        "fontSize":      { "$value": "{fontSize.lg}",          "$type": "dimension" },
+        "fontWeight":    { "$value": "{fontWeight.semibold}",   "$type": "fontWeight" },
+        "lineHeight":    { "$value": "{lineHeight.tight}",     "$type": "number" },
+        "letterSpacing": { "$value": "{letterSpacing.normal}",  "$type": "dimension" }
+      }
+    },
+
+    "body": {
+      "lg": {
+        "fontFamily":    { "$value": "{fontFamily.sans}",      "$type": "fontFamily" },
+        "fontSize":      { "$value": "{fontSize.lg}",          "$type": "dimension" },
+        "fontWeight":    { "$value": "{fontWeight.regular}",    "$type": "fontWeight" },
+        "lineHeight":    { "$value": "{lineHeight.normal}",    "$type": "number" }
+      },
+      "md": {
+        "fontFamily":    { "$value": "{fontFamily.sans}",      "$type": "fontFamily" },
+        "fontSize":      { "$value": "{fontSize.base}",        "$type": "dimension" },
+        "fontWeight":    { "$value": "{fontWeight.regular}",    "$type": "fontWeight" },
+        "lineHeight":    { "$value": "{lineHeight.normal}",    "$type": "number" }
+      },
+      "sm": {
+        "fontFamily":    { "$value": "{fontFamily.sans}",      "$type": "fontFamily" },
+        "fontSize":      { "$value": "{fontSize.sm}",          "$type": "dimension" },
+        "fontWeight":    { "$value": "{fontWeight.regular}",    "$type": "fontWeight" },
+        "lineHeight":    { "$value": "{lineHeight.normal}",    "$type": "number" }
+      }
+    },
+
+    "label": {
+      "lg": {
+        "fontFamily":    { "$value": "{fontFamily.sans}",      "$type": "fontFamily" },
+        "fontSize":      { "$value": "{fontSize.base}",        "$type": "dimension" },
+        "fontWeight":    { "$value": "{fontWeight.medium}",     "$type": "fontWeight" },
+        "lineHeight":    { "$value": "{lineHeight.tight}",     "$type": "number" }
+      },
+      "md": {
+        "fontFamily":    { "$value": "{fontFamily.sans}",      "$type": "fontFamily" },
+        "fontSize":      { "$value": "{fontSize.sm}",          "$type": "dimension" },
+        "fontWeight":    { "$value": "{fontWeight.medium}",     "$type": "fontWeight" },
+        "lineHeight":    { "$value": "{lineHeight.tight}",     "$type": "number" }
+      },
+      "sm": {
+        "fontFamily":    { "$value": "{fontFamily.sans}",      "$type": "fontFamily" },
+        "fontSize":      { "$value": "{fontSize.xs}",          "$type": "dimension" },
+        "fontWeight":    { "$value": "{fontWeight.medium}",     "$type": "fontWeight" },
+        "lineHeight":    { "$value": "{lineHeight.tight}",     "$type": "number" }
+      }
+    },
+
+    "code": {
+      "fontFamily":    { "$value": "{fontFamily.mono}",      "$type": "fontFamily" },
+      "fontSize":      { "$value": "{fontSize.sm}",          "$type": "dimension" },
+      "fontWeight":    { "$value": "{fontWeight.regular}",    "$type": "fontWeight" },
+      "lineHeight":    { "$value": "{lineHeight.normal}",    "$type": "number" }
+    }
+  }
+}

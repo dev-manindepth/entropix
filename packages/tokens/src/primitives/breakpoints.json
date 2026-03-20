@@ -1,0 +1,11 @@
+{
+  "breakpoint": {
+    "$description": "Viewport breakpoints for responsive design",
+
+    "sm":  { "$value": "640px",  "$type": "dimension", "$description": "Small screens (landscape phones)" },
+    "md":  { "$value": "768px",  "$type": "dimension", "$description": "Medium screens (tablets)" },
+    "lg":  { "$value": "1024px", "$type": "dimension", "$description": "Large screens (laptops)" },
+    "xl":  { "$value": "1280px", "$type": "dimension", "$description": "Extra large screens (desktops)" },
+    "2xl": { "$value": "1536px", "$type": "dimension", "$description": "Wide screens (large desktops)" }
+  }
+}
