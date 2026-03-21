@@ -1,5 +1,11 @@
 # @entropix/core
 
+## 1.0.1
+
+### Patch Changes
+
+- d2ad57f: perf: enable tree shaking, multi-entry builds, CSS minification, exclude sourcemaps from publish
+
 ## 1.0.0
 
 ### Minor Changes

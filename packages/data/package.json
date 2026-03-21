@@ -1,6 +1,6 @@
 {
   "name": "@entropix/data",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Data components (DataTable, Charts) for the Entropix design system — web/React",
   "type": "module",
   "license": "MIT",
@@ -29,24 +29,54 @@
       }
     },
     "./data-table": {
-      "import": { "types": "./dist/data-table.d.ts", "default": "./dist/data-table.js" },
-      "require": { "types": "./dist/data-table.d.cts", "default": "./dist/data-table.cjs" }
+      "import": {
+        "types": "./dist/data-table.d.ts",
+        "default": "./dist/data-table.js"
+      },
+      "require": {
+        "types": "./dist/data-table.d.cts",
+        "default": "./dist/data-table.cjs"
+      }
     },
     "./bar-chart": {
-      "import": { "types": "./dist/bar-chart.d.ts", "default": "./dist/bar-chart.js" },
-      "require": { "types": "./dist/bar-chart.d.cts", "default": "./dist/bar-chart.cjs" }
+      "import": {
+        "types": "./dist/bar-chart.d.ts",
+        "default": "./dist/bar-chart.js"
+      },
+      "require": {
+        "types": "./dist/bar-chart.d.cts",
+        "default": "./dist/bar-chart.cjs"
+      }
     },
     "./line-chart": {
-      "import": { "types": "./dist/line-chart.d.ts", "default": "./dist/line-chart.js" },
-      "require": { "types": "./dist/line-chart.d.cts", "default": "./dist/line-chart.cjs" }
+      "import": {
+        "types": "./dist/line-chart.d.ts",
+        "default": "./dist/line-chart.js"
+      },
+      "require": {
+        "types": "./dist/line-chart.d.cts",
+        "default": "./dist/line-chart.cjs"
+      }
     },
     "./area-chart": {
-      "import": { "types": "./dist/area-chart.d.ts", "default": "./dist/area-chart.js" },
-      "require": { "types": "./dist/area-chart.d.cts", "default": "./dist/area-chart.cjs" }
+      "import": {
+        "types": "./dist/area-chart.d.ts",
+        "default": "./dist/area-chart.js"
+      },
+      "require": {
+        "types": "./dist/area-chart.d.cts",
+        "default": "./dist/area-chart.cjs"
+      }
     },
     "./pie-chart": {
-      "import": { "types": "./dist/pie-chart.d.ts", "default": "./dist/pie-chart.js" },
-      "require": { "types": "./dist/pie-chart.d.cts", "default": "./dist/pie-chart.cjs" }
+      "import": {
+        "types": "./dist/pie-chart.d.ts",
+        "default": "./dist/pie-chart.js"
+      },
+      "require": {
+        "types": "./dist/pie-chart.d.cts",
+        "default": "./dist/pie-chart.cjs"
+      }
     },
     "./styles": "./dist/styles/data-table.css",
     "./styles/*": "./dist/styles/*.css"
@@ -54,7 +84,10 @@
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "files": ["dist", "!dist/**/*.map"],
+  "files": [
+    "dist",
+    "!dist/**/*.map"
+  ],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",

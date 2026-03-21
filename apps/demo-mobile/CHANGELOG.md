@@ -1,5 +1,14 @@
 # demo-mobile
 
+## 1.0.5
+
+### Patch Changes
+
+- Updated dependencies [d2ad57f]
+  - @entropix/react-native@1.0.1
+  - @entropix/data-native@1.0.1
+  - @entropix/tokens@1.0.1
+
 ## 1.0.4
 
 ### Patch Changes

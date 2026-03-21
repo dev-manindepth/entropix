@@ -1,6 +1,6 @@
 {
   "name": "@entropix/tokens",
-  "version": "0.3.0",
+  "version": "1.0.1",
   "description": "W3C DTCG design tokens for the Entropix design system — CSS variables, JS objects, and theme files",
   "type": "module",
   "license": "MIT",

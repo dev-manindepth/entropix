@@ -1,6 +1,6 @@
 {
   "name": "@entropix/react",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "React (Web) components for the Entropix design system — styled with CSS custom properties and design tokens",
   "type": "module",
   "license": "MIT",
@@ -44,56 +44,134 @@
     "./styles": "./dist/styles/index.css",
     "./styles/*": "./dist/styles/*.css",
     "./button": {
-      "import": { "types": "./dist/button.d.ts", "default": "./dist/button.js" },
-      "require": { "types": "./dist/button.d.cts", "default": "./dist/button.cjs" }
+      "import": {
+        "types": "./dist/button.d.ts",
+        "default": "./dist/button.js"
+      },
+      "require": {
+        "types": "./dist/button.d.cts",
+        "default": "./dist/button.cjs"
+      }
     },
     "./toggle": {
-      "import": { "types": "./dist/toggle.d.ts", "default": "./dist/toggle.js" },
-      "require": { "types": "./dist/toggle.d.cts", "default": "./dist/toggle.cjs" }
+      "import": {
+        "types": "./dist/toggle.d.ts",
+        "default": "./dist/toggle.js"
+      },
+      "require": {
+        "types": "./dist/toggle.d.cts",
+        "default": "./dist/toggle.cjs"
+      }
     },
     "./switch": {
-      "import": { "types": "./dist/switch.d.ts", "default": "./dist/switch.js" },
-      "require": { "types": "./dist/switch.d.cts", "default": "./dist/switch.cjs" }
+      "import": {
+        "types": "./dist/switch.d.ts",
+        "default": "./dist/switch.js"
+      },
+      "require": {
+        "types": "./dist/switch.d.cts",
+        "default": "./dist/switch.cjs"
+      }
     },
     "./dialog": {
-      "import": { "types": "./dist/dialog.d.ts", "default": "./dist/dialog.js" },
-      "require": { "types": "./dist/dialog.d.cts", "default": "./dist/dialog.cjs" }
+      "import": {
+        "types": "./dist/dialog.d.ts",
+        "default": "./dist/dialog.js"
+      },
+      "require": {
+        "types": "./dist/dialog.d.cts",
+        "default": "./dist/dialog.cjs"
+      }
     },
     "./tabs": {
-      "import": { "types": "./dist/tabs.d.ts", "default": "./dist/tabs.js" },
-      "require": { "types": "./dist/tabs.d.cts", "default": "./dist/tabs.cjs" }
+      "import": {
+        "types": "./dist/tabs.d.ts",
+        "default": "./dist/tabs.js"
+      },
+      "require": {
+        "types": "./dist/tabs.d.cts",
+        "default": "./dist/tabs.cjs"
+      }
     },
     "./accordion": {
-      "import": { "types": "./dist/accordion.d.ts", "default": "./dist/accordion.js" },
-      "require": { "types": "./dist/accordion.d.cts", "default": "./dist/accordion.cjs" }
+      "import": {
+        "types": "./dist/accordion.d.ts",
+        "default": "./dist/accordion.js"
+      },
+      "require": {
+        "types": "./dist/accordion.d.cts",
+        "default": "./dist/accordion.cjs"
+      }
     },
     "./menu": {
-      "import": { "types": "./dist/menu.d.ts", "default": "./dist/menu.js" },
-      "require": { "types": "./dist/menu.d.cts", "default": "./dist/menu.cjs" }
+      "import": {
+        "types": "./dist/menu.d.ts",
+        "default": "./dist/menu.js"
+      },
+      "require": {
+        "types": "./dist/menu.d.cts",
+        "default": "./dist/menu.cjs"
+      }
     },
     "./input": {
-      "import": { "types": "./dist/input.d.ts", "default": "./dist/input.js" },
-      "require": { "types": "./dist/input.d.cts", "default": "./dist/input.cjs" }
+      "import": {
+        "types": "./dist/input.d.ts",
+        "default": "./dist/input.js"
+      },
+      "require": {
+        "types": "./dist/input.d.cts",
+        "default": "./dist/input.cjs"
+      }
     },
     "./textarea": {
-      "import": { "types": "./dist/textarea.d.ts", "default": "./dist/textarea.js" },
-      "require": { "types": "./dist/textarea.d.cts", "default": "./dist/textarea.cjs" }
+      "import": {
+        "types": "./dist/textarea.d.ts",
+        "default": "./dist/textarea.js"
+      },
+      "require": {
+        "types": "./dist/textarea.d.cts",
+        "default": "./dist/textarea.cjs"
+      }
     },
     "./checkbox": {
-      "import": { "types": "./dist/checkbox.d.ts", "default": "./dist/checkbox.js" },
-      "require": { "types": "./dist/checkbox.d.cts", "default": "./dist/checkbox.cjs" }
+      "import": {
+        "types": "./dist/checkbox.d.ts",
+        "default": "./dist/checkbox.js"
+      },
+      "require": {
+        "types": "./dist/checkbox.d.cts",
+        "default": "./dist/checkbox.cjs"
+      }
     },
     "./radio": {
-      "import": { "types": "./dist/radio.d.ts", "default": "./dist/radio.js" },
-      "require": { "types": "./dist/radio.d.cts", "default": "./dist/radio.cjs" }
+      "import": {
+        "types": "./dist/radio.d.ts",
+        "default": "./dist/radio.js"
+      },
+      "require": {
+        "types": "./dist/radio.d.cts",
+        "default": "./dist/radio.cjs"
+      }
     },
     "./select": {
-      "import": { "types": "./dist/select.d.ts", "default": "./dist/select.js" },
-      "require": { "types": "./dist/select.d.cts", "default": "./dist/select.cjs" }
+      "import": {
+        "types": "./dist/select.d.ts",
+        "default": "./dist/select.js"
+      },
+      "require": {
+        "types": "./dist/select.d.cts",
+        "default": "./dist/select.cjs"
+      }
     },
     "./layout": {
-      "import": { "types": "./dist/layout.d.ts", "default": "./dist/layout.js" },
-      "require": { "types": "./dist/layout.d.cts", "default": "./dist/layout.cjs" }
+      "import": {
+        "types": "./dist/layout.d.ts",
+        "default": "./dist/layout.js"
+      },
+      "require": {
+        "types": "./dist/layout.d.cts",
+        "default": "./dist/layout.cjs"
+      }
     }
   },
   "main": "./dist/index.cjs",

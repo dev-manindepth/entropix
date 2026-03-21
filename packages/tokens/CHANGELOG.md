@@ -1,5 +1,11 @@
 # @entropix/tokens
 
+## 1.0.1
+
+### Patch Changes
+
+- d2ad57f: perf: enable tree shaking, multi-entry builds, CSS minification, exclude sourcemaps from publish
+
 ## 0.3.0
 
 ### Patch Changes
