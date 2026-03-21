@@ -10,6 +10,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@entropix/data-native": "workspace:*",
     "@entropix/react-native": "workspace:*",
     "@entropix/tokens": "workspace:*",
     "@expo/metro-runtime": "~55.0.6",

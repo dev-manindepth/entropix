@@ -8,6 +8,7 @@
 @import "@entropix/tokens/brands/sunset/themes/light";
 @import "@entropix/tokens/brands/sunset/themes/dark";
 @import "@entropix/react/styles";
+@import "@entropix/data/styles";
 
 *,
 *::before,

@@ -4,7 +4,7 @@
   "commit": false,
   "fixed": [],
   "linked": [
-    ["@entropix/core", "@entropix/react", "@entropix/react-native", "@entropix/tokens"]
+    ["@entropix/core", "@entropix/react", "@entropix/react-native", "@entropix/tokens", "@entropix/data", "@entropix/data-native"]
   ],
   "access": "public",
   "baseBranch": "main",

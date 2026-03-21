@@ -31,6 +31,12 @@ export type AriaRole =
   | "tooltip"
   | "progressbar"
   | "region"
+  | "grid"
+  | "row"
+  | "columnheader"
+  | "gridcell"
+  | "rowgroup"
+  | "rowheader"
   | "none"
   | "presentation";
 

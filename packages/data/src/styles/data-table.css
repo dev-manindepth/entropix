@@ -1,0 +1,304 @@
+/* ─── DataTable Component Tokens ──────────────────────────────────────────── */
+
+:root {
+  --datatable-cell-padding: var(--entropix-spacing-3) var(--entropix-spacing-4);
+  --datatable-row-height: 48px;
+  --datatable-header-bg: var(--entropix-color-bg-secondary, #f9fafb);
+  --datatable-border-color: var(--entropix-color-border-default, #e5e7eb);
+  --datatable-stripe-bg: var(--entropix-color-bg-tertiary, #f3f4f6);
+  --datatable-hover-bg: var(--entropix-color-action-secondary-hover, #f0f0f0);
+  --datatable-selected-bg: var(
+    --entropix-color-action-primary-subtle,
+    #eff6ff
+  );
+}
+
+/* ─── Wrapper ─────────────────────────────────────────────────────────────── */
+
+.entropix-datatable {
+  width: 100%;
+  font-family: var(--entropix-font-family-sans, system-ui, sans-serif);
+  font-size: var(--entropix-font-size-sm, 0.875rem);
+  line-height: var(--entropix-line-height-normal, 1.5);
+  color: var(--entropix-color-text-primary, #111827);
+}
+
+/* ─── Table ───────────────────────────────────────────────────────────────── */
+
+.entropix-datatable__table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid var(--datatable-border-color);
+  border-radius: var(--entropix-radius-md, 6px);
+  overflow: hidden;
+}
+
+/* ─── Header ──────────────────────────────────────────────────────────────── */
+
+.entropix-datatable__thead {
+  background: var(--datatable-header-bg);
+}
+
+.entropix-datatable__thead[data-sticky="true"] {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.entropix-datatable__th {
+  padding: var(--datatable-cell-padding);
+  min-height: var(--datatable-row-height);
+  text-align: left;
+  font-weight: var(--entropix-font-weight-semibold, 600);
+  font-size: var(--entropix-font-size-xs, 0.75rem);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--entropix-color-text-secondary, #6b7280);
+  border-bottom: 2px solid var(--datatable-border-color);
+  white-space: nowrap;
+  user-select: none;
+}
+
+.entropix-datatable__th--sortable {
+  cursor: pointer;
+  transition: color var(--entropix-duration-fast, 150ms)
+    var(--entropix-easing-default, ease);
+}
+
+.entropix-datatable__th--sortable:hover {
+  color: var(--entropix-color-text-primary, #111827);
+}
+
+.entropix-datatable__th--sortable:focus-visible {
+  outline: 2px solid var(--entropix-color-border-focus, #3b82f6);
+  outline-offset: -2px;
+}
+
+.entropix-datatable__th[data-sort="asc"],
+.entropix-datatable__th[data-sort="desc"] {
+  color: var(--entropix-color-text-primary, #111827);
+}
+
+.entropix-datatable__th--checkbox {
+  width: 48px;
+  min-width: 48px;
+  max-width: 48px;
+  text-align: center;
+  padding: var(--entropix-spacing-2);
+}
+
+.entropix-datatable__th-content {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--entropix-spacing-1, 4px);
+}
+
+/* ─── Sort icon ───────────────────────────────────────────────────────────── */
+
+.entropix-datatable__sort-icon {
+  display: inline-block;
+  font-size: var(--entropix-font-size-xs, 0.75rem);
+  line-height: 1;
+  color: var(--entropix-color-action-primary-default, #3b82f6);
+}
+
+/* ─── Filter row ──────────────────────────────────────────────────────────── */
+
+.entropix-datatable__filter-row {
+  background: var(--datatable-header-bg);
+}
+
+.entropix-datatable__th--filter {
+  padding: var(--entropix-spacing-1) var(--entropix-spacing-4)
+    var(--entropix-spacing-2);
+  border-bottom: 1px solid var(--datatable-border-color);
+  font-weight: var(--entropix-font-weight-normal, 400);
+}
+
+.entropix-datatable__filter {
+  width: 100%;
+  padding: var(--entropix-spacing-1) var(--entropix-spacing-2);
+  border: 1px solid var(--datatable-border-color);
+  border-radius: var(--entropix-radius-sm, 4px);
+  font-family: inherit;
+  font-size: var(--entropix-font-size-sm, 0.875rem);
+  color: var(--entropix-color-text-primary, #111827);
+  background: var(--entropix-color-bg-primary, #ffffff);
+  outline: none;
+  transition: border-color var(--entropix-duration-fast, 150ms)
+    var(--entropix-easing-default, ease);
+}
+
+.entropix-datatable__filter::placeholder {
+  color: var(--entropix-color-text-muted, #9ca3af);
+}
+
+.entropix-datatable__filter:focus {
+  border-color: var(--entropix-color-border-focus, #3b82f6);
+  box-shadow: 0 0 0 1px var(--entropix-color-border-focus, #3b82f6);
+}
+
+/* ─── Body ────────────────────────────────────────────────────────────────── */
+
+.entropix-datatable__tbody {
+  background: var(--entropix-color-bg-primary, #ffffff);
+}
+
+/* ─── Rows ────────────────────────────────────────────────────────────────── */
+
+.entropix-datatable__tr {
+  border-bottom: 1px solid var(--datatable-border-color);
+  transition: background var(--entropix-duration-fast, 150ms)
+    var(--entropix-easing-default, ease);
+}
+
+.entropix-datatable__tr:last-child {
+  border-bottom: none;
+}
+
+/* Zebra striping */
+.entropix-datatable__tbody .entropix-datatable__tr:nth-child(even) {
+  background: var(--datatable-stripe-bg);
+}
+
+/* Hover */
+.entropix-datatable__tbody .entropix-datatable__tr:hover {
+  background: var(--datatable-hover-bg);
+}
+
+/* Selected */
+.entropix-datatable__tr[data-selected="true"] {
+  background: var(--datatable-selected-bg);
+}
+
+.entropix-datatable__tbody
+  .entropix-datatable__tr[data-selected="true"]:hover {
+  background: var(--datatable-selected-bg);
+}
+
+/* ─── Cells ───────────────────────────────────────────────────────────────── */
+
+.entropix-datatable__td {
+  padding: var(--datatable-cell-padding);
+  min-height: var(--datatable-row-height);
+  vertical-align: middle;
+  color: var(--entropix-color-text-primary, #111827);
+}
+
+.entropix-datatable__td--checkbox {
+  width: 48px;
+  min-width: 48px;
+  max-width: 48px;
+  text-align: center;
+  padding: var(--entropix-spacing-2);
+}
+
+/* ─── Checkbox ────────────────────────────────────────────────────────────── */
+
+.entropix-datatable__checkbox {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: var(--entropix-color-action-primary-default, #3b82f6);
+}
+
+/* ─── Loading / Empty states ──────────────────────────────────────────────── */
+
+.entropix-datatable__loading,
+.entropix-datatable__empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 120px;
+  color: var(--entropix-color-text-muted, #9ca3af);
+  font-size: var(--entropix-font-size-sm, 0.875rem);
+  font-style: italic;
+}
+
+.entropix-datatable__td--loading,
+.entropix-datatable__td--empty {
+  text-align: center;
+}
+
+/* ─── Pagination ──────────────────────────────────────────────────────────── */
+
+.entropix-datatable__pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--entropix-spacing-2, 8px);
+  padding: var(--entropix-spacing-3, 12px) var(--entropix-spacing-4, 16px);
+  border-top: 1px solid var(--datatable-border-color);
+}
+
+.entropix-datatable__pagination-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 36px;
+  padding: var(--entropix-spacing-1, 4px) var(--entropix-spacing-2, 8px);
+  border: 1px solid var(--datatable-border-color);
+  border-radius: var(--entropix-radius-md, 6px);
+  background: var(--entropix-color-bg-primary, #ffffff);
+  color: var(--entropix-color-text-primary, #111827);
+  font-family: inherit;
+  font-size: var(--entropix-font-size-sm, 0.875rem);
+  font-weight: var(--entropix-font-weight-medium, 500);
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background var(--entropix-duration-fast, 150ms)
+      var(--entropix-easing-default, ease),
+    border-color var(--entropix-duration-fast, 150ms)
+      var(--entropix-easing-default, ease),
+    color var(--entropix-duration-fast, 150ms)
+      var(--entropix-easing-default, ease);
+}
+
+.entropix-datatable__pagination-btn:hover:not(:disabled) {
+  background: var(--entropix-color-action-secondary-hover, #f0f0f0);
+  border-color: var(--entropix-color-border-hover, #d1d5db);
+}
+
+.entropix-datatable__pagination-btn:focus-visible {
+  outline: 2px solid var(--entropix-color-border-focus, #3b82f6);
+  outline-offset: 2px;
+}
+
+.entropix-datatable__pagination-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.entropix-datatable__pagination-info {
+  padding: 0 var(--entropix-spacing-2, 8px);
+  font-size: var(--entropix-font-size-sm, 0.875rem);
+  color: var(--entropix-color-text-secondary, #6b7280);
+  white-space: nowrap;
+}
+
+/* ─── Responsive ──────────────────────────────────────────────────────────── */
+
+@media (max-width: 640px) {
+  .entropix-datatable__th,
+  .entropix-datatable__td {
+    padding: var(--entropix-spacing-2, 8px) var(--entropix-spacing-3, 12px);
+  }
+
+  .entropix-datatable__pagination {
+    gap: var(--entropix-spacing-1, 4px);
+    padding: var(--entropix-spacing-2, 8px);
+  }
+
+  .entropix-datatable__pagination-btn {
+    min-width: 32px;
+    height: 32px;
+    font-size: var(--entropix-font-size-xs, 0.75rem);
+  }
+
+  .entropix-datatable__filter {
+    padding: var(--entropix-spacing-2, 8px);
+    font-size: 16px; /* Prevent iOS zoom on focus */
+  }
+}

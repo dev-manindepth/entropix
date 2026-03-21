@@ -10,6 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@entropix/data": "workspace:*",
     "@entropix/react": "workspace:*",
     "@entropix/tokens": "workspace:*",
     "next": "16.1.5",

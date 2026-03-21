@@ -80,3 +80,12 @@ export type {
   UseSelectReturn,
   SelectFocusIntent,
 } from "./hooks/use-select.js";
+
+export { useTable } from "./hooks/use-table.js";
+export type {
+  UseTableOptions,
+  UseTableReturn,
+  ColumnDef,
+  SortState,
+  SortDirection,
+} from "./hooks/use-table.js";

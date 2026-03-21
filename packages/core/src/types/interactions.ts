@@ -14,6 +14,8 @@ export type KeyIntent =
   | "moveStart"
   | "moveEnd"
   | "selectAll"
+  | "selectRow"
+  | "selectAllRows"
   | "focusNext"
   | "focusPrevious";
 

@@ -34,8 +34,24 @@ import {
   SelectContent,
   SelectOption,
 } from "@entropix/react";
+import { DataTable } from "@entropix/data";
 
 type Brand = "default" | "ocean" | "sunset";
+
+const SAMPLE_DATA = [
+  { id: 1, name: "Alice Johnson", email: "alice@example.com", role: "Admin", status: "Active" },
+  { id: 2, name: "Bob Smith", email: "bob@example.com", role: "Editor", status: "Active" },
+  { id: 3, name: "Carol White", email: "carol@example.com", role: "Viewer", status: "Inactive" },
+  { id: 4, name: "Dan Brown", email: "dan@example.com", role: "Editor", status: "Active" },
+  { id: 5, name: "Eve Davis", email: "eve@example.com", role: "Admin", status: "Active" },
+  { id: 6, name: "Frank Miller", email: "frank@example.com", role: "Viewer", status: "Inactive" },
+  { id: 7, name: "Grace Lee", email: "grace@example.com", role: "Editor", status: "Active" },
+  { id: 8, name: "Hank Wilson", email: "hank@example.com", role: "Viewer", status: "Active" },
+  { id: 9, name: "Iris Chen", email: "iris@example.com", role: "Admin", status: "Active" },
+  { id: 10, name: "Jack Taylor", email: "jack@example.com", role: "Editor", status: "Inactive" },
+  { id: 11, name: "Kate Adams", email: "kate@example.com", role: "Viewer", status: "Active" },
+  { id: 12, name: "Leo Garcia", email: "leo@example.com", role: "Admin", status: "Active" },
+];
 
 export default function DemoLandingPage() {
   const [theme, setTheme] = useState<"light" | "dark">("light");
@@ -249,6 +265,7 @@ export default function DemoLandingPage() {
                 <Tab value="layout">Layout</Tab>
                 <Tab value="dialogs">Dialogs</Tab>
                 <Tab value="forms">Forms</Tab>
+                <Tab value="data">Data</Tab>
               </TabList>
 
               <TabPanel value="brands">
@@ -534,6 +551,32 @@ export default function DemoLandingPage() {
                         </SelectContent>
                       </Select>
                     </Stack>
+                  </Stack>
+                </div>
+              </TabPanel>
+
+              <TabPanel value="data">
+                <div className="demo-box">
+                  <Stack gap="lg">
+                    <Stack gap="sm">
+                      <h4 style={{ fontWeight: 600 }}>DataTable</h4>
+                      <p className="panel-text" style={{ padding: 0 }}>
+                        Sortable, filterable, paginated data table with row selection — built from scratch with zero dependencies.
+                      </p>
+                    </Stack>
+                    <DataTable
+                      data={SAMPLE_DATA}
+                      columns={[
+                        { key: "name", header: "Name", sortable: true, filterable: true },
+                        { key: "email", header: "Email", sortable: true, filterable: true },
+                        { key: "role", header: "Role", sortable: true, filterable: true },
+                        { key: "status", header: "Status", sortable: true },
+                      ]}
+                      selectionMode="multi"
+                      pageSize={5}
+                      stickyHeader
+                      getRowKey={(row) => String(row.id)}
+                    />
                   </Stack>
                 </div>
               </TabPanel>

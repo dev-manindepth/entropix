@@ -1,0 +1,61 @@
+{
+  "name": "@entropix/data",
+  "version": "0.0.0",
+  "description": "Data components (DataTable, Charts) for the Entropix design system — web/React",
+  "type": "module",
+  "license": "MIT",
+  "author": "Manish <manindepth07@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dev-manindepth/entropix.git",
+    "directory": "packages/data"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "sideEffects": ["**/*.css"],
+  "exports": {
+    ".": {
+      "import": { "types": "./dist/index.d.ts", "default": "./dist/index.js" },
+      "require": { "types": "./dist/index.d.cts", "default": "./dist/index.cjs" }
+    },
+    "./styles": "./dist/styles/data-table.css",
+    "./styles/*": "./dist/styles/*.css"
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "lint": "eslint . --max-warnings 0",
+    "check-types": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@entropix/core": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
+  },
+  "devDependencies": {
+    "@entropix/eslint-config": "workspace:*",
+    "@entropix/typescript-config": "workspace:*",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/react": "19.2.2",
+    "@types/react-dom": "19.2.2",
+    "eslint": "^9.39.1",
+    "jsdom": "^26.1.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "tsup": "^8.4.0",
+    "typescript": "5.9.2",
+    "vitest": "^3.2.1"
+  }
+}

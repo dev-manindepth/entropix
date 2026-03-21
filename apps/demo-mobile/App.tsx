@@ -5,6 +5,7 @@ import { StatusBar } from "expo-status-bar";
 import {
   EntropixProvider,
   useTheme,
+  registerBrand,
   Button,
   Toggle,
   Switch,
@@ -36,15 +37,47 @@ import {
   SelectContent,
   SelectOption,
 } from "@entropix/react-native";
+import { DataTable } from "@entropix/data-native";
+
+// @ts-expect-error -- wildcard export
+import { tokens as oceanLight } from "@entropix/tokens/brands/ocean/native/light";
+// @ts-expect-error -- wildcard export
+import { tokens as oceanDark } from "@entropix/tokens/brands/ocean/native/dark";
+// @ts-expect-error -- wildcard export
+import { tokens as sunsetLight } from "@entropix/tokens/brands/sunset/native/light";
+// @ts-expect-error -- wildcard export
+import { tokens as sunsetDark } from "@entropix/tokens/brands/sunset/native/dark";
+
+registerBrand("ocean", { light: oceanLight, dark: oceanDark });
+registerBrand("sunset", { light: sunsetLight, dark: sunsetDark });
+
+type Brand = "default" | "ocean" | "sunset";
+
+const SAMPLE_DATA = [
+  { id: 1, name: "Alice Johnson", email: "alice@example.com", role: "Admin", status: "Active" },
+  { id: 2, name: "Bob Smith", email: "bob@example.com", role: "Editor", status: "Active" },
+  { id: 3, name: "Carol White", email: "carol@example.com", role: "Viewer", status: "Inactive" },
+  { id: 4, name: "Dan Brown", email: "dan@example.com", role: "Editor", status: "Active" },
+  { id: 5, name: "Eve Davis", email: "eve@example.com", role: "Admin", status: "Active" },
+  { id: 6, name: "Frank Miller", email: "frank@example.com", role: "Viewer", status: "Inactive" },
+  { id: 7, name: "Grace Lee", email: "grace@example.com", role: "Editor", status: "Active" },
+  { id: 8, name: "Hank Wilson", email: "hank@example.com", role: "Viewer", status: "Active" },
+];
 
 export default function App() {
   const systemScheme = useColorScheme();
   const [isDark, setIsDark] = useState(systemScheme === "dark");
+  const [brand, setBrand] = useState<Brand>("default");
 
   return (
-    <EntropixProvider mode={isDark ? "dark" : "light"}>
+    <EntropixProvider mode={isDark ? "dark" : "light"} brand={brand}>
       <SafeAreaProvider style={{ flex: 1 }}>
-        <LandingPage isDark={isDark} onToggleTheme={() => setIsDark(!isDark)} />
+        <LandingPage
+          isDark={isDark}
+          onToggleTheme={() => setIsDark(!isDark)}
+          brand={brand}
+          onBrandChange={setBrand}
+        />
       </SafeAreaProvider>
     </EntropixProvider>
   );
@@ -53,9 +86,13 @@ export default function App() {
 function LandingPage({
   isDark,
   onToggleTheme,
+  brand,
+  onBrandChange,
 }: {
   isDark: boolean;
   onToggleTheme: () => void;
+  brand: Brand;
+  onBrandChange: (brand: Brand) => void;
 }) {
   const { tokens: t, baseTokens: bt } = useTheme();
 
@@ -88,9 +125,18 @@ function LandingPage({
               <Text style={{ color: actionPrimary }}>{"}"}</Text>
               {" "}Entropix
             </Text>
-            <Inline gap="xs">
+            <Inline gap="xs" wrap>
+              <Button variant={brand === "default" ? "primary" : "ghost"} size="sm" onPress={() => onBrandChange("default")}>
+                Default
+              </Button>
+              <Button variant={brand === "ocean" ? "primary" : "ghost"} size="sm" onPress={() => onBrandChange("ocean")}>
+                🌊
+              </Button>
+              <Button variant={brand === "sunset" ? "primary" : "ghost"} size="sm" onPress={() => onBrandChange("sunset")}>
+                🌅
+              </Button>
               <Button variant="ghost" size="sm" onPress={onToggleTheme}>
-                {isDark ? "Light" : "Dark"}
+                {isDark ? "☀️" : "🌙"}
               </Button>
             </Inline>
           </Inline>
@@ -270,13 +316,65 @@ function LandingPage({
               </Text>
             </Stack>
 
-            <Tabs defaultSelectedKey="buttons">
+            <Tabs defaultSelectedKey="brands">
               <TabList>
+                <Tab value="brands">Brands</Tab>
                 <Tab value="buttons">Buttons</Tab>
                 <Tab value="controls">Controls</Tab>
                 <Tab value="dialogs">Dialogs</Tab>
                 <Tab value="forms">Forms</Tab>
+                <Tab value="data">Data</Tab>
               </TabList>
+
+              <TabPanel value="brands">
+                <Stack gap="md">
+                  <Stack gap="sm">
+                    <Text style={{ fontWeight: "600", color: textPrimary, fontSize: 16 }}>Multi-Brand Theming</Text>
+                    <Text style={{ color: textSecondary, fontSize: 14, lineHeight: 20 }}>
+                      Switch brands using the nav buttons above. Each brand overrides design tokens (colors, radii, shadows) while sharing the same component code.
+                    </Text>
+                  </Stack>
+
+                  <Inline gap="sm" wrap>
+                    <View style={{ flex: 1, padding: 16, borderRadius: 8, borderWidth: 1, borderColor: borderDefault, backgroundColor: t.entropixColorBgPrimary as string }}>
+                      <Text style={{ color: textSecondary, fontSize: 12, fontWeight: "600" }}>Current Brand</Text>
+                      <Text style={{ color: actionPrimary, fontSize: 18, fontWeight: "700", marginTop: 4 }}>
+                        {brand === "default" ? "Default (Blue)" : brand === "ocean" ? "🌊 Ocean (Teal)" : "🌅 Sunset (Orange)"}
+                      </Text>
+                    </View>
+                    <View style={{ flex: 1, padding: 16, borderRadius: 8, borderWidth: 1, borderColor: borderDefault, backgroundColor: t.entropixColorBgPrimary as string }}>
+                      <Text style={{ color: textSecondary, fontSize: 12, fontWeight: "600" }}>Current Theme</Text>
+                      <Text style={{ color: actionPrimary, fontSize: 18, fontWeight: "700", marginTop: 4 }}>
+                        {isDark ? "🌙 Dark" : "☀️ Light"}
+                      </Text>
+                    </View>
+                  </Inline>
+
+                  <Stack gap="sm">
+                    <Text style={{ fontWeight: "600", color: textPrimary }}>Same Components, Different Brands</Text>
+                    <Inline gap="sm" wrap>
+                      <Button variant="primary">Primary Action</Button>
+                      <Button variant="secondary">Secondary</Button>
+                      <Button variant="outline">Outline</Button>
+                    </Inline>
+                    <Inline gap="sm" wrap>
+                      <Toggle defaultChecked>Toggle</Toggle>
+                      <SwitchRow label="Switch" defaultChecked textColor={textPrimary} />
+                    </Inline>
+                    <Input label="Branded Input" placeholder="Notice the focus color changes per brand" />
+                    <Checkbox defaultChecked>Branded checkbox</Checkbox>
+                  </Stack>
+
+                  <Divider />
+
+                  <Stack gap="sm">
+                    <Text style={{ fontWeight: "600", color: textPrimary }}>How it works</Text>
+                    <Text style={{ color: textSecondary, fontSize: 14, lineHeight: 20 }}>
+                      Brands use registerBrand() to register token overrides, then pass the brand name to EntropixProvider. All components automatically adapt.
+                    </Text>
+                  </Stack>
+                </Stack>
+              </TabPanel>
 
               <TabPanel value="buttons">
                 <Stack gap="sm">
@@ -434,6 +532,26 @@ function LandingPage({
                       </SelectContent>
                     </Select>
                   </Stack>
+                </Stack>
+              </TabPanel>
+
+              <TabPanel value="data">
+                <Stack gap="md">
+                  <Text style={{ fontWeight: "600", color: textPrimary, fontSize: 16 }}>DataTable</Text>
+                  <Text style={{ color: textSecondary, fontSize: 14 }}>
+                    Sortable, filterable, paginated data table with row selection.
+                  </Text>
+                  <DataTable
+                    data={SAMPLE_DATA}
+                    columns={[
+                      { key: "name", header: "Name", sortable: true, filterable: true },
+                      { key: "role", header: "Role", sortable: true, filterable: true },
+                      { key: "status", header: "Status", sortable: true },
+                    ]}
+                    selectionMode="multi"
+                    pageSize={5}
+                    getRowKey={(row) => String(row.id)}
+                  />
                 </Stack>
               </TabPanel>
             </Tabs>
