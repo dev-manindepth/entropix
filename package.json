@@ -15,11 +15,18 @@
     "build:packages": "turbo run build --filter='./packages/*'",
     "test:packages": "turbo run test --filter='./packages/*'",
     "release": "turbo run build --filter='./packages/*' && changeset publish",
-    "publish:dry": "turbo run build --filter='./packages/*' && pnpm -r publish --dry-run --no-git-checks"
+    "publish:dry": "turbo run build --filter='./packages/*' && pnpm -r publish --dry-run --no-git-checks",
+    "size": "size-limit",
+    "size:check": "size-limit --limit",
+    "verify:treeshake": "node scripts/verify-treeshake.mjs"
   },
   "devDependencies": {
     "@changesets/cli": "^2.29.0",
+    "@size-limit/preset-small-lib": "^12.0.1",
+    "esbuild": "^0.27.4",
+    "lightningcss": "^1.32.0",
     "prettier": "^3.7.4",
+    "size-limit": "^12.0.1",
     "turbo": "^2.8.17",
     "typescript": "5.9.2"
   },

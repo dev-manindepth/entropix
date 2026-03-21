@@ -4,6 +4,7 @@
   "description": "W3C DTCG design tokens for the Entropix design system — CSS variables, JS objects, and theme files",
   "type": "module",
   "license": "MIT",
+  "sideEffects": false,
   "author": "Manish <manindepth07@gmail.com>",
   "repository": {
     "type": "git",
@@ -67,7 +68,8 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "!dist/**/*.map"
   ],
   "scripts": {
     "build": "tsx build.ts",

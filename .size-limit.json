@@ -1,0 +1,6 @@
+[
+  { "path": "packages/core/dist/index.js", "limit": "20 KB", "name": "@entropix/core", "ignore": ["react"] },
+  { "path": "packages/react/dist/index.js", "limit": "20 KB", "name": "@entropix/react (JS)", "ignore": ["react", "react-dom", "@entropix/core"] },
+  { "path": "packages/react/dist/button.js", "limit": "5 KB", "name": "@entropix/react/button", "ignore": ["react", "react-dom", "@entropix/core"] },
+  { "path": "packages/data/dist/index.js", "limit": "20 KB", "name": "@entropix/data", "ignore": ["react", "react-dom", "@entropix/core"] }
+]
