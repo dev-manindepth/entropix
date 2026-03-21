@@ -1,6 +1,6 @@
 {
   "name": "@entropix/core",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "description": "Headless core hooks and utilities for the Entropix design system — platform-agnostic behavior, state, and accessibility",
   "type": "module",
   "license": "MIT",

@@ -1,6 +1,6 @@
 {
   "name": "@entropix/react-native",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "description": "React Native components for the Entropix design system — iOS and Android with shared headless core",
   "type": "module",
   "license": "MIT",

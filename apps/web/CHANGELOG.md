@@ -1,5 +1,11 @@
 # web
 
+## 0.1.4
+
+### Patch Changes
+
+- @entropix/react@1.0.0
+
 ## 0.1.3
 
 ### Patch Changes

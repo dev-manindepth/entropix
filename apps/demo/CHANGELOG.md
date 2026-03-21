@@ -1,5 +1,13 @@
 # demo
 
+## 0.1.4
+
+### Patch Changes
+
+- Updated dependencies [db7a7a8]
+  - @entropix/data@1.0.0
+  - @entropix/react@1.0.0
+
 ## 0.1.3
 
 ### Patch Changes
