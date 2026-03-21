@@ -1,5 +1,13 @@
 # web
 
+## 0.1.5
+
+### Patch Changes
+
+- Updated dependencies [d2ad57f]
+  - @entropix/react@1.0.1
+  - @entropix/tokens@1.0.1
+
 ## 0.1.4
 
 ### Patch Changes
