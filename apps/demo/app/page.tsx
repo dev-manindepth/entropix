@@ -34,9 +34,30 @@ import {
   SelectContent,
   SelectOption,
 } from "@entropix/react";
-import { DataTable } from "@entropix/data";
+import { DataTable, BarChart, LineChart, AreaChart, PieChart } from "@entropix/data";
 
 type Brand = "default" | "ocean" | "sunset";
+
+const CHART_REVENUE = [
+  { label: "Jan", value: 4200 },
+  { label: "Feb", value: 3800 },
+  { label: "Mar", value: 5100 },
+  { label: "Apr", value: 4600 },
+  { label: "May", value: 5800 },
+  { label: "Jun", value: 6200 },
+];
+
+const CHART_MULTI = [
+  { name: "Revenue", data: [{ label: "Q1", value: 120 }, { label: "Q2", value: 180 }, { label: "Q3", value: 150 }, { label: "Q4", value: 210 }] },
+  { name: "Expenses", data: [{ label: "Q1", value: 90 }, { label: "Q2", value: 130 }, { label: "Q3", value: 110 }, { label: "Q4", value: 160 }] },
+];
+
+const CHART_PIE = [
+  { label: "Chrome", value: 65 },
+  { label: "Safari", value: 18 },
+  { label: "Firefox", value: 10 },
+  { label: "Other", value: 7 },
+];
 
 const SAMPLE_DATA = [
   { id: 1, name: "Alice Johnson", email: "alice@example.com", role: "Admin", status: "Active" },
@@ -266,6 +287,7 @@ export default function DemoLandingPage() {
                 <Tab value="dialogs">Dialogs</Tab>
                 <Tab value="forms">Forms</Tab>
                 <Tab value="data">Data</Tab>
+                <Tab value="charts">Charts</Tab>
               </TabList>
 
               <TabPanel value="brands">
@@ -577,6 +599,38 @@ export default function DemoLandingPage() {
                       stickyHeader
                       getRowKey={(row) => String(row.id)}
                     />
+                  </Stack>
+                </div>
+              </TabPanel>
+
+              <TabPanel value="charts">
+                <div className="demo-box">
+                  <Stack gap="xl">
+                    <Stack gap="sm">
+                      <h4 style={{ fontWeight: 600 }}>Bar Chart</h4>
+                      <BarChart data={CHART_REVENUE} height={300} showGrid showTooltip showLegend />
+                    </Stack>
+
+                    <Divider />
+
+                    <Stack gap="sm">
+                      <h4 style={{ fontWeight: 600 }}>Line Chart (Multi-Series)</h4>
+                      <LineChart data={CHART_MULTI} height={300} curved showPoints showGrid showTooltip showLegend />
+                    </Stack>
+
+                    <Divider />
+
+                    <Stack gap="sm">
+                      <h4 style={{ fontWeight: 600 }}>Area Chart</h4>
+                      <AreaChart data={CHART_MULTI} height={300} curved showGrid showTooltip showLegend />
+                    </Stack>
+
+                    <Divider />
+
+                    <Stack gap="sm">
+                      <h4 style={{ fontWeight: 600 }}>Donut Chart</h4>
+                      <PieChart data={CHART_PIE} height={300} innerRadius={0.6} showTooltip showLegend />
+                    </Stack>
                   </Stack>
                 </div>
               </TabPanel>

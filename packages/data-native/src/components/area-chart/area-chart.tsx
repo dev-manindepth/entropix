@@ -1,0 +1,192 @@
+import React, { useMemo, useState, useCallback } from "react";
+import { View, type StyleProp, type ViewStyle } from "react-native";
+import SvgImport, { G, Path, Circle } from "react-native-svg";
+const Svg = SvgImport as unknown as React.ComponentType<{ width: number; height: number; children?: React.ReactNode }>;
+import { useTheme } from "@entropix/react-native";
+import {
+  normalizeChartData,
+  getDataExtent,
+  createLinearScale,
+  createBandScale,
+  computeLinePoints,
+  describeLinePath,
+  describeAreaPath,
+  type ChartData,
+  type TooltipData,
+  type LegendItem,
+  type ChartMargins,
+} from "@entropix/core";
+import { ChartContainer } from "../chart-primitives/chart-container.js";
+import { XAxis } from "../chart-primitives/x-axis.js";
+import { YAxis } from "../chart-primitives/y-axis.js";
+import { ChartTooltip } from "../chart-primitives/chart-tooltip.js";
+import { ChartLegend } from "../chart-primitives/chart-legend.js";
+
+export interface AreaChartProps {
+  /** Chart data (single or multi-series) */
+  data: ChartData;
+  /** Chart height in pixels (default 300) */
+  height?: number;
+  /** Custom color palette */
+  colors?: string[];
+  /** Use curved lines (default false) */
+  curved?: boolean;
+  /** Fill opacity for area (default 0.2) */
+  fillOpacity?: number;
+  /** Show horizontal grid lines (default true) */
+  showGrid?: boolean;
+  /** Show data point circles (default false) */
+  showPoints?: boolean;
+  /** Show tooltip on point press (default true) */
+  showTooltip?: boolean;
+  /** Show legend below chart (default true) */
+  showLegend?: boolean;
+  /** Override wrapper View style */
+  style?: StyleProp<ViewStyle>;
+}
+
+const DEFAULT_MARGINS: ChartMargins = { top: 16, right: 16, bottom: 32, left: 48 };
+
+export function AreaChart({
+  data,
+  height = 300,
+  colors,
+  curved = false,
+  fillOpacity = 0.2,
+  showGrid = true,
+  showPoints = false,
+  showTooltip = true,
+  showLegend = true,
+  style,
+}: AreaChartProps) {
+  const { tokens: st } = useTheme();
+  const [tooltip, setTooltip] = useState<TooltipData | null>(null);
+  const [hiddenSeries, setHiddenSeries] = useState<Set<string>>(new Set());
+
+  const series = useMemo(
+    () => normalizeChartData(data, colors),
+    [data, colors],
+  );
+
+  const visibleSeries = useMemo(
+    () => series.filter((s) => !hiddenSeries.has(s.name)),
+    [series, hiddenSeries],
+  );
+
+  const legendItems: LegendItem[] = useMemo(
+    () =>
+      series.map((s) => ({
+        name: s.name,
+        color: s.color,
+        active: !hiddenSeries.has(s.name),
+      })),
+    [series, hiddenSeries],
+  );
+
+  const handleLegendToggle = useCallback((name: string) => {
+    setHiddenSeries((prev) => {
+      const next = new Set(prev);
+      if (next.has(name)) {
+        next.delete(name);
+      } else {
+        next.add(name);
+      }
+      return next;
+    });
+  }, []);
+
+  const renderChart = useCallback(
+    (containerWidth: number, containerHeight: number) => {
+      const { categories, yMin, yMax } = getDataExtent(visibleSeries);
+      if (categories.length === 0) return null;
+
+      const margins = DEFAULT_MARGINS;
+      const innerWidth = containerWidth - margins.left - margins.right;
+      const innerHeight = containerHeight - margins.top - margins.bottom;
+
+      const xScale = createBandScale(categories, [0, innerWidth]);
+      const yScale = createLinearScale([yMin, yMax], [innerHeight, 0]);
+      const baselineY = yScale(0);
+
+      return (
+        <View style={{ flex: 1 }}>
+          <Svg width={containerWidth} height={containerHeight}>
+            <G x={margins.left} y={margins.top}>
+              <YAxis
+                scale={yScale}
+                x={0}
+                width={innerWidth}
+                showGrid={showGrid}
+              />
+              <XAxis scale={xScale} y={innerHeight} />
+              {visibleSeries.map((s, sIdx) => {
+                const points = computeLinePoints(s, xScale, yScale);
+                const areaD = describeAreaPath(points, baselineY, curved);
+                const lineD = describeLinePath(points, curved);
+
+                return (
+                  <G key={s.name}>
+                    {/* Filled area */}
+                    <Path
+                      d={areaD}
+                      fill={s.color}
+                      opacity={fillOpacity}
+                    />
+                    {/* Line on top */}
+                    <Path
+                      d={lineD}
+                      fill="none"
+                      stroke={s.color}
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    {showPoints &&
+                      points.map((pt, pIdx) => (
+                        <Circle
+                          key={`pt-${sIdx}-${pIdx}`}
+                          cx={pt.x}
+                          cy={pt.y}
+                          r={4}
+                          fill={s.color}
+                          stroke={st.entropixColorSurfaceDefault as string}
+                          strokeWidth={2}
+                          onPress={
+                            showTooltip
+                              ? () => {
+                                  setTooltip({
+                                    x: margins.left + pt.x,
+                                    y: margins.top + pt.y,
+                                    series: s.name,
+                                    label: pt.label,
+                                    value: pt.value,
+                                    color: s.color,
+                                  });
+                                }
+                              : undefined
+                          }
+                        />
+                      ))}
+                  </G>
+                );
+              })}
+            </G>
+          </Svg>
+          {showTooltip && <ChartTooltip data={tooltip} />}
+        </View>
+      );
+    },
+    [visibleSeries, curved, fillOpacity, showGrid, showPoints, showTooltip, tooltip, st],
+  );
+
+  return (
+    <View>
+      <ChartContainer height={height} style={style}>
+        {renderChart}
+      </ChartContainer>
+      {showLegend && series.length > 1 && (
+        <ChartLegend items={legendItems} onToggle={handleLegendToggle} />
+      )}
+    </View>
+  );
+}

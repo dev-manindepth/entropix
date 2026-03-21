@@ -1,0 +1,190 @@
+/* ─── Chart Component Tokens ─────────────────────────────────────────────── */
+
+:root {
+  --chart-bg: var(--entropix-color-bg-primary, #ffffff);
+  --chart-border-color: var(--entropix-color-border-default, #e5e7eb);
+  --chart-grid-color: var(--entropix-color-border-subtle, #f3f4f6);
+  --chart-text-color: var(--entropix-color-text-secondary, #6b7280);
+  --chart-tooltip-bg: var(--entropix-color-bg-inverse, #1f2937);
+  --chart-tooltip-text: var(--entropix-color-text-inverse, #ffffff);
+  --chart-font-size: var(--entropix-font-size-xs, 0.75rem);
+  --chart-series-1: var(--entropix-color-chart-1, #3b82f6);
+  --chart-series-2: var(--entropix-color-chart-2, #ef4444);
+  --chart-series-3: var(--entropix-color-chart-3, #22c55e);
+  --chart-series-4: var(--entropix-color-chart-4, #f59e0b);
+  --chart-series-5: var(--entropix-color-chart-5, #a855f7);
+}
+
+/* ─── Chart Wrapper ──────────────────────────────────────────────────────── */
+
+.entropix-chart {
+  position: relative;
+  width: 100%;
+  background: var(--chart-bg);
+  font-family: var(--entropix-font-family-sans, system-ui, sans-serif);
+  font-size: var(--chart-font-size);
+  color: var(--chart-text-color);
+}
+
+/* ─── SVG Canvas ─────────────────────────────────────────────────────────── */
+
+.entropix-chart__svg {
+  display: block;
+  overflow: visible;
+}
+
+/* ─── Axis Text ──────────────────────────────────────────────────────────── */
+
+.entropix-chart__axis-text {
+  fill: var(--chart-text-color);
+  font-size: var(--chart-font-size);
+  font-family: inherit;
+  user-select: none;
+}
+
+/* ─── Grid Lines ─────────────────────────────────────────────────────────── */
+
+.entropix-chart__grid-line {
+  stroke: var(--chart-grid-color);
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+}
+
+/* ─── Tooltip ────────────────────────────────────────────────────────────── */
+
+.entropix-chart__tooltip {
+  position: absolute;
+  background: var(--chart-tooltip-bg);
+  color: var(--chart-tooltip-text);
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: var(--chart-font-size);
+  line-height: 1.4;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 10;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  opacity: 0;
+  transition: opacity 0.15s ease-in-out;
+}
+
+.entropix-chart__tooltip--visible {
+  opacity: 1;
+}
+
+.entropix-chart__tooltip-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.entropix-chart__tooltip-swatch {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ─── Legend ──────────────────────────────────────────────────────────────── */
+
+.entropix-chart__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 8px 0 0;
+  justify-content: center;
+}
+
+.entropix-chart__legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  user-select: none;
+  font-size: var(--chart-font-size);
+  color: var(--chart-text-color);
+  transition: opacity 0.15s ease-in-out;
+}
+
+.entropix-chart__legend-item--inactive {
+  opacity: 0.4;
+}
+
+.entropix-chart__legend-swatch {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ─── Bar ─────────────────────────────────────────────────────────────────── */
+
+.entropix-chart__bar {
+  transition: opacity 0.15s ease-in-out;
+}
+
+.entropix-chart__bar:hover {
+  opacity: 0.8;
+}
+
+/* ─── Line ────────────────────────────────────────────────────────────────── */
+
+.entropix-chart__line {
+  fill: none;
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+/* ─── Area ────────────────────────────────────────────────────────────────── */
+
+.entropix-chart__area {
+  stroke: none;
+  stroke-linejoin: round;
+}
+
+/* ─── Data Point ─────────────────────────────────────────────────────────── */
+
+.entropix-chart__point {
+  stroke: var(--chart-bg);
+  stroke-width: 2;
+  transition: r 0.15s ease-in-out;
+}
+
+.entropix-chart__point:hover {
+  r: 5;
+}
+
+/* ─── Arc / Pie ──────────────────────────────────────────────────────────── */
+
+.entropix-chart__arc {
+  transition:
+    opacity 0.15s ease-in-out,
+    transform 0.15s ease-in-out;
+  transform-origin: center;
+}
+
+.entropix-chart__arc:hover {
+  opacity: 0.85;
+  transform: scale(1.03);
+}
+
+/* ─── Responsive ─────────────────────────────────────────────────────────── */
+
+@container (max-width: 400px) {
+  .entropix-chart {
+    font-size: 0.625rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .entropix-chart {
+    font-size: 0.625rem;
+  }
+
+  .entropix-chart__legend {
+    gap: 8px;
+  }
+}

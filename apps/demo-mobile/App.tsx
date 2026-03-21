@@ -37,7 +37,7 @@ import {
   SelectContent,
   SelectOption,
 } from "@entropix/react-native";
-import { DataTable } from "@entropix/data-native";
+import { DataTable, BarChart, LineChart, AreaChart, PieChart } from "@entropix/data-native";
 
 // @ts-expect-error -- wildcard export
 import { tokens as oceanLight } from "@entropix/tokens/brands/ocean/native/light";
@@ -62,6 +62,27 @@ const SAMPLE_DATA = [
   { id: 6, name: "Frank Miller", email: "frank@example.com", role: "Viewer", status: "Inactive" },
   { id: 7, name: "Grace Lee", email: "grace@example.com", role: "Editor", status: "Active" },
   { id: 8, name: "Hank Wilson", email: "hank@example.com", role: "Viewer", status: "Active" },
+];
+
+const CHART_REVENUE = [
+  { label: "Jan", value: 4200 },
+  { label: "Feb", value: 3800 },
+  { label: "Mar", value: 5100 },
+  { label: "Apr", value: 4600 },
+  { label: "May", value: 5800 },
+  { label: "Jun", value: 6200 },
+];
+
+const CHART_MULTI = [
+  { name: "Revenue", data: [{ label: "Q1", value: 120 }, { label: "Q2", value: 180 }, { label: "Q3", value: 150 }, { label: "Q4", value: 210 }] },
+  { name: "Expenses", data: [{ label: "Q1", value: 90 }, { label: "Q2", value: 130 }, { label: "Q3", value: 110 }, { label: "Q4", value: 160 }] },
+];
+
+const CHART_PIE = [
+  { label: "Chrome", value: 65 },
+  { label: "Safari", value: 18 },
+  { label: "Firefox", value: 10 },
+  { label: "Other", value: 7 },
 ];
 
 export default function App() {
@@ -324,6 +345,7 @@ function LandingPage({
                 <Tab value="dialogs">Dialogs</Tab>
                 <Tab value="forms">Forms</Tab>
                 <Tab value="data">Data</Tab>
+                <Tab value="charts">Charts</Tab>
               </TabList>
 
               <TabPanel value="brands">
@@ -552,6 +574,36 @@ function LandingPage({
                     pageSize={5}
                     getRowKey={(row) => String(row.id)}
                   />
+                </Stack>
+              </TabPanel>
+
+              <TabPanel value="charts">
+                <Stack gap="lg">
+                  <Stack gap="sm">
+                    <Text style={{ fontWeight: "600", color: textPrimary, fontSize: 16 }}>Bar Chart</Text>
+                    <BarChart data={CHART_REVENUE} height={250} showGrid showTooltip showLegend />
+                  </Stack>
+
+                  <Divider />
+
+                  <Stack gap="sm">
+                    <Text style={{ fontWeight: "600", color: textPrimary, fontSize: 16 }}>Line Chart (Multi-Series)</Text>
+                    <LineChart data={CHART_MULTI} height={250} curved showPoints showGrid showTooltip showLegend />
+                  </Stack>
+
+                  <Divider />
+
+                  <Stack gap="sm">
+                    <Text style={{ fontWeight: "600", color: textPrimary, fontSize: 16 }}>Area Chart</Text>
+                    <AreaChart data={CHART_MULTI} height={250} curved showGrid showTooltip showLegend />
+                  </Stack>
+
+                  <Divider />
+
+                  <Stack gap="sm">
+                    <Text style={{ fontWeight: "600", color: textPrimary, fontSize: 16 }}>Donut Chart</Text>
+                    <PieChart data={CHART_PIE} height={250} innerRadiusRatio={0.6} showTooltip showLegend />
+                  </Stack>
                 </Stack>
               </TabPanel>
             </Tabs>

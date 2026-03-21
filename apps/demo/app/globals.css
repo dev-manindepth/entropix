@@ -9,6 +9,7 @@
 @import "@entropix/tokens/brands/sunset/themes/dark";
 @import "@entropix/react/styles";
 @import "@entropix/data/styles";
+@import "@entropix/data/styles/chart";
 
 *,
 *::before,

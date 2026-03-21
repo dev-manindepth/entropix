@@ -89,3 +89,36 @@ export type {
   SortState,
   SortDirection,
 } from "./hooks/use-table.js";
+
+// === Chart Utilities ===
+export {
+  createLinearScale,
+  createBandScale,
+  generateLinearTicks,
+  niceBounds,
+  normalizeChartData,
+  getDataExtent,
+  DEFAULT_CHART_COLORS,
+  getSeriesColor,
+  computeBarGeometry,
+  computeLinePoints,
+  describeLinePath,
+  describeAreaPath,
+  computeArcGeometry,
+} from "./utils/chart/index.js";
+
+export type {
+  ChartDataPoint,
+  ChartSeries,
+  ChartData,
+  NormalizedSeries,
+  BarRect,
+  LinePoint,
+  ArcSlice,
+  ChartMargins,
+  AxisConfig,
+  TooltipData,
+  LegendItem,
+  LinearScale,
+  BandScale,
+} from "./types/chart.js";
