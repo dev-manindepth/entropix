@@ -3,6 +3,7 @@ import { View, type StyleProp, type ViewStyle } from "react-native";
 import SvgImport, { G, Path, Circle } from "react-native-svg";
 const Svg = SvgImport as unknown as React.ComponentType<{ width: number; height: number; children?: React.ReactNode }>;
 import { useTheme } from "@entropix/react-native";
+import { useChartColors } from "../../utils/use-chart-colors.js";
 import {
   normalizeChartData,
   getDataExtent,
@@ -56,12 +57,13 @@ export function LineChart({
   style,
 }: LineChartProps) {
   const { tokens: st } = useTheme();
+  const chartColors = useChartColors(colors);
   const [tooltip, setTooltip] = useState<TooltipData | null>(null);
   const [hiddenSeries, setHiddenSeries] = useState<Set<string>>(new Set());
 
   const series = useMemo(
-    () => normalizeChartData(data, colors),
-    [data, colors],
+    () => normalizeChartData(data, chartColors),
+    [data, chartColors],
   );
 
   const visibleSeries = useMemo(

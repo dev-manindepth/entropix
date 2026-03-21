@@ -2,7 +2,7 @@ import React, { useMemo, useState, useCallback } from "react";
 import { View, type StyleProp, type ViewStyle } from "react-native";
 import SvgImport, { G, Rect } from "react-native-svg";
 const Svg = SvgImport as unknown as React.ComponentType<{ width: number; height: number; children?: React.ReactNode }>;
-import { useTheme } from "@entropix/react-native";
+import { useChartColors } from "../../utils/use-chart-colors.js";
 import {
   normalizeChartData,
   getDataExtent,
@@ -51,13 +51,13 @@ export function BarChart({
   showLegend = true,
   style,
 }: BarChartProps) {
-  const { tokens: _st } = useTheme();
+  const chartColors = useChartColors(colors);
   const [tooltip, setTooltip] = useState<TooltipData | null>(null);
   const [hiddenSeries, setHiddenSeries] = useState<Set<string>>(new Set());
 
   const series = useMemo(
-    () => normalizeChartData(data, colors),
-    [data, colors],
+    () => normalizeChartData(data, chartColors),
+    [data, chartColors],
   );
 
   const visibleSeries = useMemo(

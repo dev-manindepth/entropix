@@ -20,6 +20,7 @@ import { XAxis } from "../chart-primitives/x-axis.js";
 import { YAxis } from "../chart-primitives/y-axis.js";
 import { ChartTooltip } from "../chart-primitives/chart-tooltip.js";
 import { ChartLegend } from "../chart-primitives/chart-legend.js";
+import { CSS_CHART_COLORS } from "../../utils/chart-colors.js";
 import "../../styles/chart.css";
 
 export interface LineChartProps {
@@ -64,7 +65,7 @@ export function LineChart({
     });
   }, []);
 
-  const allSeries = normalizeChartData(data, colors);
+  const allSeries = normalizeChartData(data, colors ?? CSS_CHART_COLORS);
   const visibleSeries = allSeries.filter((s) => !hiddenSeries.has(s.name));
   const { categories, yMin, yMax } = getDataExtent(visibleSeries);
 

@@ -8,6 +8,7 @@ import { computeArcGeometry, getSeriesColor } from "@entropix/core";
 import { ChartContainer } from "../chart-primitives/chart-container.js";
 import { ChartTooltip } from "../chart-primitives/chart-tooltip.js";
 import { ChartLegend } from "../chart-primitives/chart-legend.js";
+import { CSS_CHART_COLORS } from "../../utils/chart-colors.js";
 import "../../styles/chart.css";
 
 export interface PieChartProps {
@@ -42,9 +43,10 @@ export function PieChart({
     });
   }, []);
 
+  const palette = colors ?? CSS_CHART_COLORS;
   const coloredData = data.map((d, i) => ({
     ...d,
-    color: getSeriesColor(i, colors),
+    color: getSeriesColor(i, palette),
   }));
 
   const visibleData = coloredData.filter((d) => !hiddenSlices.has(d.label));

@@ -3,6 +3,7 @@ import { View, type StyleProp, type ViewStyle } from "react-native";
 import SvgImport, { G, Path } from "react-native-svg";
 const Svg = SvgImport as unknown as React.ComponentType<{ width: number; height: number; children?: React.ReactNode }>;
 import { useTheme } from "@entropix/react-native";
+import { useChartColors } from "../../utils/use-chart-colors.js";
 import {
   normalizeChartData,
   computeArcGeometry,
@@ -42,12 +43,13 @@ export function PieChart({
   style,
 }: PieChartProps) {
   const { tokens: st } = useTheme();
+  const chartColors = useChartColors(colors);
   const [tooltip, setTooltip] = useState<TooltipData | null>(null);
   const [hiddenSeries, setHiddenSeries] = useState<Set<string>>(new Set());
 
   const series = useMemo(
-    () => normalizeChartData(data, colors),
-    [data, colors],
+    () => normalizeChartData(data, chartColors),
+    [data, chartColors],
   );
 
   // For pie chart, flatten all series data points into slice data
@@ -80,7 +82,7 @@ export function PieChart({
     if (series.length === 1) {
       return allItems.map((item, i) => ({
         name: item.label,
-        color: getSeriesColor(i, colors),
+        color: getSeriesColor(i, chartColors),
         active: !hiddenSeries.has(item.label),
       }));
     }
@@ -90,7 +92,7 @@ export function PieChart({
       color: s.color,
       active: !hiddenSeries.has(s.name),
     }));
-  }, [series, colors, hiddenSeries]);
+  }, [series, chartColors, hiddenSeries]);
 
   const handleLegendToggle = useCallback((name: string) => {
     setHiddenSeries((prev) => {
@@ -118,7 +120,7 @@ export function PieChart({
         arcData = sliceData.map((d, i) => ({
           label: d.label,
           value: d.value,
-          color: getSeriesColor(i, colors),
+          color: getSeriesColor(i, chartColors),
         }));
       } else {
         arcData = sliceData.map((d) => ({
