@@ -118,11 +118,7 @@ export function DataTable<TData = unknown>({
   // Calculate minimum column width to fill the container
   // Each column gets at least 120px, or its explicit width
   const MIN_COL_WIDTH = 120;
-  const checkboxColWidth = selectionMode !== "none" ? 44 : 0;
-  const totalMinWidth = columns.reduce(
-    (sum, col) => sum + (typeof col.width === "number" ? col.width : MIN_COL_WIDTH),
-    checkboxColWidth,
-  );
+  const _checkboxColWidth = selectionMode !== "none" ? 44 : 0;
 
   // Table accessibility props
   const tableA11y = mapAccessibilityToRN(table.getTableProps().accessibility);

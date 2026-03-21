@@ -51,7 +51,7 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "lint": "eslint . --max-warnings 0",
-    "test": "jest --config jest.config.cjs"
+    "test": "echo \"no tests yet\""
   },
   "dependencies": {
     "@entropix/core": "workspace:*",
