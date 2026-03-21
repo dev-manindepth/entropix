@@ -1,130 +1,128 @@
 /* Radio — @entropix/react */
 
-@layer entropix {
-  .entropix-radio-group {
-    display: flex;
-    gap: var(--entropix-spacing-2);
-  }
+.entropix-radio-group {
+  display: flex;
+  gap: var(--entropix-spacing-2);
+}
 
-  .entropix-radio-group[data-orientation="vertical"] {
-    flex-direction: column;
-  }
+.entropix-radio-group[data-orientation="vertical"] {
+  flex-direction: column;
+}
 
-  .entropix-radio-group[data-orientation="horizontal"] {
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
+.entropix-radio-group[data-orientation="horizontal"] {
+  flex-direction: row;
+  flex-wrap: wrap;
+}
 
-  /* === Radio Item === */
+/* === Radio Item === */
 
+.entropix-radio-item {
+  --radio-size: 20px;
+  --radio-border-color: var(--entropix-color-border-default);
+  --radio-checked-color: var(--entropix-color-action-primary-default);
+  --radio-dot-size: 10px;
+
+  display: inline-flex;
+  align-items: center;
+  gap: var(--entropix-spacing-2);
+  padding: var(--entropix-spacing-1) 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  user-select: none;
+  font-family: var(--entropix-font-family-sans);
+  font-size: var(--entropix-font-size-sm);
+  color: var(--entropix-color-text-primary);
+  line-height: var(--entropix-line-height-normal);
+}
+
+/* === Indicator (circle) === */
+
+.entropix-radio-item__indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--radio-size);
+  height: var(--radio-size);
+  border: 2px solid var(--radio-border-color);
+  border-radius: 50%;
+  background: var(--entropix-color-bg-primary);
+  flex-shrink: 0;
+  transition:
+    border-color var(--entropix-duration-fast) var(--entropix-easing-default),
+    background var(--entropix-duration-fast) var(--entropix-easing-default);
+}
+
+.entropix-radio-item__indicator[data-state="checked"] {
+  border-color: var(--radio-checked-color);
+}
+
+/* Inner filled circle via ::after */
+.entropix-radio-item__indicator[data-state="checked"]::after {
+  content: "";
+  display: block;
+  width: var(--radio-dot-size);
+  height: var(--radio-dot-size);
+  border-radius: 50%;
+  background: var(--radio-checked-color);
+}
+
+/* === Label === */
+
+.entropix-radio-item__label {
+  font-family: var(--entropix-font-family-sans);
+  font-size: var(--entropix-font-size-sm);
+  color: var(--entropix-color-text-primary);
+  line-height: var(--entropix-line-height-normal);
+}
+
+/* === Hover === */
+
+.entropix-radio-item:hover:not(:disabled) .entropix-radio-item__indicator {
+  border-color: var(--entropix-color-border-hover);
+}
+
+.entropix-radio-item:hover:not(:disabled)
+  .entropix-radio-item__indicator[data-state="checked"] {
+  border-color: var(--entropix-color-action-primary-hover);
+}
+
+.entropix-radio-item:hover:not(:disabled)
+  .entropix-radio-item__indicator[data-state="checked"]::after {
+  background: var(--entropix-color-action-primary-hover);
+}
+
+/* === Focus === */
+
+.entropix-radio-item:focus-visible {
+  outline: 2px solid var(--entropix-color-border-focus);
+  outline-offset: 2px;
+  border-radius: var(--entropix-radius-sm);
+}
+
+/* === Disabled === */
+
+.entropix-radio-item:disabled,
+.entropix-radio-item[data-disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* === Responsive — Touch-friendly sizing on mobile === */
+
+@media (max-width: 767px) {
   .entropix-radio-item {
-    --radio-size: 20px;
-    --radio-border-color: var(--entropix-color-border-default);
-    --radio-checked-color: var(--entropix-color-action-primary-default);
-    --radio-dot-size: 10px;
-
-    display: inline-flex;
-    align-items: center;
-    gap: var(--entropix-spacing-2);
-    padding: var(--entropix-spacing-1) 0;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    user-select: none;
-    font-family: var(--entropix-font-family-sans);
-    font-size: var(--entropix-font-size-sm);
-    color: var(--entropix-color-text-primary);
-    line-height: var(--entropix-line-height-normal);
+    min-height: 44px;
   }
-
-  /* === Indicator (circle) === */
 
   .entropix-radio-item__indicator {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: var(--radio-size);
-    height: var(--radio-size);
-    border: 2px solid var(--radio-border-color);
-    border-radius: 50%;
-    background: var(--entropix-color-bg-primary);
-    flex-shrink: 0;
-    transition:
-      border-color var(--entropix-duration-fast) var(--entropix-easing-default),
-      background var(--entropix-duration-fast) var(--entropix-easing-default);
+    width: 22px;
+    height: 22px;
   }
 
-  .entropix-radio-item__indicator[data-state="checked"] {
-    border-color: var(--radio-checked-color);
-  }
-
-  /* Inner filled circle via ::after */
   .entropix-radio-item__indicator[data-state="checked"]::after {
-    content: "";
-    display: block;
-    width: var(--radio-dot-size);
-    height: var(--radio-dot-size);
-    border-radius: 50%;
-    background: var(--radio-checked-color);
-  }
-
-  /* === Label === */
-
-  .entropix-radio-item__label {
-    font-family: var(--entropix-font-family-sans);
-    font-size: var(--entropix-font-size-sm);
-    color: var(--entropix-color-text-primary);
-    line-height: var(--entropix-line-height-normal);
-  }
-
-  /* === Hover === */
-
-  .entropix-radio-item:hover:not(:disabled) .entropix-radio-item__indicator {
-    border-color: var(--entropix-color-border-hover);
-  }
-
-  .entropix-radio-item:hover:not(:disabled)
-    .entropix-radio-item__indicator[data-state="checked"] {
-    border-color: var(--entropix-color-action-primary-hover);
-  }
-
-  .entropix-radio-item:hover:not(:disabled)
-    .entropix-radio-item__indicator[data-state="checked"]::after {
-    background: var(--entropix-color-action-primary-hover);
-  }
-
-  /* === Focus === */
-
-  .entropix-radio-item:focus-visible {
-    outline: 2px solid var(--entropix-color-border-focus);
-    outline-offset: 2px;
-    border-radius: var(--entropix-radius-sm);
-  }
-
-  /* === Disabled === */
-
-  .entropix-radio-item:disabled,
-  .entropix-radio-item[data-disabled] {
-    opacity: 0.5;
-    cursor: not-allowed;
-    pointer-events: none;
-  }
-
-  /* === Responsive — Touch-friendly sizing on mobile === */
-
-  @media (max-width: 767px) {
-    .entropix-radio-item {
-      min-height: 44px;
-    }
-
-    .entropix-radio-item__indicator {
-      width: 22px;
-      height: 22px;
-    }
-
-    .entropix-radio-item__indicator[data-state="checked"]::after {
-      width: 10px;
-      height: 10px;
-    }
+    width: 10px;
+    height: 10px;
   }
 }

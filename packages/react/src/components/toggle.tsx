@@ -121,7 +121,7 @@ export const ToggleInner = forwardRef<HTMLButtonElement, ToggleInternalProps>(
         onKeyDown={onKeyDown || externalOnKeyDown ? handleKeyDown : undefined}
         data-state={isChecked ? "checked" : "unchecked"}
       >
-        {children}
+        {children ?? label ?? (isChecked ? "On" : "Off")}
       </button>
     );
   },

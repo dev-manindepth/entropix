@@ -1,7 +1,5 @@
 /* Entropix Design System — All Component Styles */
 
-@layer entropix;
-
 @import "./button.css";
 @import "./toggle.css";
 @import "./switch.css";

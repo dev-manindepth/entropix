@@ -35,8 +35,11 @@ import {
   SelectOption,
 } from "@entropix/react";
 
+type Brand = "default" | "ocean" | "sunset";
+
 export default function DemoLandingPage() {
   const [theme, setTheme] = useState<"light" | "dark">("light");
+  const [brand, setBrand] = useState<Brand>("default");
   const [plan, setPlan] = useState("startup");
   const [framework, setFramework] = useState("");
 
@@ -44,6 +47,15 @@ export default function DemoLandingPage() {
     const next = theme === "light" ? "dark" : "light";
     setTheme(next);
     document.documentElement.setAttribute("data-theme", next);
+  };
+
+  const switchBrand = (newBrand: Brand) => {
+    setBrand(newBrand);
+    if (newBrand === "default") {
+      document.documentElement.removeAttribute("data-brand");
+    } else {
+      document.documentElement.setAttribute("data-brand", newBrand);
+    }
   };
 
   return (
@@ -55,12 +67,32 @@ export default function DemoLandingPage() {
             <span className="nav-logo">
               <span>{"{"}</span>E<span>{"}"}</span> Entropix
             </span>
-            <Inline gap="sm">
+            <Inline gap="sm" wrap>
+              <Inline gap="xs">
+                <Button
+                  variant={brand === "default" ? "primary" : "ghost"}
+                  size="sm"
+                  onPress={() => switchBrand("default")}
+                >
+                  Default
+                </Button>
+                <Button
+                  variant={brand === "ocean" ? "primary" : "ghost"}
+                  size="sm"
+                  onPress={() => switchBrand("ocean")}
+                >
+                  🌊 Ocean
+                </Button>
+                <Button
+                  variant={brand === "sunset" ? "primary" : "ghost"}
+                  size="sm"
+                  onPress={() => switchBrand("sunset")}
+                >
+                  🌅 Sunset
+                </Button>
+              </Inline>
               <Button variant="ghost" size="sm" onPress={toggleTheme}>
-                {theme === "light" ? "Dark" : "Light"}
-              </Button>
-              <Button variant="primary" size="sm">
-                Get Started
+                {theme === "light" ? "🌙 Dark" : "☀️ Light"}
               </Button>
             </Inline>
           </div>
@@ -209,14 +241,74 @@ export default function DemoLandingPage() {
               </p>
             </div>
 
-            <Tabs defaultSelectedKey="buttons">
+            <Tabs defaultSelectedKey="brands">
               <TabList>
+                <Tab value="brands">Brands</Tab>
                 <Tab value="buttons">Buttons</Tab>
                 <Tab value="controls">Controls</Tab>
                 <Tab value="layout">Layout</Tab>
                 <Tab value="dialogs">Dialogs</Tab>
                 <Tab value="forms">Forms</Tab>
               </TabList>
+
+              <TabPanel value="brands">
+                <div className="demo-box">
+                  <Stack gap="lg">
+                    <div>
+                      <h4 style={{ fontWeight: 600 }}>Multi-Brand Theming</h4>
+                      <p style={{ color: "var(--entropix-color-text-secondary)", marginTop: "0.5rem" }}>
+                        Switch brands using the nav buttons above. Each brand overrides design tokens
+                        (colors, radii, shadows) while sharing the same component code.
+                      </p>
+                    </div>
+
+                    <div className="demo-grid">
+                      <div className="feature-card">
+                        <h4 style={{ fontWeight: 600 }}>Current Brand</h4>
+                        <p style={{ fontSize: "1.5rem", fontWeight: 700, color: "var(--entropix-color-action-primary-default)", marginTop: "0.5rem" }}>
+                          {brand === "default" ? "Default (Blue)" : brand === "ocean" ? "🌊 Ocean (Teal)" : "🌅 Sunset (Orange)"}
+                        </p>
+                      </div>
+                      <div className="feature-card">
+                        <h4 style={{ fontWeight: 600 }}>Current Theme</h4>
+                        <p style={{ fontSize: "1.5rem", fontWeight: 700, color: "var(--entropix-color-action-primary-default)", marginTop: "0.5rem" }}>
+                          {theme === "light" ? "☀️ Light" : "🌙 Dark"}
+                        </p>
+                      </div>
+                    </div>
+
+                    <Stack gap="md">
+                      <h4 style={{ fontWeight: 600 }}>Same Components, Different Brands</h4>
+                      <Inline gap="sm" wrap>
+                        <Button variant="primary">Primary Action</Button>
+                        <Button variant="secondary">Secondary</Button>
+                        <Button variant="outline">Outline</Button>
+                      </Inline>
+                      <Inline gap="lg" wrap>
+                        <Toggle defaultChecked>Toggle</Toggle>
+                        <label style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                          <Switch defaultChecked /> Switch
+                        </label>
+                      </Inline>
+                      <Input label="Branded Input" placeholder="Notice the focus color changes per brand" />
+                      <Checkbox defaultChecked>Branded checkbox</Checkbox>
+                    </Stack>
+
+                    <Divider />
+
+                    <Stack gap="sm">
+                      <h4 style={{ fontWeight: 600 }}>How it works</h4>
+                      <p className="panel-text">
+                        Brands use <code className="code-inline">data-brand</code> + <code className="code-inline">data-theme</code> attributes
+                        on the root element. CSS variables cascade down — all components automatically adapt.
+                      </p>
+                      <code className="code-inline" style={{ display: "block", padding: "0.75rem" }}>
+                        {'<html data-brand="' + brand + '" data-theme="' + theme + '">'}
+                      </code>
+                    </Stack>
+                  </Stack>
+                </div>
+              </TabPanel>
 
               <TabPanel value="buttons">
                 <div className="demo-box">
@@ -252,12 +344,8 @@ export default function DemoLandingPage() {
                     <Stack gap="md">
                       <h4 style={{ fontWeight: 600 }}>Toggles</h4>
                       <Inline gap="lg" wrap>
-                        <label style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                          <Toggle /> Notifications
-                        </label>
-                        <label style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                          <Toggle defaultChecked /> Marketing emails
-                        </label>
+                        <Toggle>Notifications</Toggle>
+                        <Toggle defaultChecked>Marketing emails</Toggle>
                       </Inline>
                     </Stack>
                     <Divider />

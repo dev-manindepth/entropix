@@ -385,7 +385,7 @@ function LandingPage({
                       label="Bio"
                       placeholder="Tell us about yourself"
                       helperText="Max 200 characters"
-                      rows={4}
+                      numberOfLines={4}
                     />
                   </Stack>
 
@@ -577,10 +577,9 @@ function FeatureCard({ icon, title, desc, borderColor, textColor, titleColor }: 
 function ToggleRow({ label, defaultChecked = false, textColor }: { label: string; defaultChecked?: boolean; textColor: string }) {
   const [checked, setChecked] = useState(defaultChecked);
   return (
-    <Inline gap="sm">
-      <Toggle checked={checked} onChange={setChecked} label={label} />
-      <Text style={{ color: textColor, fontSize: 14 }}>{label}</Text>
-    </Inline>
+    <Toggle checked={checked} onChange={setChecked} label={label}>
+      {label}
+    </Toggle>
   );
 }
 

@@ -1,121 +1,119 @@
 /* Checkbox — @entropix/react */
 
-@layer entropix {
+.entropix-checkbox {
+  --checkbox-size: 18px;
+  --checkbox-border-color: var(--entropix-color-border-default);
+  --checkbox-checked-bg: var(--entropix-color-action-primary-default);
+  --checkbox-checked-border: var(--entropix-color-action-primary-default);
+  --checkbox-border-radius: var(--entropix-radius-sm);
+
+  display: inline-flex;
+  align-items: center;
+  gap: var(--entropix-spacing-2);
+  padding: var(--entropix-spacing-1) 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  user-select: none;
+  font-family: var(--entropix-font-family-sans);
+  font-size: var(--entropix-font-size-sm);
+  color: var(--entropix-color-text-primary);
+  line-height: var(--entropix-line-height-normal);
+}
+
+/* === Indicator === */
+
+.entropix-checkbox__indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--checkbox-size);
+  height: var(--checkbox-size);
+  border: 2px solid var(--checkbox-border-color);
+  border-radius: var(--checkbox-border-radius);
+  background: var(--entropix-color-bg-primary);
+  flex-shrink: 0;
+  transition:
+    background var(--entropix-duration-fast) var(--entropix-easing-default),
+    border-color var(--entropix-duration-fast) var(--entropix-easing-default);
+}
+
+.entropix-checkbox__indicator[data-state="checked"],
+.entropix-checkbox__indicator[data-state="indeterminate"] {
+  background: var(--checkbox-checked-bg);
+  border-color: var(--checkbox-checked-border);
+}
+
+/* Checkmark via ::after pseudo-element */
+.entropix-checkbox__indicator[data-state="checked"]::after {
+  content: "";
+  display: block;
+  width: 5px;
+  height: 9px;
+  border: solid var(--entropix-color-text-inverse);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  margin-top: -1px;
+}
+
+/* Indeterminate minus via ::after pseudo-element */
+.entropix-checkbox__indicator[data-state="indeterminate"]::after {
+  content: "";
+  display: block;
+  width: 8px;
+  height: 2px;
+  background: var(--entropix-color-text-inverse);
+  border-radius: 1px;
+}
+
+/* === Label === */
+
+.entropix-checkbox__label {
+  font-family: var(--entropix-font-family-sans);
+  font-size: var(--entropix-font-size-sm);
+  color: var(--entropix-color-text-primary);
+  line-height: var(--entropix-line-height-normal);
+}
+
+/* === Hover === */
+
+.entropix-checkbox:hover:not(:disabled) .entropix-checkbox__indicator {
+  border-color: var(--entropix-color-border-hover);
+}
+
+.entropix-checkbox:hover:not(:disabled)
+  .entropix-checkbox__indicator[data-state="checked"],
+.entropix-checkbox:hover:not(:disabled)
+  .entropix-checkbox__indicator[data-state="indeterminate"] {
+  background: var(--entropix-color-action-primary-hover);
+  border-color: var(--entropix-color-action-primary-hover);
+}
+
+/* === Focus === */
+
+.entropix-checkbox:focus-visible {
+  outline: 2px solid var(--entropix-color-border-focus);
+  outline-offset: 2px;
+  border-radius: var(--checkbox-border-radius);
+}
+
+/* === Disabled === */
+
+.entropix-checkbox:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* === Responsive — Touch-friendly sizing on mobile === */
+
+@media (max-width: 767px) {
   .entropix-checkbox {
-    --checkbox-size: 18px;
-    --checkbox-border-color: var(--entropix-color-border-default);
-    --checkbox-checked-bg: var(--entropix-color-action-primary-default);
-    --checkbox-checked-border: var(--entropix-color-action-primary-default);
-    --checkbox-border-radius: var(--entropix-radius-sm);
-
-    display: inline-flex;
-    align-items: center;
-    gap: var(--entropix-spacing-2);
-    padding: var(--entropix-spacing-1) 0;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    user-select: none;
-    font-family: var(--entropix-font-family-sans);
-    font-size: var(--entropix-font-size-sm);
-    color: var(--entropix-color-text-primary);
-    line-height: var(--entropix-line-height-normal);
+    min-height: 44px;
   }
-
-  /* === Indicator === */
 
   .entropix-checkbox__indicator {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: var(--checkbox-size);
-    height: var(--checkbox-size);
-    border: 2px solid var(--checkbox-border-color);
-    border-radius: var(--checkbox-border-radius);
-    background: var(--entropix-color-bg-primary);
-    flex-shrink: 0;
-    transition:
-      background var(--entropix-duration-fast) var(--entropix-easing-default),
-      border-color var(--entropix-duration-fast) var(--entropix-easing-default);
-  }
-
-  .entropix-checkbox__indicator[data-state="checked"],
-  .entropix-checkbox__indicator[data-state="indeterminate"] {
-    background: var(--checkbox-checked-bg);
-    border-color: var(--checkbox-checked-border);
-  }
-
-  /* Checkmark via ::after pseudo-element */
-  .entropix-checkbox__indicator[data-state="checked"]::after {
-    content: "";
-    display: block;
-    width: 5px;
-    height: 9px;
-    border: solid var(--entropix-color-text-inverse);
-    border-width: 0 2px 2px 0;
-    transform: rotate(45deg);
-    margin-top: -1px;
-  }
-
-  /* Indeterminate minus via ::after pseudo-element */
-  .entropix-checkbox__indicator[data-state="indeterminate"]::after {
-    content: "";
-    display: block;
-    width: 8px;
-    height: 2px;
-    background: var(--entropix-color-text-inverse);
-    border-radius: 1px;
-  }
-
-  /* === Label === */
-
-  .entropix-checkbox__label {
-    font-family: var(--entropix-font-family-sans);
-    font-size: var(--entropix-font-size-sm);
-    color: var(--entropix-color-text-primary);
-    line-height: var(--entropix-line-height-normal);
-  }
-
-  /* === Hover === */
-
-  .entropix-checkbox:hover:not(:disabled) .entropix-checkbox__indicator {
-    border-color: var(--entropix-color-border-hover);
-  }
-
-  .entropix-checkbox:hover:not(:disabled)
-    .entropix-checkbox__indicator[data-state="checked"],
-  .entropix-checkbox:hover:not(:disabled)
-    .entropix-checkbox__indicator[data-state="indeterminate"] {
-    background: var(--entropix-color-action-primary-hover);
-    border-color: var(--entropix-color-action-primary-hover);
-  }
-
-  /* === Focus === */
-
-  .entropix-checkbox:focus-visible {
-    outline: 2px solid var(--entropix-color-border-focus);
-    outline-offset: 2px;
-    border-radius: var(--checkbox-border-radius);
-  }
-
-  /* === Disabled === */
-
-  .entropix-checkbox:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    pointer-events: none;
-  }
-
-  /* === Responsive — Touch-friendly sizing on mobile === */
-
-  @media (max-width: 767px) {
-    .entropix-checkbox {
-      min-height: 44px;
-    }
-
-    .entropix-checkbox__indicator {
-      width: 22px;
-      height: 22px;
-    }
+    width: 22px;
+    height: 22px;
   }
 }

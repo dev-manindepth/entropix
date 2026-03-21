@@ -1,0 +1,9 @@
+{
+  "radius": {
+    "$description": "Ocean brand — extra rounded corners",
+    "sm":   { "$value": "6px",   "$type": "dimension" },
+    "md":   { "$value": "12px",  "$type": "dimension" },
+    "lg":   { "$value": "16px",  "$type": "dimension" },
+    "xl":   { "$value": "24px",  "$type": "dimension" }
+  }
+}

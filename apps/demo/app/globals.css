@@ -1,6 +1,12 @@
 @import "@entropix/tokens/css";
 @import "@entropix/tokens/themes/light";
 @import "@entropix/tokens/themes/dark";
+@import "@entropix/tokens/brands/ocean/css";
+@import "@entropix/tokens/brands/ocean/themes/light";
+@import "@entropix/tokens/brands/ocean/themes/dark";
+@import "@entropix/tokens/brands/sunset/css";
+@import "@entropix/tokens/brands/sunset/themes/light";
+@import "@entropix/tokens/brands/sunset/themes/dark";
 @import "@entropix/react/styles";
 
 *,

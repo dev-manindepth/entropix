@@ -2,22 +2,19 @@
  * Entropix Design Tokens Build Script
  *
  * Uses Style Dictionary v4 with W3C DTCG format to compile
- * design tokens into platform-specific outputs:
+ * design tokens into platform-specific outputs.
  *
- *   - dist/web/variables.css     → CSS custom properties
- *   - dist/web/tokens.js         → ES module for web (TypeScript-authored)
- *   - dist/native/tokens.js      → ES module for React Native (no px units)
- *   - dist/themes/light.css      → Light theme CSS (scoped to [data-theme="light"])
- *   - dist/themes/dark.css       → Dark theme CSS (scoped to [data-theme="dark"])
- *   - dist/native/light.js       → Light theme ES module for React Native
- *   - dist/native/dark.js        → Dark theme ES module for React Native
+ * Supports multi-brand token generation:
+ *   - Default brand: dist/web/, dist/themes/, dist/native/
+ *   - Custom brands: dist/brands/{name}/web/, dist/brands/{name}/themes/, dist/brands/{name}/native/
  */
 
 import StyleDictionary from "style-dictionary";
 import type { Config, TransformedToken } from "style-dictionary/types";
+import { readdirSync, existsSync, writeFileSync, mkdirSync } from "fs";
+import { join } from "path";
 
 // ─── Custom Transform: Strip px for React Native ────────────────────────────
-// RN uses unitless numbers for dimensions. This strips "px" and returns a number.
 StyleDictionary.registerTransform({
   name: "dimension/pixelToNumber",
   type: "value",
@@ -34,7 +31,6 @@ StyleDictionary.registerTransform({
 });
 
 // ─── Custom Transform: Shadow to RN format ──────────────────────────────────
-// Converts DTCG shadow objects to React Native shadow properties
 StyleDictionary.registerTransform({
   name: "shadow/reactNative",
   type: "value",
@@ -97,150 +93,193 @@ StyleDictionary.registerFormat({
   },
 });
 
-// ─── Base config: all tokens (primitives + semantic + components) ───────────
-const baseConfig: Config = {
-  source: [
-    "src/primitives/**/*.json",
-    "src/semantic/**/*.json",
-    "src/components/**/*.json",
-  ],
-  usesDtcg: true,
-  log: {
-    verbosity: "default",
-  },
-  platforms: {
-    web: {
-      transformGroup: "css",
-      buildPath: "dist/web/",
-      prefix: "entropix",
-      files: [
-        {
-          destination: "variables.css",
-          format: "css/variables",
-          options: {
-            outputReferences: true,
-          },
-        },
-      ],
-    },
-    "web-js": {
-      transformGroup: "js",
-      buildPath: "dist/web/",
-      prefix: "entropix",
-      files: [
-        {
-          destination: "tokens.js",
-          format: "javascript/esm-tokens",
-        },
-      ],
-    },
-    native: {
-      transforms: [
-        "name/camel",
-        "dimension/pixelToNumber",
-        "shadow/reactNative",
-        "duration/milliseconds",
-        "color/css",
-      ],
-      buildPath: "dist/native/",
-      prefix: "entropix",
-      files: [
-        {
-          destination: "tokens.js",
-          format: "javascript/esm-tokens",
-        },
-      ],
-    },
-  },
-};
+// ─── Brand Discovery ────────────────────────────────────────────────────────
+function discoverBrands(): string[] {
+  const brandsDir = join(process.cwd(), "src/brands");
+  if (!existsSync(brandsDir)) return [];
 
-// ─── Theme config factory ───────────────────────────────────────────────────
-function createThemeConfig(themeName: string): Config {
+  return readdirSync(brandsDir, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => entry.name);
+}
+
+// ─── Native transforms (shared) ────────────────────────────────────────────
+const nativeTransforms = [
+  "name/camel",
+  "dimension/pixelToNumber",
+  "shadow/reactNative",
+  "duration/milliseconds",
+  "color/css",
+];
+
+// ─── Brand Base Config Factory ──────────────────────────────────────────────
+function createBrandBaseConfig(brand: string): Config {
+  const isDefault = brand === "default";
+  const brandDir = `src/brands/${brand}`;
+
+  const source = [
+    "src/primitives/**/*.json",
+    ...(isDefault ? [] : existsSync(join(process.cwd(), brandDir, "primitives"))
+      ? [`${brandDir}/primitives/**/*.json`] : []),
+    "src/semantic/**/*.json",
+    ...(isDefault ? [] : existsSync(join(process.cwd(), brandDir, "semantic"))
+      ? [`${brandDir}/semantic/**/*.json`] : []),
+    "src/components/**/*.json",
+  ];
+
+  const buildPathWeb = isDefault ? "dist/web/" : `dist/brands/${brand}/web/`;
+  const buildPathNative = isDefault ? "dist/native/" : `dist/brands/${brand}/native/`;
+  const cssSelector = isDefault ? ":root" : `[data-brand="${brand}"]`;
+
   return {
-    source: [
-      "src/primitives/**/*.json",
-      "src/semantic/**/*.json",
-      `src/themes/${themeName}.json`,
-      "src/components/**/*.json",
-    ],
+    source,
     usesDtcg: true,
-    log: {
-      verbosity: "silent",
-    },
+    log: { verbosity: isDefault ? "default" : "silent" },
     platforms: {
-      // CSS output: [data-theme="light"] / [data-theme="dark"]
-      [`theme-${themeName}`]: {
+      web: {
         transformGroup: "css",
-        buildPath: "dist/themes/",
+        buildPath: buildPathWeb,
         prefix: "entropix",
         files: [
           {
-            destination: `${themeName}.css`,
+            destination: "variables.css",
             format: "css/variables",
-            options: {
-              outputReferences: true,
-              selector: `[data-theme="${themeName}"]`,
-            },
+            options: { outputReferences: true, selector: cssSelector },
           },
         ],
       },
-      // Native JS output: dist/native/light.js / dist/native/dark.js
-      [`theme-${themeName}-native`]: {
-        transforms: [
-          "name/camel",
-          "dimension/pixelToNumber",
-          "shadow/reactNative",
-          "duration/milliseconds",
-          "color/css",
-        ],
-        buildPath: "dist/native/",
+      "web-js": {
+        transformGroup: "js",
+        buildPath: buildPathWeb,
         prefix: "entropix",
         files: [
-          {
-            destination: `${themeName}.js`,
-            format: "javascript/esm-tokens",
-          },
+          { destination: "tokens.js", format: "javascript/esm-tokens" },
+        ],
+      },
+      native: {
+        transforms: nativeTransforms,
+        buildPath: buildPathNative,
+        prefix: "entropix",
+        files: [
+          { destination: "tokens.js", format: "javascript/esm-tokens" },
         ],
       },
     },
   };
 }
 
+// ─── Brand Theme Config Factory ─────────────────────────────────────────────
+function createBrandThemeConfig(brand: string, theme: string): Config {
+  const isDefault = brand === "default";
+  const brandDir = `src/brands/${brand}`;
+  const brandThemeFile = `${brandDir}/themes/${theme}.json`;
+  const hasBrandTheme = !isDefault && existsSync(join(process.cwd(), brandThemeFile));
+
+  const source = [
+    "src/primitives/**/*.json",
+    ...(isDefault ? [] : existsSync(join(process.cwd(), brandDir, "primitives"))
+      ? [`${brandDir}/primitives/**/*.json`] : []),
+    "src/semantic/**/*.json",
+    ...(isDefault ? [] : existsSync(join(process.cwd(), brandDir, "semantic"))
+      ? [`${brandDir}/semantic/**/*.json`] : []),
+    `src/themes/${theme}.json`,
+    ...(hasBrandTheme ? [brandThemeFile] : []),
+    "src/components/**/*.json",
+  ];
+
+  const buildPathThemes = isDefault ? "dist/themes/" : `dist/brands/${brand}/themes/`;
+  const buildPathNative = isDefault ? "dist/native/" : `dist/brands/${brand}/native/`;
+
+  const cssSelector = isDefault
+    ? `[data-theme="${theme}"]`
+    : `[data-brand="${brand}"][data-theme="${theme}"]`;
+
+  return {
+    source,
+    usesDtcg: true,
+    log: { verbosity: "silent" },
+    platforms: {
+      [`theme-${theme}`]: {
+        transformGroup: "css",
+        buildPath: buildPathThemes,
+        prefix: "entropix",
+        files: [
+          {
+            destination: `${theme}.css`,
+            format: "css/variables",
+            options: { outputReferences: true, selector: cssSelector },
+          },
+        ],
+      },
+      [`theme-${theme}-native`]: {
+        transforms: nativeTransforms,
+        buildPath: buildPathNative,
+        prefix: "entropix",
+        files: [
+          { destination: `${theme}.js`, format: "javascript/esm-tokens" },
+        ],
+      },
+    },
+  };
+}
+
+// ─── Generate .d.ts files ───────────────────────────────────────────────────
+function generateDTS(brand: string) {
+  const dtsContent = `export declare const tokens: Record<string, string | number | object>;\n`;
+  const isDefault = brand === "default";
+  const base = isDefault ? "dist" : `dist/brands/${brand}`;
+
+  const files = [
+    `${base}/${isDefault ? "web" : "web"}/tokens.d.ts`,
+    `${base}/${isDefault ? "native" : "native"}/tokens.d.ts`,
+    `${base}/${isDefault ? "native" : "native"}/light.d.ts`,
+    `${base}/${isDefault ? "native" : "native"}/dark.d.ts`,
+  ];
+
+  for (const file of files) {
+    const dir = file.substring(0, file.lastIndexOf("/"));
+    mkdirSync(dir, { recursive: true });
+    writeFileSync(file, dtsContent, "utf-8");
+  }
+}
+
 // ─── Build ──────────────────────────────────────────────────────────────────
 async function build() {
   console.log("\n🔨 Building Entropix Design Tokens...\n");
 
-  // 1. Build base tokens (all primitives + semantic + components)
-  console.log("📦 Building base tokens...");
-  const baseSD = new StyleDictionary(baseConfig);
-  await baseSD.buildAllPlatforms();
-  console.log("   ✅ Base tokens built\n");
-
-  // 2. Build theme-specific CSS
   const themes = ["light", "dark"];
-  for (const theme of themes) {
-    console.log(`🎨 Building ${theme} theme...`);
-    const themeSD = new StyleDictionary(createThemeConfig(theme));
-    await themeSD.buildAllPlatforms();
-    console.log(`   ✅ ${theme} theme built\n`);
+  const customBrands = discoverBrands();
+  const allBrands = ["default", ...customBrands];
+
+  console.log(`📋 Brands: ${allBrands.join(", ")}`);
+  console.log(`🎨 Themes: ${themes.join(", ")}\n`);
+
+  for (const brand of allBrands) {
+    const label = brand === "default" ? "default" : `brand: ${brand}`;
+
+    // Build base tokens
+    console.log(`📦 Building base tokens (${label})...`);
+    const baseSD = new StyleDictionary(createBrandBaseConfig(brand));
+    await baseSD.buildAllPlatforms();
+    console.log(`   ✅ Base tokens built\n`);
+
+    // Build theme-specific outputs
+    for (const theme of themes) {
+      console.log(`🎨 Building ${theme} theme (${label})...`);
+      const themeSD = new StyleDictionary(createBrandThemeConfig(brand, theme));
+      await themeSD.buildAllPlatforms();
+      console.log(`   ✅ ${theme} theme built\n`);
+    }
+
+    // Generate .d.ts files
+    generateDTS(brand);
   }
 
-  // 3. Generate .d.ts files for JS token outputs
-  console.log("📝 Generating type declarations...");
-  const { writeFileSync } = await import("fs");
-  const dtsContent = `export declare const tokens: Record<string, string | number | object>;\n`;
-  const dtsFiles = [
-    "dist/web/tokens.d.ts",
-    "dist/native/tokens.d.ts",
-    "dist/native/light.d.ts",
-    "dist/native/dark.d.ts",
-  ];
-  for (const file of dtsFiles) {
-    writeFileSync(file, dtsContent, "utf-8");
-  }
-  console.log("   ✅ Type declarations generated\n");
-
-  console.log("✅ All tokens built successfully!\n");
+  console.log("📝 Type declarations generated");
+  console.log("\n✅ All tokens built successfully!\n");
+  console.log(`   Brands: ${allBrands.length} (${allBrands.join(", ")})`);
+  console.log(`   Outputs per brand: base + ${themes.length} themes`);
+  console.log(`   Total builds: ${allBrands.length * (1 + themes.length)}\n`);
 }
 
 build().catch((err) => {

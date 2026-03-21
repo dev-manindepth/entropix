@@ -1,178 +1,176 @@
 /* Input & Textarea — @entropix/react */
 
-@layer entropix {
-  .entropix-input-wrapper {
-    --input-border-color: var(--entropix-color-border-default);
-    --input-border-radius: var(--entropix-radius-md);
-    --input-bg: var(--entropix-color-bg-primary);
-    --input-font-size: var(--entropix-font-size-sm);
-    --input-padding-y: var(--entropix-spacing-2);
-    --input-padding-x: var(--entropix-spacing-3);
-    --input-focus-color: var(--entropix-color-border-focus);
-    --input-error-color: var(--entropix-color-border-danger);
+.entropix-input-wrapper {
+  --input-border-color: var(--entropix-color-border-default);
+  --input-border-radius: var(--entropix-radius-md);
+  --input-bg: var(--entropix-color-bg-primary);
+  --input-font-size: var(--entropix-font-size-sm);
+  --input-padding-y: var(--entropix-spacing-2);
+  --input-padding-x: var(--entropix-spacing-3);
+  --input-focus-color: var(--entropix-color-border-focus);
+  --input-error-color: var(--entropix-color-border-danger);
 
-    display: flex;
-    flex-direction: column;
-    gap: var(--entropix-spacing-1);
-    width: 100%;
-  }
+  display: flex;
+  flex-direction: column;
+  gap: var(--entropix-spacing-1);
+  width: 100%;
+}
 
-  /* === Label === */
+/* === Label === */
 
-  .entropix-input-label {
-    display: block;
-    font-family: var(--entropix-font-family-sans);
-    font-size: var(--entropix-font-size-sm);
-    font-weight: var(--entropix-font-weight-medium);
-    color: var(--entropix-color-text-primary);
-    line-height: var(--entropix-line-height-normal);
-  }
+.entropix-input-label {
+  display: block;
+  font-family: var(--entropix-font-family-sans);
+  font-size: var(--entropix-font-size-sm);
+  font-weight: var(--entropix-font-weight-medium);
+  color: var(--entropix-color-text-primary);
+  line-height: var(--entropix-line-height-normal);
+}
 
-  .entropix-input-required {
-    color: var(--entropix-color-text-danger);
-    margin-left: var(--entropix-spacing-1);
-  }
+.entropix-input-required {
+  color: var(--entropix-color-text-danger);
+  margin-left: var(--entropix-spacing-1);
+}
 
-  /* === Shared Input / Textarea base === */
+/* === Shared Input / Textarea base === */
 
+.entropix-input,
+.entropix-textarea {
+  display: block;
+  width: 100%;
+  border: 1px solid var(--input-border-color);
+  border-radius: var(--input-border-radius);
+  background: var(--input-bg);
+  color: var(--entropix-color-text-primary);
+  font-family: var(--entropix-font-family-sans);
+  font-size: var(--input-font-size);
+  line-height: var(--entropix-line-height-normal);
+  padding: var(--input-padding-y) var(--input-padding-x);
+  transition:
+    border-color var(--entropix-duration-fast) var(--entropix-easing-default),
+    box-shadow var(--entropix-duration-fast) var(--entropix-easing-default),
+    background var(--entropix-duration-fast) var(--entropix-easing-default);
+}
+
+.entropix-input::placeholder,
+.entropix-textarea::placeholder {
+  color: var(--entropix-color-text-tertiary);
+}
+
+/* === Focus === */
+
+.entropix-input:focus,
+.entropix-textarea:focus {
+  outline: none;
+  border-color: var(--input-focus-color);
+  box-shadow: 0 0 0 1px var(--input-focus-color);
+}
+
+.entropix-input:focus-visible,
+.entropix-textarea:focus-visible {
+  outline: 2px solid var(--input-focus-color);
+  outline-offset: 2px;
+}
+
+/* === Hover === */
+
+.entropix-input:hover:not(:disabled):not(:focus),
+.entropix-textarea:hover:not(:disabled):not(:focus) {
+  border-color: var(--entropix-color-border-hover);
+}
+
+/* === Variants === */
+
+.entropix-input[data-variant="filled"],
+.entropix-textarea[data-variant="filled"] {
+  background: var(--entropix-color-bg-secondary);
+  border-color: transparent;
+}
+
+.entropix-input[data-variant="filled"]:focus,
+.entropix-textarea[data-variant="filled"]:focus {
+  background: var(--input-bg);
+  border-color: var(--input-focus-color);
+}
+
+/* === Sizes === */
+
+.entropix-input[data-size="sm"],
+.entropix-textarea[data-size="sm"] {
+  padding: var(--entropix-spacing-1) var(--entropix-spacing-2);
+  font-size: var(--entropix-font-size-xs);
+  border-radius: var(--entropix-radius-sm);
+}
+
+.entropix-input[data-size="md"],
+.entropix-textarea[data-size="md"] {
+  padding: var(--input-padding-y) var(--input-padding-x);
+  font-size: var(--input-font-size);
+}
+
+.entropix-input[data-size="lg"],
+.entropix-textarea[data-size="lg"] {
+  padding: var(--entropix-spacing-3) var(--entropix-spacing-4);
+  font-size: var(--entropix-font-size-base);
+  border-radius: var(--entropix-radius-lg);
+}
+
+/* === States === */
+
+.entropix-input[data-state="invalid"],
+.entropix-textarea[data-state="invalid"] {
+  border-color: var(--input-error-color);
+}
+
+.entropix-input[data-state="invalid"]:focus,
+.entropix-textarea[data-state="invalid"]:focus {
+  border-color: var(--input-error-color);
+  box-shadow: 0 0 0 1px var(--input-error-color);
+}
+
+.entropix-input:disabled,
+.entropix-textarea:disabled,
+.entropix-input[data-state="disabled"],
+.entropix-textarea[data-state="disabled"] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* === Helper & Error text === */
+
+.entropix-input-helper {
+  font-family: var(--entropix-font-family-sans);
+  font-size: var(--entropix-font-size-xs);
+  color: var(--entropix-color-text-secondary);
+  line-height: var(--entropix-line-height-normal);
+}
+
+.entropix-input-error {
+  font-family: var(--entropix-font-family-sans);
+  font-size: var(--entropix-font-size-xs);
+  color: var(--entropix-color-text-danger);
+  line-height: var(--entropix-line-height-normal);
+}
+
+/* === Textarea specific === */
+
+.entropix-textarea {
+  min-height: 80px;
+}
+
+/* === Responsive — Touch-friendly sizing on mobile === */
+
+@media (max-width: 767px) {
   .entropix-input,
   .entropix-textarea {
-    display: block;
-    width: 100%;
-    border: 1px solid var(--input-border-color);
-    border-radius: var(--input-border-radius);
-    background: var(--input-bg);
-    color: var(--entropix-color-text-primary);
-    font-family: var(--entropix-font-family-sans);
-    font-size: var(--input-font-size);
-    line-height: var(--entropix-line-height-normal);
-    padding: var(--input-padding-y) var(--input-padding-x);
-    transition:
-      border-color var(--entropix-duration-fast) var(--entropix-easing-default),
-      box-shadow var(--entropix-duration-fast) var(--entropix-easing-default),
-      background var(--entropix-duration-fast) var(--entropix-easing-default);
+    min-height: 44px;
+    font-size: var(--entropix-font-size-base);
   }
-
-  .entropix-input::placeholder,
-  .entropix-textarea::placeholder {
-    color: var(--entropix-color-text-tertiary);
-  }
-
-  /* === Focus === */
-
-  .entropix-input:focus,
-  .entropix-textarea:focus {
-    outline: none;
-    border-color: var(--input-focus-color);
-    box-shadow: 0 0 0 1px var(--input-focus-color);
-  }
-
-  .entropix-input:focus-visible,
-  .entropix-textarea:focus-visible {
-    outline: 2px solid var(--input-focus-color);
-    outline-offset: 2px;
-  }
-
-  /* === Hover === */
-
-  .entropix-input:hover:not(:disabled):not(:focus),
-  .entropix-textarea:hover:not(:disabled):not(:focus) {
-    border-color: var(--entropix-color-border-hover);
-  }
-
-  /* === Variants === */
-
-  .entropix-input[data-variant="filled"],
-  .entropix-textarea[data-variant="filled"] {
-    background: var(--entropix-color-bg-secondary);
-    border-color: transparent;
-  }
-
-  .entropix-input[data-variant="filled"]:focus,
-  .entropix-textarea[data-variant="filled"]:focus {
-    background: var(--input-bg);
-    border-color: var(--input-focus-color);
-  }
-
-  /* === Sizes === */
 
   .entropix-input[data-size="sm"],
   .entropix-textarea[data-size="sm"] {
-    padding: var(--entropix-spacing-1) var(--entropix-spacing-2);
-    font-size: var(--entropix-font-size-xs);
-    border-radius: var(--entropix-radius-sm);
-  }
-
-  .entropix-input[data-size="md"],
-  .entropix-textarea[data-size="md"] {
-    padding: var(--input-padding-y) var(--input-padding-x);
-    font-size: var(--input-font-size);
-  }
-
-  .entropix-input[data-size="lg"],
-  .entropix-textarea[data-size="lg"] {
-    padding: var(--entropix-spacing-3) var(--entropix-spacing-4);
-    font-size: var(--entropix-font-size-base);
-    border-radius: var(--entropix-radius-lg);
-  }
-
-  /* === States === */
-
-  .entropix-input[data-state="invalid"],
-  .entropix-textarea[data-state="invalid"] {
-    border-color: var(--input-error-color);
-  }
-
-  .entropix-input[data-state="invalid"]:focus,
-  .entropix-textarea[data-state="invalid"]:focus {
-    border-color: var(--input-error-color);
-    box-shadow: 0 0 0 1px var(--input-error-color);
-  }
-
-  .entropix-input:disabled,
-  .entropix-textarea:disabled,
-  .entropix-input[data-state="disabled"],
-  .entropix-textarea[data-state="disabled"] {
-    opacity: 0.5;
-    cursor: not-allowed;
-    pointer-events: none;
-  }
-
-  /* === Helper & Error text === */
-
-  .entropix-input-helper {
-    font-family: var(--entropix-font-family-sans);
-    font-size: var(--entropix-font-size-xs);
-    color: var(--entropix-color-text-secondary);
-    line-height: var(--entropix-line-height-normal);
-  }
-
-  .entropix-input-error {
-    font-family: var(--entropix-font-family-sans);
-    font-size: var(--entropix-font-size-xs);
-    color: var(--entropix-color-text-danger);
-    line-height: var(--entropix-line-height-normal);
-  }
-
-  /* === Textarea specific === */
-
-  .entropix-textarea {
-    min-height: 80px;
-  }
-
-  /* === Responsive — Touch-friendly sizing on mobile === */
-
-  @media (max-width: 767px) {
-    .entropix-input,
-    .entropix-textarea {
-      min-height: 44px;
-      font-size: var(--entropix-font-size-base);
-    }
-
-    .entropix-input[data-size="sm"],
-    .entropix-textarea[data-size="sm"] {
-      min-height: 36px;
-      font-size: var(--entropix-font-size-sm);
-    }
+    min-height: 36px;
+    font-size: var(--entropix-font-size-sm);
   }
 }

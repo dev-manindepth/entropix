@@ -1,0 +1,18 @@
+{
+  "color": {
+    "$description": "Sunset brand color palette — warm orange primary",
+    "orange": {
+      "50":  { "$value": "#fff7ed", "$type": "color" },
+      "100": { "$value": "#ffedd5", "$type": "color" },
+      "200": { "$value": "#fed7aa", "$type": "color" },
+      "300": { "$value": "#fdba74", "$type": "color" },
+      "400": { "$value": "#fb923c", "$type": "color" },
+      "500": { "$value": "#f97316", "$type": "color" },
+      "600": { "$value": "#ea580c", "$type": "color" },
+      "700": { "$value": "#c2410c", "$type": "color" },
+      "800": { "$value": "#9a3412", "$type": "color" },
+      "900": { "$value": "#7c2d12", "$type": "color" },
+      "950": { "$value": "#431407", "$type": "color" }
+    }
+  }
+}

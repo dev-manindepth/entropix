@@ -1,6 +1,6 @@
 // === Theme Provider ===
-export { EntropixProvider, useTheme } from "./theme/theme-context.js";
-export type { EntropixTheme, ThemeMode, EntropixProviderProps } from "./theme/theme-context.js";
+export { EntropixProvider, useTheme, registerBrand } from "./theme/theme-context.js";
+export type { EntropixTheme, ThemeMode, EntropixProviderProps, BrandName } from "./theme/theme-context.js";
 
 // === Adapter Utilities ===
 export { mapAccessibilityToRN } from "./utils/map-accessibility-to-rn.js";

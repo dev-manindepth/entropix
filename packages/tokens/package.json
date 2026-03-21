@@ -45,6 +45,25 @@
     "./native/dark": {
       "types": "./dist/native/dark.d.ts",
       "default": "./dist/native/dark.js"
+    },
+    "./brands/*/css": "./dist/brands/*/web/variables.css",
+    "./brands/*/web": {
+      "types": "./dist/brands/*/web/tokens.d.ts",
+      "default": "./dist/brands/*/web/tokens.js"
+    },
+    "./brands/*/themes/light": "./dist/brands/*/themes/light.css",
+    "./brands/*/themes/dark": "./dist/brands/*/themes/dark.css",
+    "./brands/*/native": {
+      "types": "./dist/brands/*/native/tokens.d.ts",
+      "default": "./dist/brands/*/native/tokens.js"
+    },
+    "./brands/*/native/light": {
+      "types": "./dist/brands/*/native/light.d.ts",
+      "default": "./dist/brands/*/native/light.js"
+    },
+    "./brands/*/native/dark": {
+      "types": "./dist/brands/*/native/dark.d.ts",
+      "default": "./dist/brands/*/native/dark.js"
     }
   },
   "files": [

@@ -1,0 +1,9 @@
+{
+  "radius": {
+    "$description": "Sunset brand — minimal rounding, sharp edges",
+    "sm":   { "$value": "2px",  "$type": "dimension" },
+    "md":   { "$value": "4px",  "$type": "dimension" },
+    "lg":   { "$value": "6px",  "$type": "dimension" },
+    "xl":   { "$value": "8px",  "$type": "dimension" }
+  }
+}
