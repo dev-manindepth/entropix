@@ -1,5 +1,14 @@
 # demo
 
+## 0.1.6
+
+### Patch Changes
+
+- Updated dependencies [801385d]
+  - @entropix/core@2.0.0
+  - @entropix/react@2.0.0
+  - @entropix/data@2.0.0
+
 ## 0.1.5
 
 ### Patch Changes

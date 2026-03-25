@@ -1,5 +1,13 @@
 # @entropix/data-native
 
+## 2.0.0
+
+### Patch Changes
+
+- Updated dependencies [801385d]
+  - @entropix/core@2.0.0
+  - @entropix/react-native@2.0.0
+
 ## 1.0.1
 
 ### Patch Changes
