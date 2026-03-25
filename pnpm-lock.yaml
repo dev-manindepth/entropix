@@ -261,6 +261,52 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
 
+  packages/ai:
+    dependencies:
+      '@entropix/core':
+        specifier: workspace:*
+        version: link:../core
+    devDependencies:
+      '@entropix/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@entropix/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      '@types/react':
+        specifier: ^19.0.0
+        version: 19.2.2
+      '@typescript-eslint/eslint-plugin':
+        specifier: ^8.30.0
+        version: 8.50.0(@typescript-eslint/parser@8.50.0(eslint@9.39.1)(typescript@5.9.2))(eslint@9.39.1)(typescript@5.9.2)
+      '@typescript-eslint/parser':
+        specifier: ^8.30.0
+        version: 8.50.0(eslint@9.39.1)(typescript@5.9.2)
+      eslint:
+        specifier: ^9.0.0
+        version: 9.39.1
+      eslint-config-prettier:
+        specifier: ^10.0.0
+        version: 10.1.1(eslint@9.39.1)
+      react:
+        specifier: ^19.2.0
+        version: 19.2.0
+      react-dom:
+        specifier: ^19.2.0
+        version: 19.2.0(react@19.2.0)
+      tsup:
+        specifier: ^8.0.0
+        version: 8.5.1(postcss@8.5.8)(tsx@4.21.0)(typescript@5.9.2)(yaml@2.8.2)
+      typescript:
+        specifier: ^5.5.0
+        version: 5.9.2
+      vitest:
+        specifier: ^3.2.1
+        version: 3.2.4(@types/node@22.15.3)(jsdom@26.1.0)(lightningcss@1.32.0)(terser@5.46.1)(tsx@4.21.0)(yaml@2.8.2)
+      zod:
+        specifier: ^3.24.0
+        version: 3.25.76
+
   packages/core:
     devDependencies:
       '@entropix/eslint-config':

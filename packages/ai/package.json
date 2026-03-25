@@ -1,0 +1,76 @@
+{
+  "name": "@entropix/ai",
+  "version": "0.0.0",
+  "description": "AI-native layer for the Entropix design system — registry, renderer, and generation pipeline",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./renderer": {
+      "import": {
+        "types": "./dist/renderer.d.ts",
+        "default": "./dist/renderer.js"
+      },
+      "require": {
+        "types": "./dist/renderer.d.cts",
+        "default": "./dist/renderer.cjs"
+      }
+    },
+    "./generate": {
+      "import": {
+        "types": "./dist/generate.d.ts",
+        "default": "./dist/generate.js"
+      },
+      "require": {
+        "types": "./dist/generate.d.cts",
+        "default": "./dist/generate.cjs"
+      }
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsup",
+    "lint": "eslint . --max-warnings 0",
+    "test": "vitest run"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0",
+    "zod": "^3.22.0"
+  },
+  "peerDependenciesMeta": {
+    "react": { "optional": true }
+  },
+  "dependencies": {
+    "@entropix/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@entropix/eslint-config": "workspace:*",
+    "@entropix/typescript-config": "workspace:*",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "@types/react": "^19.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.5.0",
+    "vitest": "^3.2.1",
+    "zod": "^3.24.0",
+    "eslint": "^9.0.0",
+    "eslint-config-prettier": "^10.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.30.0",
+    "@typescript-eslint/parser": "^8.30.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT"
+}
