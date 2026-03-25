@@ -1,5 +1,12 @@
 # mobile
 
+## 1.0.6
+
+### Patch Changes
+
+- Updated dependencies [801385d]
+  - @entropix/react-native@2.0.0
+
 ## 1.0.5
 
 ### Patch Changes

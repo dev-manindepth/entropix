@@ -1,6 +1,6 @@
 {
   "name": "@entropix/react",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "React (Web) components for the Entropix design system — styled with CSS custom properties and design tokens",
   "type": "module",
   "license": "MIT",

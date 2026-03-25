@@ -1,5 +1,11 @@
 # @entropix/core
 
+## 2.0.0
+
+### Minor Changes
+
+- 801385d: Add Toast, Popover/Tooltip, DatePicker/Calendar, Breadcrumb, Pagination components and i18n foundation with LocaleProvider/useLocale
+
 ## 1.0.1
 
 ### Patch Changes
