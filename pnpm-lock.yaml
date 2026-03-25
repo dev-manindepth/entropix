@@ -35,6 +35,9 @@ importers:
 
   apps/demo:
     dependencies:
+      '@entropix/ai':
+        specifier: workspace:*
+        version: link:../../packages/ai
       '@entropix/core':
         specifier: workspace:*
         version: link:../../packages/core
@@ -273,6 +276,9 @@ importers:
       '@entropix/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
+      '@types/node':
+        specifier: ^22.0.0
+        version: 22.15.3
       '@types/react':
         specifier: ^19.0.0
         version: 19.2.2

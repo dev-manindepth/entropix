@@ -10,6 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@entropix/ai": "workspace:*",
     "@entropix/core": "workspace:*",
     "@entropix/data": "workspace:*",
     "@entropix/react": "workspace:*",

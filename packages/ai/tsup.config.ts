@@ -5,6 +5,7 @@ export default defineConfig({
     index: "src/index.ts",
     renderer: "src/renderer/index.ts",
     generate: "src/generate/index.ts",
+    cli: "src/mcp/cli.ts",
   },
   format: ["esm", "cjs"],
   dts: true,
@@ -21,5 +22,6 @@ export default defineConfig({
     "@entropix/react-native",
     "@entropix/data",
     "@entropix/data-native",
+    "@modelcontextprotocol/sdk",
   ],
 });

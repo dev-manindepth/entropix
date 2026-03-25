@@ -57,3 +57,12 @@ export type {
   GenerateResult,
   TokenUsage,
 } from "./generate/index.js";
+
+// MCP
+export { ENTROPIX_MCP_TOOLS, startMCPServer } from "./mcp/index.js";
+export {
+  handleListComponents,
+  handleComponentInfo,
+  handleRenderUI,
+  handleGenerateUI,
+} from "./mcp/index.js";
