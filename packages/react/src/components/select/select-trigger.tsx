@@ -3,6 +3,7 @@ import { useSelectContext } from "./select-context.js";
 import { mapAccessibilityToAria } from "../../utils/map-accessibility-to-aria.js";
 import { useKeyboardHandler } from "../../utils/use-keyboard-handler.js";
 import { cn } from "../../utils/cn.js";
+import { useLocale } from "../../i18n/i18n-context.js";
 
 export interface SelectTriggerProps {
   /** Placeholder text when no value is selected */
@@ -17,10 +18,11 @@ export interface SelectTriggerProps {
  * Displays the currently selected value or placeholder text.
  */
 export function SelectTrigger({
-  placeholder = "Select...",
+  placeholder,
   children,
   className,
 }: SelectTriggerProps) {
+  const locale = useLocale();
   const { getTriggerProps, toggle, open, selectedValue, isDisabled } =
     useSelectContext();
   const propGetterReturn = getTriggerProps();
@@ -46,7 +48,7 @@ export function SelectTrigger({
       disabled={isDisabled || undefined}
     >
       <span className="entropix-select-trigger__value">
-        {children ?? (selectedValue || placeholder)}
+        {children ?? (selectedValue || (placeholder ?? locale.select_placeholder))}
       </span>
       <span className="entropix-select-trigger__chevron" aria-hidden="true">
         &#9662;

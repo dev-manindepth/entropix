@@ -1,0 +1,61 @@
+/* Popover / Tooltip — @entropix/react */
+
+/* === Popover trigger === */
+
+.entropix-popover-trigger {
+  cursor: pointer;
+}
+
+/* === Popover content === */
+
+.entropix-popover-content {
+  z-index: 50;
+  background: var(--entropix-color-bg-primary);
+  border: 1px solid var(--entropix-color-border-default);
+  border-radius: var(--entropix-radius-md);
+  box-shadow: var(--entropix-shadow-lg);
+  padding: var(--entropix-spacing-4);
+  font-family: var(--entropix-font-family-sans);
+  font-size: var(--entropix-font-size-sm);
+  line-height: var(--entropix-line-height-normal);
+  color: var(--entropix-color-text-primary);
+  animation: entropix-popover-fade-in var(--entropix-duration-fast) var(--entropix-easing-default);
+  max-width: 320px;
+}
+
+@keyframes entropix-popover-fade-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.entropix-popover-content:focus {
+  outline: none;
+}
+
+/* === Tooltip variant === */
+
+.entropix-tooltip {
+  padding: var(--entropix-spacing-1) var(--entropix-spacing-2);
+  background: var(--entropix-color-text-primary);
+  color: var(--entropix-color-bg-primary);
+  border: none;
+  border-radius: var(--entropix-radius-sm);
+  box-shadow: var(--entropix-shadow-sm);
+  font-size: var(--entropix-font-size-xs);
+  max-width: 240px;
+  pointer-events: none;
+}
+
+/* === Responsive — Touch-friendly === */
+
+@media (max-width: 767px) {
+  .entropix-popover-content {
+    max-width: calc(100vw - 32px);
+  }
+}

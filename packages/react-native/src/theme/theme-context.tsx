@@ -2,6 +2,8 @@ import React, { createContext, useContext, useMemo } from "react";
 import { tokens as baseTokens } from "@entropix/tokens/native";
 import { tokens as lightTokens } from "@entropix/tokens/native/light";
 import { tokens as darkTokens } from "@entropix/tokens/native/dark";
+import { defaultLocale, type EntropixLocale } from "@entropix/core";
+import { LocaleContext } from "../i18n/i18n-context.js";
 
 export type EntropixTheme = typeof lightTokens;
 export type ThemeMode = "light" | "dark";
@@ -57,6 +59,8 @@ export interface EntropixProviderProps {
   brand?: BrandName;
   /** Override tokens directly (bypasses brand registry) */
   tokens?: EntropixTheme;
+  /** Locale overrides. Merged onto defaultLocale (English). */
+  locale?: Partial<EntropixLocale>;
   children: React.ReactNode;
 }
 
@@ -76,6 +80,7 @@ export function EntropixProvider({
   mode = "light",
   brand = "default",
   tokens: tokenOverride,
+  locale: localeOverride,
   children,
 }: EntropixProviderProps) {
   const value = useMemo<ThemeContextValue>(() => {
@@ -96,8 +101,17 @@ export function EntropixProvider({
     };
   }, [mode, brand, tokenOverride]);
 
+  const resolvedLocale = useMemo<EntropixLocale>(
+    () => (localeOverride ? { ...defaultLocale, ...localeOverride } : defaultLocale),
+    [localeOverride],
+  );
+
   return (
-    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
+    <ThemeContext.Provider value={value}>
+      <LocaleContext.Provider value={resolvedLocale}>
+        {children}
+      </LocaleContext.Provider>
+    </ThemeContext.Provider>
   );
 }
 

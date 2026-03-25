@@ -1,0 +1,145 @@
+/* Toast — @entropix/react */
+
+/* === Container: fixed bottom-right, stacked === */
+
+.entropix-toast-container {
+  position: fixed;
+  bottom: var(--entropix-spacing-4);
+  right: var(--entropix-spacing-4);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: var(--entropix-spacing-2);
+  pointer-events: none;
+  max-width: 420px;
+  width: 100%;
+}
+
+/* === Individual toast === */
+
+.entropix-toast {
+  display: flex;
+  align-items: center;
+  gap: var(--entropix-spacing-3);
+  padding: var(--entropix-spacing-3) var(--entropix-spacing-4);
+  border-radius: var(--entropix-radius-md);
+  background: var(--entropix-color-bg-primary);
+  border: 1px solid var(--entropix-color-border-default);
+  box-shadow: var(--entropix-shadow-lg);
+  pointer-events: auto;
+  animation: entropix-toast-slide-in var(--entropix-duration-normal) var(--entropix-easing-default);
+  font-family: var(--entropix-font-family-sans);
+  font-size: var(--entropix-font-size-sm);
+  line-height: var(--entropix-line-height-normal);
+  color: var(--entropix-color-text-primary);
+}
+
+/* === Slide-in animation === */
+
+@keyframes entropix-toast-slide-in {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* === Icon === */
+
+.entropix-toast__icon {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  font-size: var(--entropix-font-size-sm);
+  font-weight: var(--entropix-font-weight-bold);
+}
+
+/* === Message === */
+
+.entropix-toast__message {
+  flex: 1;
+  min-width: 0;
+}
+
+/* === Close button === */
+
+.entropix-toast__close {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  border-radius: var(--entropix-radius-sm);
+  background: transparent;
+  color: var(--entropix-color-text-secondary);
+  cursor: pointer;
+  font-size: var(--entropix-font-size-xs);
+  transition: background var(--entropix-duration-fast) var(--entropix-easing-default);
+}
+
+.entropix-toast__close:hover {
+  background: var(--entropix-color-action-secondary-default);
+}
+
+.entropix-toast__close:focus-visible {
+  outline: 2px solid var(--entropix-color-border-focus);
+  outline-offset: 2px;
+}
+
+/* === Type variants === */
+
+/* Success */
+.entropix-toast--success {
+  border-left: 4px solid var(--entropix-color-status-success, #22c55e);
+}
+
+.entropix-toast--success .entropix-toast__icon {
+  color: var(--entropix-color-status-success, #22c55e);
+}
+
+/* Error */
+.entropix-toast--error {
+  border-left: 4px solid var(--entropix-color-status-error, #ef4444);
+}
+
+.entropix-toast--error .entropix-toast__icon {
+  color: var(--entropix-color-status-error, #ef4444);
+}
+
+/* Warning */
+.entropix-toast--warning {
+  border-left: 4px solid var(--entropix-color-status-warning, #f59e0b);
+}
+
+.entropix-toast--warning .entropix-toast__icon {
+  color: var(--entropix-color-status-warning, #f59e0b);
+}
+
+/* Info */
+.entropix-toast--info {
+  border-left: 4px solid var(--entropix-color-status-info, #3b82f6);
+}
+
+.entropix-toast--info .entropix-toast__icon {
+  color: var(--entropix-color-status-info, #3b82f6);
+}
+
+/* === Responsive — full-width on mobile === */
+
+@media (max-width: 767px) {
+  .entropix-toast-container {
+    bottom: var(--entropix-spacing-2);
+    right: var(--entropix-spacing-2);
+    left: var(--entropix-spacing-2);
+    max-width: none;
+  }
+}

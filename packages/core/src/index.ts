@@ -122,3 +122,52 @@ export type {
   LinearScale,
   BandScale,
 } from "./types/chart.js";
+
+// === i18n ===
+export { defaultLocale } from "./i18n/index.js";
+export type { EntropixLocale } from "./i18n/index.js";
+
+// === Date Utilities ===
+export {
+  getDaysInMonth,
+  getCalendarGrid,
+  formatDate,
+  parseDate,
+  isSameDay,
+  isBefore,
+  isAfter,
+  addMonths,
+  MONTH_NAMES,
+  DAY_NAMES,
+  type CalendarDay,
+} from "./utils/date-utils.js";
+
+// === New Hooks ===
+export { useToast } from "./hooks/use-toast.js";
+export type {
+  ToastItem,
+  ToastType,
+  UseToastOptions,
+  UseToastReturn,
+} from "./hooks/use-toast.js";
+
+export { usePopover } from "./hooks/use-popover.js";
+export type {
+  PopoverPlacement,
+  PopoverTriggerMode,
+  UsePopoverOptions,
+  UsePopoverReturn,
+} from "./hooks/use-popover.js";
+
+export { useDatePicker } from "./hooks/use-date-picker.js";
+export type {
+  UseDatePickerOptions,
+  UseDatePickerReturn,
+} from "./hooks/use-date-picker.js";
+
+export { usePagination } from "./hooks/use-pagination.js";
+export type {
+  PaginationPage,
+  UsePaginationOptions,
+  UsePaginationReturn,
+} from "./hooks/use-pagination.js";

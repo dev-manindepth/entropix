@@ -2,6 +2,9 @@
 export { EntropixProvider, useTheme, registerBrand } from "./theme/theme-context.js";
 export type { EntropixTheme, ThemeMode, EntropixProviderProps, BrandName } from "./theme/theme-context.js";
 
+// === i18n ===
+export { useLocale } from "./i18n/index.js";
+
 // === Adapter Utilities ===
 export { mapAccessibilityToRN } from "./utils/map-accessibility-to-rn.js";
 export type { RNAccessibilityProps } from "./utils/types.js";
@@ -105,6 +108,31 @@ export type {
   SelectContentProps,
   SelectOptionProps,
 } from "./components/select/index.js";
+
+// === Toast ===
+export { ToastProvider, useToastContext } from "./components/toast/index.js";
+export type { ToastProviderProps, ToastContextValue } from "./components/toast/index.js";
+
+// === Popover / Tooltip ===
+export { Popover, PopoverTrigger, PopoverContent, Tooltip } from "./components/popover/index.js";
+export type {
+  PopoverProps,
+  PopoverTriggerProps,
+  PopoverContentProps,
+  TooltipProps,
+} from "./components/popover/index.js";
+
+// === DatePicker / Calendar ===
+export { DatePicker, Calendar } from "./components/date-picker/index.js";
+export type { DatePickerProps, CalendarProps } from "./components/date-picker/index.js";
+
+// === Breadcrumb ===
+export { Breadcrumb, BreadcrumbItem } from "./components/breadcrumb/index.js";
+export type { BreadcrumbProps, BreadcrumbItemProps } from "./components/breadcrumb/index.js";
+
+// === Pagination ===
+export { Pagination } from "./components/pagination/index.js";
+export type { PaginationProps } from "./components/pagination/index.js";
 
 // === Responsive Hooks ===
 export { useBreakpoint, useBreakpointValue, useScreenDimensions, BREAKPOINTS } from "./utils/use-breakpoint.js";

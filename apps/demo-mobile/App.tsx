@@ -36,6 +36,17 @@ import {
   SelectTrigger,
   SelectContent,
   SelectOption,
+  ToastProvider,
+  useToastContext,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  Tooltip,
+  DatePicker,
+  Calendar,
+  Breadcrumb,
+  BreadcrumbItem,
+  Pagination,
 } from "@entropix/react-native";
 import { DataTable, BarChart, LineChart, AreaChart, PieChart } from "@entropix/data-native";
 
@@ -85,21 +96,49 @@ const CHART_PIE = [
   { label: "Other", value: 7 },
 ];
 
+const jaLocale = {
+  locale: "ja-JP",
+  direction: "ltr" as const,
+  calendar_monthNames: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"],
+  calendar_dayNames: ["日", "月", "火", "水", "木", "金", "土"],
+  calendar_label: "カレンダー",
+  calendar_previousMonth: "前月",
+  calendar_nextMonth: "翌月",
+  calendar_dayLabel: (date: Date) => date.toLocaleDateString("ja-JP", { weekday: "long", year: "numeric", month: "long", day: "numeric" }),
+  datePicker_label: "日付選択",
+  datePicker_placeholder: "YYYY/MM/DD",
+  pagination_label: "ページネーション",
+  pagination_firstPage: "最初のページ",
+  pagination_previousPage: "前のページ",
+  pagination_nextPage: "次のページ",
+  pagination_lastPage: "最後のページ",
+  pagination_pageLabel: (page: number) => `${page}ページ`,
+  toast_regionLabel: "通知",
+  toast_dismiss: "通知を閉じる",
+  breadcrumb_label: "パンくずリスト",
+  select_placeholder: "選択してください...",
+};
+
 export default function App() {
   const systemScheme = useColorScheme();
   const [isDark, setIsDark] = useState(systemScheme === "dark");
   const [brand, setBrand] = useState<Brand>("default");
+  const [lang, setLang] = useState<"en" | "ja">("en");
 
   return (
-    <EntropixProvider mode={isDark ? "dark" : "light"} brand={brand}>
+    <EntropixProvider mode={isDark ? "dark" : "light"} brand={brand} locale={lang === "ja" ? jaLocale : undefined}>
+      <ToastProvider>
       <SafeAreaProvider style={{ flex: 1 }}>
         <LandingPage
           isDark={isDark}
           onToggleTheme={() => setIsDark(!isDark)}
           brand={brand}
           onBrandChange={setBrand}
+          lang={lang}
+          onToggleLang={() => setLang(lang === "en" ? "ja" : "en")}
         />
       </SafeAreaProvider>
+      </ToastProvider>
     </EntropixProvider>
   );
 }
@@ -109,11 +148,15 @@ function LandingPage({
   onToggleTheme,
   brand,
   onBrandChange,
+  lang,
+  onToggleLang,
 }: {
   isDark: boolean;
   onToggleTheme: () => void;
   brand: Brand;
   onBrandChange: (brand: Brand) => void;
+  lang: "en" | "ja";
+  onToggleLang: () => void;
 }) {
   const { tokens: t, baseTokens: bt } = useTheme();
 
@@ -158,6 +201,9 @@ function LandingPage({
               </Button>
               <Button variant="ghost" size="sm" onPress={onToggleTheme}>
                 {isDark ? "☀️" : "🌙"}
+              </Button>
+              <Button variant={lang === "ja" ? "primary" : "ghost"} size="sm" onPress={onToggleLang}>
+                {lang === "en" ? "🇯🇵" : "🇺🇸"}
               </Button>
             </Inline>
           </Inline>
@@ -346,6 +392,7 @@ function LandingPage({
                 <Tab value="forms">Forms</Tab>
                 <Tab value="data">Data</Tab>
                 <Tab value="charts">Charts</Tab>
+                <Tab value="more">More</Tab>
               </TabList>
 
               <TabPanel value="brands">
@@ -606,6 +653,73 @@ function LandingPage({
                   </Stack>
                 </Stack>
               </TabPanel>
+
+              <TabPanel value="more">
+                <Stack gap="lg">
+                  {/* Breadcrumb */}
+                  <Stack gap="sm">
+                    <Text style={{ fontWeight: "600", color: textPrimary, fontSize: 16 }}>Breadcrumb</Text>
+                    <Breadcrumb>
+                      <BreadcrumbItem onPress={() => {}}>Home</BreadcrumbItem>
+                      <BreadcrumbItem onPress={() => {}}>Shopping</BreadcrumbItem>
+                      <BreadcrumbItem>Electronics</BreadcrumbItem>
+                    </Breadcrumb>
+                  </Stack>
+
+                  <Divider />
+
+                  {/* Pagination */}
+                  <Stack gap="sm">
+                    <Text style={{ fontWeight: "600", color: textPrimary, fontSize: 16 }}>Pagination</Text>
+                    <PaginationDemoMobile textPrimary={textPrimary} />
+                  </Stack>
+
+                  <Divider />
+
+                  {/* DatePicker */}
+                  <Stack gap="sm">
+                    <Text style={{ fontWeight: "600", color: textPrimary, fontSize: 16 }}>DatePicker</Text>
+                    <DatePicker label="Departure Date" placeholder="Select a date" />
+                  </Stack>
+
+                  <Divider />
+
+                  {/* Popover */}
+                  <Stack gap="sm">
+                    <Text style={{ fontWeight: "600", color: textPrimary, fontSize: 16 }}>Popover</Text>
+                    <Popover>
+                      <PopoverTrigger>
+                        <Button variant="outline">Tap for Popover</Button>
+                      </PopoverTrigger>
+                      <PopoverContent>
+                        <Stack gap="sm">
+                          <Text style={{ fontWeight: "600", color: textPrimary }}>Settings</Text>
+                          <Text style={{ color: textPrimary, fontSize: 13 }}>Configure your preferences here.</Text>
+                          <Button variant="primary" size="sm">Save</Button>
+                        </Stack>
+                      </PopoverContent>
+                    </Popover>
+                  </Stack>
+
+                  <Divider />
+
+                  {/* Tooltip */}
+                  <Stack gap="sm">
+                    <Text style={{ fontWeight: "600", color: textPrimary, fontSize: 16 }}>Tooltip</Text>
+                    <Tooltip content="This saves your progress">
+                      <Button variant="secondary">Tap for tooltip</Button>
+                    </Tooltip>
+                  </Stack>
+
+                  <Divider />
+
+                  {/* Toast */}
+                  <Stack gap="sm">
+                    <Text style={{ fontWeight: "600", color: textPrimary, fontSize: 16 }}>Toast Notifications</Text>
+                    <ToastDemoMobile />
+                  </Stack>
+                </Stack>
+              </TabPanel>
             </Tabs>
           </Stack>
         </Container>
@@ -759,6 +873,28 @@ function SwitchRow({ label, defaultChecked = false, textColor }: { label: string
     <Inline gap="sm">
       <Switch checked={checked} onChange={setChecked} label={label} />
       <Text style={{ color: textColor, fontSize: 14 }}>{label}</Text>
+    </Inline>
+  );
+}
+
+function PaginationDemoMobile({ textPrimary }: { textPrimary: string }) {
+  const [page, setPage] = useState(1);
+  return (
+    <Stack gap="sm">
+      <Pagination totalItems={120} pageSize={10} currentPage={page} onPageChange={setPage} siblingCount={1} />
+      <Text style={{ color: textPrimary, fontSize: 12 }}>Page {page} of 12 (120 total items)</Text>
+    </Stack>
+  );
+}
+
+function ToastDemoMobile() {
+  const toast = useToastContext();
+  return (
+    <Inline gap="sm" wrap>
+      <Button variant="primary" size="sm" onPress={() => toast.add({ message: "Item saved!", type: "success" })}>✓ Success</Button>
+      <Button variant="danger" size="sm" onPress={() => toast.add({ message: "Something went wrong!", type: "error" })}>✕ Error</Button>
+      <Button variant="secondary" size="sm" onPress={() => toast.add({ message: "Check connection", type: "warning" })}>⚠ Warning</Button>
+      <Button variant="outline" size="sm" onPress={() => toast.add({ message: "New update available", type: "info" })}>ℹ Info</Button>
     </Inline>
   );
 }

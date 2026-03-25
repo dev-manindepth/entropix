@@ -1,0 +1,272 @@
+/* DatePicker / Calendar — @entropix/react */
+
+/* === DatePicker container === */
+
+.entropix-date-picker {
+  display: flex;
+  flex-direction: column;
+  gap: var(--entropix-spacing-1);
+  width: 100%;
+}
+
+/* === Label === */
+
+.entropix-date-picker__label {
+  display: block;
+  font-family: var(--entropix-font-family-sans);
+  font-size: var(--entropix-font-size-sm);
+  font-weight: var(--entropix-font-weight-medium);
+  color: var(--entropix-color-text-primary);
+  line-height: var(--entropix-line-height-normal);
+}
+
+/* === Input wrapper === */
+
+.entropix-date-picker__input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* === Input === */
+
+.entropix-date-picker__input {
+  width: 100%;
+  padding: var(--entropix-spacing-2) var(--entropix-spacing-3);
+  padding-right: var(--entropix-spacing-8);
+  border: 1px solid var(--entropix-color-border-default);
+  border-radius: var(--entropix-radius-md);
+  background: var(--entropix-color-bg-primary);
+  color: var(--entropix-color-text-primary);
+  font-family: var(--entropix-font-family-sans);
+  font-size: var(--entropix-font-size-sm);
+  line-height: var(--entropix-line-height-normal);
+  transition:
+    border-color var(--entropix-duration-fast) var(--entropix-easing-default),
+    box-shadow var(--entropix-duration-fast) var(--entropix-easing-default);
+}
+
+.entropix-date-picker__input:hover:not(:disabled) {
+  border-color: var(--entropix-color-border-hover);
+}
+
+.entropix-date-picker__input:focus-visible {
+  outline: 2px solid var(--entropix-color-border-focus);
+  outline-offset: 2px;
+}
+
+.entropix-date-picker__input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.entropix-date-picker__input--error {
+  border-color: var(--entropix-color-status-error, #ef4444);
+}
+
+/* === Calendar icon === */
+
+.entropix-date-picker__icon {
+  position: absolute;
+  right: var(--entropix-spacing-2);
+  pointer-events: none;
+  font-size: var(--entropix-font-size-sm);
+  color: var(--entropix-color-text-secondary);
+}
+
+/* === Error message === */
+
+.entropix-date-picker__error {
+  font-family: var(--entropix-font-family-sans);
+  font-size: var(--entropix-font-size-xs);
+  color: var(--entropix-color-status-error, #ef4444);
+  line-height: var(--entropix-line-height-normal);
+}
+
+/* === Dropdown === */
+
+.entropix-date-picker__dropdown {
+  z-index: 50;
+  animation: entropix-datepicker-fade-in var(--entropix-duration-fast) var(--entropix-easing-default);
+}
+
+@keyframes entropix-datepicker-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* === Calendar === */
+
+.entropix-calendar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--entropix-spacing-1);
+  padding: var(--entropix-spacing-3);
+  background: var(--entropix-color-bg-primary);
+  border: 1px solid var(--entropix-color-border-default);
+  border-radius: var(--entropix-radius-md);
+  box-shadow: var(--entropix-shadow-lg);
+  font-family: var(--entropix-font-family-sans);
+  user-select: none;
+  width: 280px;
+}
+
+.entropix-calendar[data-disabled] {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* === Header === */
+
+.entropix-calendar__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--entropix-spacing-1) 0;
+}
+
+.entropix-calendar__title {
+  font-size: var(--entropix-font-size-sm);
+  font-weight: var(--entropix-font-weight-semibold);
+  color: var(--entropix-color-text-primary);
+}
+
+.entropix-calendar__nav {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: none;
+  border-radius: var(--entropix-radius-sm);
+  background: transparent;
+  color: var(--entropix-color-text-secondary);
+  cursor: pointer;
+  font-size: var(--entropix-font-size-lg);
+  line-height: 1;
+  transition: background var(--entropix-duration-fast) var(--entropix-easing-default);
+}
+
+.entropix-calendar__nav:hover:not(:disabled) {
+  background: var(--entropix-color-action-secondary-default);
+}
+
+.entropix-calendar__nav:focus-visible {
+  outline: 2px solid var(--entropix-color-border-focus);
+  outline-offset: 2px;
+}
+
+.entropix-calendar__nav:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* === Day names === */
+
+.entropix-calendar__day-names {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0;
+}
+
+.entropix-calendar__day-name {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  font-size: var(--entropix-font-size-xs);
+  font-weight: var(--entropix-font-weight-medium);
+  color: var(--entropix-color-text-secondary);
+}
+
+/* === Day grid === */
+
+.entropix-calendar__grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0;
+}
+
+/* === Day cell === */
+
+.entropix-calendar__cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  margin: 1px auto;
+  padding: 0;
+  border: none;
+  border-radius: var(--entropix-radius-full, 9999px);
+  background: transparent;
+  color: var(--entropix-color-text-primary);
+  font-family: var(--entropix-font-family-sans);
+  font-size: var(--entropix-font-size-sm);
+  cursor: pointer;
+  transition:
+    background var(--entropix-duration-fast) var(--entropix-easing-default),
+    color var(--entropix-duration-fast) var(--entropix-easing-default);
+}
+
+.entropix-calendar__cell--empty {
+  cursor: default;
+}
+
+.entropix-calendar__cell:not(.entropix-calendar__cell--empty):hover:not(:disabled) {
+  background: var(--entropix-color-action-secondary-hover);
+}
+
+.entropix-calendar__cell:focus-visible {
+  outline: 2px solid var(--entropix-color-border-focus);
+  outline-offset: 2px;
+}
+
+/* Selected */
+.entropix-calendar__cell--selected {
+  background: var(--entropix-color-action-primary-default);
+  color: var(--entropix-color-text-on-primary, #ffffff);
+  font-weight: var(--entropix-font-weight-semibold);
+}
+
+.entropix-calendar__cell--selected:hover:not(:disabled) {
+  background: var(--entropix-color-action-primary-hover);
+}
+
+/* Today */
+.entropix-calendar__cell--today:not(.entropix-calendar__cell--selected) {
+  box-shadow: inset 0 0 0 2px var(--entropix-color-border-focus);
+}
+
+/* Disabled */
+.entropix-calendar__cell--disabled,
+.entropix-calendar__cell:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* === Responsive — Mobile === */
+
+@media (max-width: 767px) {
+  .entropix-date-picker__input {
+    min-height: 44px;
+  }
+
+  .entropix-calendar {
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .entropix-calendar__cell {
+    width: 40px;
+    height: 40px;
+  }
+}

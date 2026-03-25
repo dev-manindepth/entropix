@@ -106,6 +106,49 @@ export type {
   SelectOptionProps,
 } from "./components/select/index.js";
 
+// === Toast ===
+export { ToastProvider, useToastContext } from "./components/toast/index.js";
+export type {
+  ToastProviderProps,
+  ToastContextValue,
+  ToastItem,
+  ToastType,
+} from "./components/toast/index.js";
+
+// === Popover / Tooltip ===
+export {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  Tooltip,
+} from "./components/popover/index.js";
+export type {
+  PopoverProps,
+  PopoverTriggerProps,
+  PopoverContentProps,
+  TooltipProps,
+  PopoverPlacement,
+  PopoverTriggerMode,
+} from "./components/popover/index.js";
+
+// === DatePicker / Calendar ===
+export { DatePicker, Calendar } from "./components/date-picker/index.js";
+export type {
+  DatePickerProps,
+  CalendarProps,
+} from "./components/date-picker/index.js";
+
+// === Breadcrumb ===
+export { Breadcrumb, BreadcrumbItem } from "./components/breadcrumb/index.js";
+export type {
+  BreadcrumbProps,
+  BreadcrumbItemProps,
+} from "./components/breadcrumb/index.js";
+
+// === Pagination ===
+export { Pagination } from "./components/pagination/index.js";
+export type { PaginationProps } from "./components/pagination/index.js";
+
 // === Responsive Hooks ===
 export { useBreakpoint, useMediaQuery, useBreakpointValue, BREAKPOINTS } from "./utils/use-breakpoint.js";
 export type { Breakpoint } from "./utils/use-breakpoint.js";
@@ -125,3 +168,7 @@ export type {
   DividerProps,
   SpacingSize,
 } from "./components/layout/index.js";
+
+// === i18n ===
+export { LocaleProvider, useLocale } from "./i18n/index.js";
+export type { LocaleProviderProps } from "./i18n/index.js";

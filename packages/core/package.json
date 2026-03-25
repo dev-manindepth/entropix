@@ -138,6 +138,56 @@
         "default": "./dist/hooks/use-table.cjs"
       }
     },
+    "./hooks/use-toast": {
+      "import": {
+        "types": "./dist/hooks/use-toast.d.ts",
+        "default": "./dist/hooks/use-toast.js"
+      },
+      "require": {
+        "types": "./dist/hooks/use-toast.d.cts",
+        "default": "./dist/hooks/use-toast.cjs"
+      }
+    },
+    "./hooks/use-popover": {
+      "import": {
+        "types": "./dist/hooks/use-popover.d.ts",
+        "default": "./dist/hooks/use-popover.js"
+      },
+      "require": {
+        "types": "./dist/hooks/use-popover.d.cts",
+        "default": "./dist/hooks/use-popover.cjs"
+      }
+    },
+    "./hooks/use-date-picker": {
+      "import": {
+        "types": "./dist/hooks/use-date-picker.d.ts",
+        "default": "./dist/hooks/use-date-picker.js"
+      },
+      "require": {
+        "types": "./dist/hooks/use-date-picker.d.cts",
+        "default": "./dist/hooks/use-date-picker.cjs"
+      }
+    },
+    "./hooks/use-pagination": {
+      "import": {
+        "types": "./dist/hooks/use-pagination.d.ts",
+        "default": "./dist/hooks/use-pagination.js"
+      },
+      "require": {
+        "types": "./dist/hooks/use-pagination.d.cts",
+        "default": "./dist/hooks/use-pagination.cjs"
+      }
+    },
+    "./date-utils": {
+      "import": {
+        "types": "./dist/date-utils.d.ts",
+        "default": "./dist/date-utils.js"
+      },
+      "require": {
+        "types": "./dist/date-utils.d.cts",
+        "default": "./dist/date-utils.cjs"
+      }
+    },
     "./chart": {
       "import": {
         "types": "./dist/chart.d.ts",

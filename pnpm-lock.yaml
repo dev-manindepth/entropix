@@ -35,6 +35,9 @@ importers:
 
   apps/demo:
     dependencies:
+      '@entropix/core':
+        specifier: workspace:*
+        version: link:../../packages/core
       '@entropix/data':
         specifier: workspace:*
         version: link:../../packages/data

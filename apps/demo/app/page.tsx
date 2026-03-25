@@ -33,7 +33,20 @@ import {
   SelectTrigger,
   SelectContent,
   SelectOption,
+  ToastProvider,
+  useToastContext,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  Tooltip,
+  DatePicker,
+  Calendar,
+  Breadcrumb,
+  BreadcrumbItem,
+  Pagination,
+  LocaleProvider,
 } from "@entropix/react";
+import type { EntropixLocale } from "@entropix/core";
 import { DataTable, BarChart, LineChart, AreaChart, PieChart } from "@entropix/data";
 
 type Brand = "default" | "ocean" | "sunset";
@@ -74,9 +87,33 @@ const SAMPLE_DATA = [
   { id: 12, name: "Leo Garcia", email: "leo@example.com", role: "Admin", status: "Active" },
 ];
 
+const jaLocale: Partial<EntropixLocale> = {
+  locale: "ja-JP",
+  direction: "ltr",
+  calendar_monthNames: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"],
+  calendar_dayNames: ["日", "月", "火", "水", "木", "金", "土"],
+  calendar_label: "カレンダー",
+  calendar_previousMonth: "前月",
+  calendar_nextMonth: "翌月",
+  calendar_dayLabel: (date: Date) => date.toLocaleDateString("ja-JP", { weekday: "long", year: "numeric", month: "long", day: "numeric" }),
+  datePicker_label: "日付選択",
+  datePicker_placeholder: "YYYY/MM/DD",
+  pagination_label: "ページネーション",
+  pagination_firstPage: "最初のページ",
+  pagination_previousPage: "前のページ",
+  pagination_nextPage: "次のページ",
+  pagination_lastPage: "最後のページ",
+  pagination_pageLabel: (page: number) => `${page}ページ`,
+  toast_regionLabel: "通知",
+  toast_dismiss: "通知を閉じる",
+  breadcrumb_label: "パンくずリスト",
+  select_placeholder: "選択してください...",
+};
+
 export default function DemoLandingPage() {
   const [theme, setTheme] = useState<"light" | "dark">("light");
   const [brand, setBrand] = useState<Brand>("default");
+  const [lang, setLang] = useState<"en" | "ja">("en");
   const [plan, setPlan] = useState("startup");
   const [framework, setFramework] = useState("");
 
@@ -96,6 +133,8 @@ export default function DemoLandingPage() {
   };
 
   return (
+    <LocaleProvider locale={lang === "ja" ? jaLocale : undefined}>
+    <ToastProvider>
     <>
       {/* ── Nav ── */}
       <nav className="nav">
@@ -130,6 +169,9 @@ export default function DemoLandingPage() {
               </Inline>
               <Button variant="ghost" size="sm" onPress={toggleTheme}>
                 {theme === "light" ? "🌙 Dark" : "☀️ Light"}
+              </Button>
+              <Button variant={lang === "ja" ? "primary" : "ghost"} size="sm" onPress={() => setLang(lang === "en" ? "ja" : "en")}>
+                {lang === "en" ? "🇯🇵 日本語" : "🇺🇸 EN"}
               </Button>
             </Inline>
           </div>
@@ -288,6 +330,7 @@ export default function DemoLandingPage() {
                 <Tab value="forms">Forms</Tab>
                 <Tab value="data">Data</Tab>
                 <Tab value="charts">Charts</Tab>
+                <Tab value="more">More</Tab>
               </TabList>
 
               <TabPanel value="brands">
@@ -634,6 +677,73 @@ export default function DemoLandingPage() {
                   </Stack>
                 </div>
               </TabPanel>
+
+              <TabPanel value="more">
+                <div className="demo-box">
+                  <Stack gap="xl">
+                    {/* Breadcrumb */}
+                    <Stack gap="sm">
+                      <h4 style={{ fontWeight: 600 }}>Breadcrumb</h4>
+                      <Breadcrumb>
+                        <BreadcrumbItem href="#">Home</BreadcrumbItem>
+                        <BreadcrumbItem href="#">Shopping</BreadcrumbItem>
+                        <BreadcrumbItem href="#">Electronics</BreadcrumbItem>
+                        <BreadcrumbItem>Wireless Headphones</BreadcrumbItem>
+                      </Breadcrumb>
+                    </Stack>
+
+                    <Divider />
+
+                    {/* Pagination */}
+                    <Stack gap="sm">
+                      <h4 style={{ fontWeight: 600 }}>Pagination</h4>
+                      <PaginationDemo />
+                    </Stack>
+
+                    <Divider />
+
+                    {/* Popover */}
+                    <Stack gap="sm">
+                      <h4 style={{ fontWeight: 600 }}>Popover</h4>
+                      <Inline gap="lg" wrap>
+                        <Popover>
+                          <PopoverTrigger>
+                            <Button variant="outline">Click for Popover</Button>
+                          </PopoverTrigger>
+                          <PopoverContent>
+                            <Stack gap="sm" style={{ padding: 8 }}>
+                              <p style={{ fontWeight: 600 }}>Settings</p>
+                              <p style={{ color: "var(--entropix-color-text-secondary)", fontSize: "0.9rem" }}>
+                                Configure your preferences here.
+                              </p>
+                              <Button variant="primary" size="sm">Save</Button>
+                            </Stack>
+                          </PopoverContent>
+                        </Popover>
+                        <Tooltip content="This saves your current progress">
+                          <Button variant="secondary">Hover for Tooltip</Button>
+                        </Tooltip>
+                      </Inline>
+                    </Stack>
+
+                    <Divider />
+
+                    {/* DatePicker */}
+                    <Stack gap="sm">
+                      <h4 style={{ fontWeight: 600 }}>DatePicker & Calendar</h4>
+                      <DatePickerDemo />
+                    </Stack>
+
+                    <Divider />
+
+                    {/* Toast */}
+                    <Stack gap="sm">
+                      <h4 style={{ fontWeight: 600 }}>Toast Notifications</h4>
+                      <ToastDemo />
+                    </Stack>
+                  </Stack>
+                </div>
+              </TabPanel>
             </Tabs>
           </Stack>
         </section>
@@ -752,5 +862,52 @@ export default function DemoLandingPage() {
         </Container>
       </footer>
     </>
+    </ToastProvider>
+    </LocaleProvider>
+  );
+}
+
+function PaginationDemo() {
+  const [page, setPage] = useState(1);
+  return (
+    <Stack gap="sm">
+      <Pagination totalItems={120} pageSize={10} currentPage={page} onPageChange={setPage} siblingCount={1} />
+      <p style={{ color: "var(--entropix-color-text-secondary)", fontSize: "0.85rem" }}>
+        Page {page} of 12 (120 total items)
+      </p>
+    </Stack>
+  );
+}
+
+function DatePickerDemo() {
+  const [date, setDate] = useState<Date | null>(null);
+  return (
+    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}>
+      <DatePicker label="Departure Date" placeholder="Select a date" value={date} onChange={setDate} />
+      <Stack gap="xs">
+        <p style={{ fontWeight: 500 }}>Selected: {date ? date.toLocaleDateString() : "None"}</p>
+        <Calendar value={date} onChange={setDate} />
+      </Stack>
+    </div>
+  );
+}
+
+function ToastDemo() {
+  const toast = useToastContext();
+  return (
+    <Inline gap="sm" wrap>
+      <Button variant="primary" size="sm" onPress={() => toast.add({ message: "Item saved successfully!", type: "success" })}>
+        ✓ Success Toast
+      </Button>
+      <Button variant="danger" size="sm" onPress={() => toast.add({ message: "Something went wrong!", type: "error" })}>
+        ✕ Error Toast
+      </Button>
+      <Button variant="secondary" size="sm" onPress={() => toast.add({ message: "Check your connection", type: "warning" })}>
+        ⚠ Warning Toast
+      </Button>
+      <Button variant="outline" size="sm" onPress={() => toast.add({ message: "New update available", type: "info" })}>
+        ℹ Info Toast
+      </Button>
+    </Inline>
   );
 }

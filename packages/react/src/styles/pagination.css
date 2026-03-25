@@ -1,0 +1,97 @@
+/* Pagination — @entropix/react */
+
+.entropix-pagination {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--entropix-spacing-1);
+  font-family: var(--entropix-font-family-sans);
+}
+
+/* === Page buttons === */
+
+.entropix-pagination__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 36px;
+  padding: 0 var(--entropix-spacing-2);
+  border: 1px solid var(--entropix-color-border-default);
+  border-radius: var(--entropix-radius-md);
+  background: var(--entropix-color-bg-primary);
+  color: var(--entropix-color-text-primary);
+  font-family: var(--entropix-font-family-sans);
+  font-size: var(--entropix-font-size-sm);
+  font-weight: var(--entropix-font-weight-medium);
+  line-height: 1;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background var(--entropix-duration-fast) var(--entropix-easing-default),
+    border-color var(--entropix-duration-fast) var(--entropix-easing-default),
+    color var(--entropix-duration-fast) var(--entropix-easing-default);
+}
+
+.entropix-pagination__button:hover:not(:disabled):not(.entropix-pagination__button--active) {
+  background: var(--entropix-color-action-secondary-hover);
+  border-color: var(--entropix-color-border-hover);
+}
+
+.entropix-pagination__button:focus-visible {
+  outline: 2px solid var(--entropix-color-border-focus);
+  outline-offset: 2px;
+}
+
+/* === Active page === */
+
+.entropix-pagination__button--active {
+  background: var(--entropix-color-action-primary-default);
+  border-color: var(--entropix-color-action-primary-default);
+  color: var(--entropix-color-text-on-primary, #ffffff);
+}
+
+.entropix-pagination__button--active:hover:not(:disabled) {
+  background: var(--entropix-color-action-primary-hover);
+  border-color: var(--entropix-color-action-primary-hover);
+}
+
+/* === Disabled === */
+
+.entropix-pagination__button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* === Nav buttons (first, prev, next, last) === */
+
+.entropix-pagination__button--nav {
+  font-size: var(--entropix-font-size-md);
+}
+
+/* === Ellipsis === */
+
+.entropix-pagination__ellipsis {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 36px;
+  font-size: var(--entropix-font-size-sm);
+  color: var(--entropix-color-text-secondary);
+  user-select: none;
+}
+
+/* === Responsive — Touch-friendly sizing on mobile === */
+
+@media (max-width: 767px) {
+  .entropix-pagination__button {
+    min-width: 40px;
+    height: 40px;
+  }
+
+  .entropix-pagination__ellipsis {
+    min-width: 32px;
+  }
+}

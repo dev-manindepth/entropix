@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { mapAccessibilityToRN } from "../../utils/map-accessibility-to-rn.js";
 import { useTheme } from "../../theme/theme-context.js";
+import { useLocale } from "../../i18n/i18n-context.js";
 import { useSelectContext } from "./select-context.js";
 
 export interface SelectTriggerProps
@@ -30,13 +31,14 @@ export interface SelectTriggerProps
  * (or placeholder) and a chevron indicator.
  */
 export function SelectTrigger({
-  placeholder = "Select...",
+  placeholder,
   displayValue,
   style,
   textStyle,
   ...rest
 }: SelectTriggerProps) {
   const { tokens: t, baseTokens: bt } = useTheme();
+  const locale = useLocale();
   const { selectedValue, isDisabled, isOpen, getTriggerProps } =
     useSelectContext();
   const propGetterReturn = getTriggerProps();
@@ -47,7 +49,7 @@ export function SelectTrigger({
   }, [propGetterReturn.onAction]);
 
   const hasValue = selectedValue !== "";
-  const label = displayValue ?? (hasValue ? selectedValue : placeholder);
+  const label = displayValue ?? (hasValue ? selectedValue : (placeholder ?? locale.select_placeholder));
 
   return (
     <Pressable
