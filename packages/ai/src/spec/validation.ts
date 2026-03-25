@@ -167,6 +167,8 @@ function validateNode(
 
   // 2. Required props
   for (const propDef of entry.props) {
+    // Skip "children" — it lives at node.children, not node.props.children
+    if (propDef.name === "children" || propDef.isChildren) continue;
     if (propDef.required && !(propDef.name in props)) {
       errors.push({
         path: `${path}.props`,
