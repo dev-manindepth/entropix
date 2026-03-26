@@ -1,18 +1,8 @@
 /**
  * Entropix MCP Server
  *
- * Start the Entropix MCP server using the stdio transport.
- *
- * Run via: npx entropix-ai mcp-server
- * Or add to MCP config:
- * {
- *   "mcpServers": {
- *     "entropix": {
- *       "command": "npx",
- *       "args": ["entropix-ai", "mcp-server"]
- *     }
- *   }
- * }
+ * Standalone MCP server exposing Entropix design system tools.
+ * Uses stdio transport for Claude Desktop / Claude Code integration.
  */
 
 import { ENTROPIX_MCP_TOOLS } from "./tools.js";
@@ -30,22 +20,49 @@ import {
 } from "./handlers.js";
 import type { ToolResult } from "./handlers.js";
 
+async function handleToolCall(
+  name: string,
+  args: Record<string, unknown>,
+): Promise<ToolResult> {
+  switch (name) {
+    case "entropix_list_components":
+      return handleListComponents(args as ListComponentsInput);
+    case "entropix_component_info":
+      return handleComponentInfo(args as unknown as ComponentInfoInput);
+    case "entropix_render_ui":
+      return handleRenderUI(args as unknown as RenderUIInput);
+    case "entropix_generate_ui":
+      return await handleGenerateUI(args as unknown as GenerateUIInput);
+    default:
+      return {
+        content: [{ type: "text" as const, text: `Unknown tool: "${name}"` }],
+        isError: true,
+      };
+  }
+}
+
 export async function startMCPServer(): Promise<void> {
-  // Dynamic import so @modelcontextprotocol/sdk is optional
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let ServerClass: any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let StdioTransportClass: any;
+  let StdioTransport: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let ListToolsRequestSchema: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let CallToolRequestSchema: any;
 
   try {
-    // Use variable to prevent TypeScript from resolving the module at build time
-    const sdkServer = "@modelcontextprotocol/sdk/server/index.js";
-    const sdkStdio = "@modelcontextprotocol/sdk/server/stdio.js";
-    const serverModule = await import(sdkServer);
-    ServerClass = serverModule.Server;
-
-    const stdioModule = await import(sdkStdio);
-    StdioTransportClass = stdioModule.StdioServerTransport;
+    const serverMod = await import(
+      "@modelcontextprotocol/sdk/server/index.js"
+    );
+    ServerClass = serverMod.Server;
+    const stdioMod = await import(
+      "@modelcontextprotocol/sdk/server/stdio.js"
+    );
+    StdioTransport = stdioMod.StdioServerTransport;
+    const typesMod = await import("@modelcontextprotocol/sdk/types.js");
+    ListToolsRequestSchema = typesMod.ListToolsRequestSchema;
+    CallToolRequestSchema = typesMod.CallToolRequestSchema;
   } catch {
     console.error(
       "Error: @modelcontextprotocol/sdk is required for the MCP server.\n" +
@@ -55,74 +72,32 @@ export async function startMCPServer(): Promise<void> {
   }
 
   const server = new ServerClass(
-    {
-      name: "entropix",
-      version: "1.0.0",
-    },
-    {
-      capabilities: {
-        tools: {},
-      },
-    },
+    { name: "entropix", version: "1.0.0" },
+    { capabilities: { tools: {} } },
   );
 
-  // Register tool listing
-  server.setRequestHandler(
-    { method: "tools/list" },
-    async () => ({
-      tools: ENTROPIX_MCP_TOOLS.map((tool) => ({
-        name: tool.name,
-        description: tool.description,
-        inputSchema: tool.inputSchema,
-      })),
-    }),
-  );
+  // List available tools
+  server.setRequestHandler(ListToolsRequestSchema, async () => ({
+    tools: ENTROPIX_MCP_TOOLS.map((tool) => ({
+      name: tool.name,
+      description: tool.description,
+      inputSchema: tool.inputSchema,
+    })),
+  }));
 
-  // Register tool call handler
+  // Handle tool calls
   server.setRequestHandler(
-    { method: "tools/call" },
+    CallToolRequestSchema,
     async (request: {
       params: { name: string; arguments?: Record<string, unknown> };
     }) => {
       const { name, arguments: args = {} } = request.params;
-
-      let result: ToolResult;
-
-      switch (name) {
-        case "entropix_list_components":
-          result = handleListComponents(args as ListComponentsInput);
-          break;
-
-        case "entropix_component_info":
-          result = handleComponentInfo(args as unknown as ComponentInfoInput);
-          break;
-
-        case "entropix_render_ui":
-          result = handleRenderUI(args as unknown as RenderUIInput);
-          break;
-
-        case "entropix_generate_ui":
-          result = await handleGenerateUI(args as unknown as GenerateUIInput);
-          break;
-
-        default:
-          result = {
-            content: [
-              {
-                type: "text",
-                text: `Unknown tool: "${name}". Available tools: ${ENTROPIX_MCP_TOOLS.map((t) => t.name).join(", ")}`,
-              },
-            ],
-            isError: true,
-          };
-      }
-
-      return result;
+      return handleToolCall(name, args);
     },
   );
 
   // Connect via stdio
-  const transport = new StdioTransportClass();
+  const transport = new StdioTransport();
   await server.connect(transport);
 
   console.error("Entropix MCP server running on stdio");

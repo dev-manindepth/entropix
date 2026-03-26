@@ -55,7 +55,8 @@
     "react": { "optional": true }
   },
   "dependencies": {
-    "@entropix/core": "workspace:*"
+    "@entropix/core": "workspace:*",
+    "@modelcontextprotocol/sdk": "^1.12.1"
   },
   "devDependencies": {
     "@entropix/eslint-config": "workspace:*",
