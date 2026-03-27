@@ -11,12 +11,18 @@ import type {
   ComponentInfoInput,
   RenderUIInput,
   GenerateUIInput,
+  RefineUIInput,
+  ExportCodeInput,
+  GenerateCodeInput,
 } from "./tools.js";
 import {
   handleListComponents,
   handleComponentInfo,
   handleRenderUI,
   handleGenerateUI,
+  handleRefineUI,
+  handleExportCode,
+  handleGenerateCode,
 } from "./handlers.js";
 import type { ToolResult } from "./handlers.js";
 
@@ -33,6 +39,12 @@ async function handleToolCall(
       return handleRenderUI(args as unknown as RenderUIInput);
     case "entropix_generate_ui":
       return await handleGenerateUI(args as unknown as GenerateUIInput);
+    case "entropix_refine_ui":
+      return await handleRefineUI(args as unknown as RefineUIInput);
+    case "entropix_export_code":
+      return handleExportCode(args as unknown as ExportCodeInput);
+    case "entropix_generate_code":
+      return await handleGenerateCode(args as unknown as GenerateCodeInput);
     default:
       return {
         content: [{ type: "text" as const, text: `Unknown tool: "${name}"` }],

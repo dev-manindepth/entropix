@@ -249,7 +249,7 @@ export const defaultRegistry: ComponentRegistry = {
           name: "onPress",
           type: "() => void",
           required: false,
-          description: "Callback fired when the button is pressed. $action",
+          description: "Callback fired when the button is pressed. Use {\"$action\": \"actionName\"} in JSON spec.",
         },
         {
           name: "children",
@@ -296,7 +296,7 @@ export const defaultRegistry: ComponentRegistry = {
           name: "onChange",
           type: "(checked: boolean) => void",
           required: false,
-          description: "Callback fired when toggle state changes. $action",
+          description: "Callback fired when toggle state changes. Use {\"$action\": \"actionName\"} in JSON spec.",
         },
         {
           name: "disabled",
@@ -356,7 +356,7 @@ export const defaultRegistry: ComponentRegistry = {
           name: "onChange",
           type: "(checked: boolean) => void",
           required: false,
-          description: "Callback fired when switch state changes. $action",
+          description: "Callback fired when switch state changes. Use {\"$action\": \"actionName\"} in JSON spec.",
         },
         {
           name: "disabled",
@@ -404,7 +404,7 @@ export const defaultRegistry: ComponentRegistry = {
           name: "onChange",
           type: "(value: string) => void",
           required: false,
-          description: "Callback fired when value changes. $action",
+          description: "Callback fired when value changes. Use {\"$action\": \"actionName\"} in JSON spec.",
         },
         {
           name: "placeholder",
@@ -506,7 +506,7 @@ export const defaultRegistry: ComponentRegistry = {
           name: "onChange",
           type: "(value: string) => void",
           required: false,
-          description: "Callback fired when value changes. $action",
+          description: "Callback fired when value changes. Use {\"$action\": \"actionName\"} in JSON spec.",
         },
         {
           name: "placeholder",
@@ -607,7 +607,7 @@ export const defaultRegistry: ComponentRegistry = {
           name: "onChange",
           type: "(checked: boolean) => void",
           required: false,
-          description: "Callback fired when checked state changes. $action",
+          description: "Callback fired when checked state changes. Use {\"$action\": \"actionName\"} in JSON spec.",
         },
         {
           name: "disabled",
@@ -662,7 +662,7 @@ export const defaultRegistry: ComponentRegistry = {
           name: "onChange",
           type: "(value: string) => void",
           required: false,
-          description: "Callback fired when selection changes. $action",
+          description: "Callback fired when selection changes. Use {\"$action\": \"actionName\"} in JSON spec.",
         },
         {
           name: "disabled",
@@ -753,7 +753,7 @@ export const defaultRegistry: ComponentRegistry = {
           name: "onChange",
           type: "(value: string) => void",
           required: false,
-          description: "Callback fired when selection changes. $action",
+          description: "Callback fired when selection changes. Use {\"$action\": \"actionName\"} in JSON spec.",
         },
         {
           name: "disabled",
@@ -911,7 +911,7 @@ export const defaultRegistry: ComponentRegistry = {
           name: "onChange",
           type: "(date: Date) => void",
           required: false,
-          description: "Callback fired when date changes. $action",
+          description: "Callback fired when date changes. Use {\"$action\": \"actionName\"} in JSON spec.",
         },
         {
           name: "minDate",
@@ -975,7 +975,7 @@ export const defaultRegistry: ComponentRegistry = {
           name: "onChange",
           type: "(date: Date) => void",
           required: false,
-          description: "Callback fired when date is selected. $action",
+          description: "Callback fired when date is selected. Use {\"$action\": \"actionName\"} in JSON spec.",
         },
         {
           name: "minDate",
@@ -1326,7 +1326,7 @@ export const defaultRegistry: ComponentRegistry = {
           name: "onOpenChange",
           type: "(open: boolean) => void",
           required: false,
-          description: "Callback fired when open state changes. $action",
+          description: "Callback fired when open state changes. Use {\"$action\": \"actionName\"} in JSON spec.",
         },
         {
           name: "modal",
@@ -1688,7 +1688,7 @@ export const defaultRegistry: ComponentRegistry = {
           name: "onSelect",
           type: "() => void",
           required: false,
-          description: "Callback fired when this item is selected. $action",
+          description: "Callback fired when this item is selected. Use {\"$action\": \"actionName\"} in JSON spec.",
         },
         {
           name: "children",
@@ -1957,7 +1957,7 @@ export const defaultRegistry: ComponentRegistry = {
           name: "onPress",
           type: "() => void",
           required: false,
-          description: "Callback for navigation (native). $action",
+          description: "Callback for navigation (native). Use {\"$action\": \"actionName\"} in JSON spec.",
         },
         {
           name: "children",
@@ -2005,7 +2005,7 @@ export const defaultRegistry: ComponentRegistry = {
           name: "onPageChange",
           type: "(page: number) => void",
           required: true,
-          description: "Callback fired when page changes. $action",
+          description: "Callback fired when page changes. Use {\"$action\": \"actionName\"} in JSON spec.",
         },
         {
           name: "siblingCount",
@@ -2046,7 +2046,7 @@ export const defaultRegistry: ComponentRegistry = {
           name: "columns",
           type: "ColumnDef[]",
           required: true,
-          description: "Column definitions array",
+          description: "Array of column definitions. Each column: {key: string, header: string, sortable?: boolean, filterable?: boolean}. 'key' must match a property name in the data objects.",
         },
         {
           name: "pageSize",
@@ -2059,13 +2059,13 @@ export const defaultRegistry: ComponentRegistry = {
           name: "onSort",
           type: "(column: string, direction: 'asc' | 'desc') => void",
           required: false,
-          description: "Callback fired when a column sort changes. $action",
+          description: "Callback fired when a column sort changes. Use {\"$action\": \"actionName\"} in JSON spec.",
         },
         {
           name: "onFilter",
           type: "(filters: Record<string, unknown>) => void",
           required: false,
-          description: "Callback fired when filters change. $action",
+          description: "Callback fired when filters change. Use {\"$action\": \"actionName\"} in JSON spec.",
         },
         {
           name: "selectable",
@@ -2078,7 +2078,7 @@ export const defaultRegistry: ComponentRegistry = {
           name: "getRowKey",
           type: "(row: Record<string, unknown>) => string",
           required: false,
-          description: "Function to derive a unique key for each row",
+          description: "Function to derive a unique key for each row. Not needed in JSON spec (auto-generated from row index or 'id' field).",
         },
       ],
       examples: [
@@ -2112,9 +2112,9 @@ export const defaultRegistry: ComponentRegistry = {
       props: [
         {
           name: "data",
-          type: "ChartData",
+          type: "ChartDataPoint[] | ChartSeries[]",
           required: true,
-          description: "Chart data with labels and datasets",
+          description: "Single series: [{label: string, value: number}, ...]. Multi-series: [{name: string, data: [{label: string, value: number}, ...]}, ...]. NEVER use Chart.js {labels, datasets} format.",
           isData: true,
         },
         {
@@ -2165,11 +2165,13 @@ export const defaultRegistry: ComponentRegistry = {
           spec: {
             component: "BarChart",
             props: {
-              data: {
-                labels: ["Jan", "Feb", "Mar"],
-                datasets: [{ label: "Sales", values: [100, 200, 150] }],
-              },
+              data: [
+                { label: "Jan", value: 4200 },
+                { label: "Feb", value: 3800 },
+                { label: "Mar", value: 5100 },
+              ],
               height: 300,
+              showGrid: true,
             },
           },
         },
@@ -2186,9 +2188,9 @@ export const defaultRegistry: ComponentRegistry = {
       props: [
         {
           name: "data",
-          type: "ChartData",
+          type: "ChartDataPoint[] | ChartSeries[]",
           required: true,
-          description: "Chart data with labels and datasets",
+          description: "Single series: [{label: string, value: number}, ...]. Multi-series: [{name: string, data: [{label: string, value: number}, ...]}, ...]. NEVER use Chart.js format.",
           isData: true,
         },
         {
@@ -2246,10 +2248,9 @@ export const defaultRegistry: ComponentRegistry = {
           spec: {
             component: "LineChart",
             props: {
-              data: {
-                labels: ["Q1", "Q2", "Q3", "Q4"],
-                datasets: [{ label: "Revenue", values: [1000, 1500, 1200, 1800] }],
-              },
+              data: [
+                { name: "Revenue", data: [{ label: "Q1", value: 1000 }, { label: "Q2", value: 1500 }, { label: "Q3", value: 1200 }, { label: "Q4", value: 1800 }] },
+              ],
               height: 300,
               curved: true,
             },
@@ -2268,9 +2269,9 @@ export const defaultRegistry: ComponentRegistry = {
       props: [
         {
           name: "data",
-          type: "ChartData",
+          type: "ChartDataPoint[] | ChartSeries[]",
           required: true,
-          description: "Chart data with labels and datasets",
+          description: "Single series: [{label: string, value: number}, ...]. Multi-series: [{name: string, data: [{label: string, value: number}, ...]}, ...]. NEVER use Chart.js format.",
           isData: true,
         },
         {
@@ -2321,10 +2322,9 @@ export const defaultRegistry: ComponentRegistry = {
           spec: {
             component: "AreaChart",
             props: {
-              data: {
-                labels: ["Mon", "Tue", "Wed", "Thu", "Fri"],
-                datasets: [{ label: "Visitors", values: [500, 800, 600, 900, 750] }],
-              },
+              data: [
+                { name: "Visitors", data: [{ label: "Mon", value: 500 }, { label: "Tue", value: 800 }, { label: "Wed", value: 600 }, { label: "Thu", value: 900 }, { label: "Fri", value: 750 }] },
+              ],
               height: 300,
             },
           },
@@ -2344,7 +2344,7 @@ export const defaultRegistry: ComponentRegistry = {
           name: "data",
           type: "ChartDataPoint[]",
           required: true,
-          description: "Array of data points with label and value",
+          description: "Array of data points: [{label: string, value: number}, ...]. Each slice needs a label and a numeric value.",
           isData: true,
         },
         {

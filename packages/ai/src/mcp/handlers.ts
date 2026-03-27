@@ -4,6 +4,8 @@ import {
   validateSpecAgainstRegistry,
 } from "../spec/validation.js";
 import { generateUI } from "../generate/generate-ui.js";
+import { refineUI } from "../generate/refine-ui.js";
+import { specToCode } from "../export/spec-to-code.js";
 import { createAnthropicAdapter } from "../generate/adapters/anthropic.js";
 import type {
   ComponentCategory,
@@ -15,6 +17,9 @@ import type {
   ComponentInfoInput,
   RenderUIInput,
   GenerateUIInput,
+  RefineUIInput,
+  ExportCodeInput,
+  GenerateCodeInput,
 } from "./tools.js";
 
 // ── Result type ─────────────────────────────────────────────────────────────
@@ -234,5 +239,131 @@ export async function handleGenerateUI(
     const message =
       err instanceof Error ? err.message : "Unknown generation error";
     return textResult(`UI generation failed:\n\n${message}`, true);
+  }
+}
+
+export async function handleRefineUI(
+  input: RefineUIInput,
+): Promise<ToolResult> {
+  const { currentSpec, instruction } = input;
+
+  let adapter;
+  try {
+    adapter = createAnthropicAdapter();
+  } catch {
+    return textResult(
+      "Failed to create AI adapter. Set the ANTHROPIC_API_KEY environment variable or pass an API key.\n\n" +
+        "Example:\n  export ANTHROPIC_API_KEY=sk-ant-...",
+      true,
+    );
+  }
+
+  // Validate that currentSpec is a valid UISpec first
+  let parsedSpec;
+  try {
+    parsedSpec = validateSpec(currentSpec);
+  } catch (err: unknown) {
+    const message =
+      err instanceof Error ? err.message : "Unknown validation error";
+    return textResult(
+      `Current spec validation failed:\n\n${message}`,
+      true,
+    );
+  }
+
+  try {
+    const result = await refineUI({
+      currentSpec: parsedSpec,
+      instruction,
+      adapter,
+    });
+
+    const output: Record<string, unknown> = {
+      spec: result.spec,
+      validation: result.validation,
+      usage: result.usage,
+    };
+
+    return textResult(JSON.stringify(output, null, 2));
+  } catch (err: unknown) {
+    const message =
+      err instanceof Error ? err.message : "Unknown refinement error";
+    return textResult(`UI refinement failed:\n\n${message}`, true);
+  }
+}
+
+export function handleExportCode(input: ExportCodeInput): ToolResult {
+  const { spec, format, componentName } = input;
+
+  // Validate that spec is a valid UISpec first
+  let parsedSpec;
+  try {
+    parsedSpec = validateSpec(spec);
+  } catch (err: unknown) {
+    const message =
+      err instanceof Error ? err.message : "Unknown validation error";
+    return textResult(
+      `Spec validation failed:\n\n${message}`,
+      true,
+    );
+  }
+
+  try {
+    const result = specToCode({
+      spec: parsedSpec,
+      format,
+      componentName,
+    });
+
+    return textResult(JSON.stringify(result, null, 2));
+  } catch (err: unknown) {
+    const message =
+      err instanceof Error ? err.message : "Unknown export error";
+    return textResult(`Code export failed:\n\n${message}`, true);
+  }
+}
+
+export async function handleGenerateCode(
+  input: GenerateCodeInput,
+): Promise<ToolResult> {
+  const { prompt, format, componentName, categories } = input;
+
+  let adapter;
+  try {
+    adapter = createAnthropicAdapter();
+  } catch {
+    return textResult(
+      "Failed to create AI adapter. Set the ANTHROPIC_API_KEY environment variable or pass an API key.\n\n" +
+        "Example:\n  export ANTHROPIC_API_KEY=sk-ant-...",
+      true,
+    );
+  }
+
+  try {
+    const genResult = await generateUI({
+      prompt,
+      adapter,
+      categories: categories as ComponentCategory[] | undefined,
+    });
+
+    const codeResult = specToCode({
+      spec: genResult.spec,
+      format,
+      componentName,
+    });
+
+    const output: Record<string, unknown> = {
+      code: codeResult.code,
+      imports: codeResult.imports,
+      dependencies: codeResult.dependencies,
+      validation: genResult.validation,
+      usage: genResult.usage,
+    };
+
+    return textResult(JSON.stringify(output, null, 2));
+  } catch (err: unknown) {
+    const message =
+      err instanceof Error ? err.message : "Unknown generation error";
+    return textResult(`Code generation failed:\n\n${message}`, true);
   }
 }

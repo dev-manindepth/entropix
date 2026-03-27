@@ -55,12 +55,17 @@ Each UINode has the shape:
 
 1. Only use components listed in the Available Components section above.
 2. Use \`{ "$bind": "<path>" }\` for dynamic data references in prop values.
-3. Use \`{ "$action": "<name>", "payload": { ... } }\` for event handlers.
+3. Use \`{ "$action": "<name>", "payload": { ... } }\` for event handlers (onPress, onChange, etc.).
 4. Use \`{ "$token": "<token-name>" }\` to reference design tokens for colors, spacing, and typography.
 5. Compound components must follow nesting rules — child components must be placed inside their declared parent component.
-6. Every prop value must be a valid JSON type: string, number, boolean, null, object, or array.
+6. Every prop value must be a valid JSON type: string, number, boolean, null, object, or array. NEVER use JavaScript functions.
 7. Do NOT invent components that are not in the registry.
-8. Do NOT include any text outside the JSON object.`,
+8. Do NOT include any text outside the JSON object.
+9. \`children\` is a separate field on UINode, NOT inside \`props\`. Text children are strings directly in the children array.
+10. For charts (BarChart, LineChart, AreaChart), data MUST be: \`[{label: string, value: number}, ...]\` for single series, or \`[{name: string, data: [{label: string, value: number}, ...]}, ...]\` for multi-series. NEVER use Chart.js format like {labels, datasets}.
+11. For PieChart, data MUST be: \`[{label: string, value: number}, ...]\`.
+12. For DataTable, \`columns\` MUST be: \`[{key: string, header: string, sortable?: boolean}, ...]\` where \`key\` matches a property name in the data objects. \`data\` MUST be: \`[{...row}, ...]\`. Do NOT include \`getRowKey\` — it is auto-generated.
+13. Do NOT include function-type props (getRowKey, renderCell, etc.) — only include serializable values.`,
   );
 
   // 5. Data schema

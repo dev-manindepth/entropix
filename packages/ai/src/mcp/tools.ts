@@ -29,6 +29,24 @@ export interface GenerateUIInput {
   dataSchema?: Record<string, string>;
 }
 
+export interface RefineUIInput {
+  currentSpec: unknown;
+  instruction: string;
+}
+
+export interface ExportCodeInput {
+  spec: unknown;
+  format?: "component" | "page";
+  componentName?: string;
+}
+
+export interface GenerateCodeInput {
+  prompt: string;
+  format?: "component" | "page";
+  componentName?: string;
+  categories?: string[];
+}
+
 export const ENTROPIX_MCP_TOOLS = [
   {
     name: "entropix_list_components",
@@ -118,6 +136,85 @@ export const ENTROPIX_MCP_TOOLS = [
           type: "object",
           description:
             "Shape of available data for $bind expressions, e.g. { 'user.name': 'string' }",
+        },
+      },
+      required: ["prompt"],
+    },
+  },
+  {
+    name: "entropix_refine_ui",
+    description:
+      "Refine an existing Entropix UI specification based on a natural language instruction.",
+    inputSchema: {
+      type: "object" as const,
+      properties: {
+        currentSpec: {
+          type: "object",
+          description: "The current UISpec JSON to refine",
+        },
+        instruction: {
+          type: "string",
+          description:
+            "Natural language instruction describing the desired changes",
+        },
+      },
+      required: ["currentSpec", "instruction"],
+    },
+  },
+  {
+    name: "entropix_export_code",
+    description:
+      "Convert an Entropix UI specification to React JSX code.",
+    inputSchema: {
+      type: "object" as const,
+      properties: {
+        spec: {
+          type: "object",
+          description: "The UISpec JSON to convert to code",
+        },
+        format: {
+          type: "string",
+          enum: ["component", "page"],
+          description:
+            "Output format: 'component' for a JSX fragment, 'page' for a full page component (default: 'component')",
+        },
+        componentName: {
+          type: "string",
+          description:
+            "Name for the generated component (default: derived from spec title or 'GeneratedUI')",
+        },
+      },
+      required: ["spec"],
+    },
+  },
+  {
+    name: "entropix_generate_code",
+    description:
+      "Generate React component code from a natural language description using Entropix components.",
+    inputSchema: {
+      type: "object" as const,
+      properties: {
+        prompt: {
+          type: "string",
+          description:
+            "Natural language description of the UI to generate as code",
+        },
+        format: {
+          type: "string",
+          enum: ["component", "page"],
+          description:
+            "Output format: 'component' for a JSX fragment, 'page' for a full page component (default: 'component')",
+        },
+        componentName: {
+          type: "string",
+          description:
+            "Name for the generated component (default: derived from spec title or 'GeneratedUI')",
+        },
+        categories: {
+          type: "array",
+          items: { type: "string" },
+          description:
+            "Component categories to consider (narrows context for better results)",
         },
       },
       required: ["prompt"],

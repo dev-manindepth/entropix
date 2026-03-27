@@ -25,12 +25,23 @@ export function compressRegistry(
   }
 }
 
+function isSerializableProp(prop: PropDef): boolean {
+  if (prop.isChildren) return false;
+  // Exclude function-only props that can't be represented in JSON
+  if (prop.type?.includes("=>") && !prop.description?.includes("$action")) return false;
+  return true;
+}
+
 function formatPropSignature(prop: PropDef): string {
-  if (prop.isChildren) return "";
+  if (!isSerializableProp(prop)) return "";
   const name = prop.required ? prop.name : `${prop.name}?`;
   const defaultStr =
     prop.defaultValue !== undefined ? ` = ${JSON.stringify(prop.defaultValue)}` : "";
-  return `${name}: ${prop.type}${defaultStr}`;
+  // For complex types, include the description inline for clarity
+  const descHint = prop.description && (prop.type?.includes("[]") || prop.type?.includes("{"))
+    ? ` /* ${prop.description} */`
+    : "";
+  return `${name}: ${prop.type}${defaultStr}${descHint}`;
 }
 
 function compactMode(registry: ComponentRegistry): string {
@@ -76,7 +87,11 @@ function categoryMode(
 
   for (const [key, entry] of Object.entries(registry.components)) {
     if (categorySet.has(entry.category)) {
-      filtered.components[key] = entry;
+      // Filter out non-serializable props for AI consumption
+      filtered.components[key] = {
+        ...entry,
+        props: entry.props.filter(isSerializableProp),
+      };
     }
   }
 
