@@ -65,7 +65,15 @@ Each UINode has the shape:
 10. For charts (BarChart, LineChart, AreaChart), data MUST be: \`[{label: string, value: number}, ...]\` for single series, or \`[{name: string, data: [{label: string, value: number}, ...]}, ...]\` for multi-series. NEVER use Chart.js format like {labels, datasets}.
 11. For PieChart, data MUST be: \`[{label: string, value: number}, ...]\`.
 12. For DataTable, \`columns\` MUST be: \`[{key: string, header: string, sortable?: boolean}, ...]\` where \`key\` matches a property name in the data objects. \`data\` MUST be: \`[{...row}, ...]\`. Do NOT include \`getRowKey\` — it is auto-generated.
-13. Do NOT include function-type props (getRowKey, renderCell, etc.) — only include serializable values.`,
+13. Do NOT include function-type props (getRowKey, renderCell, etc.) — only include serializable values.
+14. NEVER use hardcoded visual values. All visual properties MUST use design tokens via CSS custom properties (\`var(--entropix-*)\`). This applies universally to ALL components and ALL visual properties:
+    - Colors: \`var(--entropix-color-*)\` — e.g. \`var(--entropix-color-action-primary-default)\`, \`var(--entropix-color-green-500)\`, \`var(--entropix-color-red-500)\`. NEVER use hex like "#3b82f6".
+    - Spacing: \`var(--entropix-spacing-*)\` — values: 0-24 (e.g. spacing-1=4px, spacing-4=16px, spacing-8=32px). NEVER use raw "16px".
+    - Radii: \`var(--entropix-radius-*)\` — values: none, sm, md, lg, xl, full. NEVER use raw "8px".
+    - Typography: \`var(--entropix-font-size-*)\`, \`var(--entropix-font-weight-*)\`, \`var(--entropix-font-family-*)\`. NEVER use raw "14px" or "bold".
+    - Shadows: \`var(--entropix-shadow-*)\` — values: sm, md, lg, xl. NEVER use raw box-shadow values.
+    - Durations: \`var(--entropix-duration-*)\` — values: fast, normal, slow.
+    When a user says "make it green", use \`var(--entropix-color-green-500)\`. When they say "add more padding", use component props like \`gap="lg"\` which map to tokens internally. This ensures all generated UIs adapt to brand theming automatically.`,
   );
 
   // 5. Data schema
