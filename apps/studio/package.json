@@ -1,0 +1,35 @@
+{
+  "name": "studio",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --port 3002",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio"
+  },
+  "dependencies": {
+    "@entropix/ai": "workspace:*",
+    "@entropix/core": "workspace:*",
+    "@entropix/data": "workspace:*",
+    "@entropix/react": "workspace:*",
+    "@entropix/tokens": "workspace:*",
+    "better-sqlite3": "^11.0.0",
+    "drizzle-orm": "^0.40.0",
+    "nanoid": "^5.1.5",
+    "next": "16.1.5",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.0",
+    "@types/node": "^22.15.3",
+    "@types/react": "19.2.2",
+    "@types/react-dom": "19.2.2",
+    "drizzle-kit": "^0.30.0",
+    "typescript": "5.9.2"
+  }
+}

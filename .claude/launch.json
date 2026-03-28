@@ -26,6 +26,12 @@
       "runtimeArgs": ["expo", "start", "--web", "--port", "8085"],
       "port": 8085,
       "cwd": "apps/demo-mobile"
+    },
+    {
+      "name": "studio",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "studio", "dev"],
+      "port": 3002
     }
   ]
 }
