@@ -24,10 +24,29 @@ export function ChatPanel({ messages, isGenerating, onSend }: ChatPanelProps) {
   const [input, setInput] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const isInitialLoadRef = useRef(true);
+  const prevMessageCountRef = useRef(0);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, isGenerating]);
+    // On initial load (messages come from server), don't auto-scroll
+    if (isInitialLoadRef.current) {
+      isInitialLoadRef.current = false;
+      prevMessageCountRef.current = messages.length;
+      return;
+    }
+    // Only auto-scroll when a NEW message is added by user action
+    if (messages.length > prevMessageCountRef.current) {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
+    prevMessageCountRef.current = messages.length;
+  }, [messages]);
+
+  useEffect(() => {
+    // Scroll to bottom when generating starts (user just sent a message)
+    if (isGenerating) {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [isGenerating]);
 
   function handleSubmit() {
     const trimmed = input.trim();

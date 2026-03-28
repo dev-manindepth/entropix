@@ -29,7 +29,7 @@ export async function POST(request: Request) {
       adapter,
       contextMode: categories?.length ? "category" : "compact",
       categories,
-      maxTokens: 4096,
+      maxTokens: 8192,
     });
 
     return NextResponse.json({

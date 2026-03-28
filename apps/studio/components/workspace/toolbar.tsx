@@ -9,6 +9,8 @@ interface ToolbarProps {
   onExport: () => void;
   viewport: Viewport;
   onViewportChange: (viewport: Viewport) => void;
+  fullscreen: boolean;
+  onToggleFullscreen: () => void;
 }
 
 const VIEWPORTS: { value: Viewport; label: string }[] = [
@@ -22,26 +24,34 @@ export function Toolbar({
   onExport,
   viewport,
   onViewportChange,
+  fullscreen,
+  onToggleFullscreen,
 }: ToolbarProps) {
   return (
     <div className="workspace-toolbar">
       <div className="workspace-toolbar-name">{projectName}</div>
 
-      <div className="workspace-toolbar-viewport">
-        {VIEWPORTS.map((vp) => (
-          <button
-            key={vp.value}
-            className={viewport === vp.value ? "active" : ""}
-            onClick={() => onViewportChange(vp.value)}
-          >
-            {vp.label}
-          </button>
-        ))}
-      </div>
+      <div className="workspace-toolbar-actions">
+        <div className="workspace-toolbar-viewport">
+          {VIEWPORTS.map((vp) => (
+            <button
+              key={vp.value}
+              className={viewport === vp.value ? "active" : ""}
+              onClick={() => onViewportChange(vp.value)}
+            >
+              {vp.label}
+            </button>
+          ))}
+        </div>
 
-      <Button variant="secondary" size="sm" onClick={onExport}>
-        Export Code
-      </Button>
+        <Button variant="ghost" size="sm" onPress={onToggleFullscreen}>
+          {fullscreen ? "Exit Fullscreen" : "⛶ Fullscreen"}
+        </Button>
+
+        <Button variant="secondary" size="sm" onPress={onExport}>
+          Export Code
+        </Button>
+      </div>
     </div>
   );
 }

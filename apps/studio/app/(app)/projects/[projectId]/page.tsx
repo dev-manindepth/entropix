@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import { ChatPanel } from "@/components/workspace/chat-panel";
 import { PreviewPanel } from "@/components/workspace/preview-panel";
 import { Toolbar } from "@/components/workspace/toolbar";
+import { useLayout } from "@/lib/layout-context";
 
 type Viewport = "desktop" | "tablet" | "mobile";
 
@@ -165,20 +166,26 @@ export default function WorkspacePage() {
     );
   }
 
+  const { fullscreenPreview, setFullscreenPreview } = useLayout();
+
   return (
-    <div className="workspace">
+    <div className={`workspace ${fullscreenPreview ? "workspace--fullscreen" : ""}`}>
       <Toolbar
         projectName={project.name}
         onExport={handleExportCode}
         viewport={viewport}
         onViewportChange={setViewport}
+        fullscreen={fullscreenPreview}
+        onToggleFullscreen={() => setFullscreenPreview(!fullscreenPreview)}
       />
 
-      <ChatPanel
-        messages={messages}
-        isGenerating={isGenerating}
-        onSend={handleSend}
-      />
+      {!fullscreenPreview && (
+        <ChatPanel
+          messages={messages}
+          isGenerating={isGenerating}
+          onSend={handleSend}
+        />
+      )}
 
       <PreviewPanel
         spec={currentSpec}
