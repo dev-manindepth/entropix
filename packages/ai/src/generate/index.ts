@@ -20,3 +20,7 @@ export type {
   AnthropicAdapterOptions,
   OpenAIAdapterOptions,
 } from "./adapters/index.js";
+
+// Re-export code export utility (server-safe, no React dependency)
+export { specToCode } from "../export/spec-to-code.js";
+export type { CodeExportOptions, CodeExportResult } from "../export/spec-to-code.js";

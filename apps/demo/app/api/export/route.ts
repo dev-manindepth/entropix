@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { specToCode } from "@entropix/ai";
+import { specToCode } from "@entropix/ai/generate";
 
 export async function POST(request: Request) {
   try {
