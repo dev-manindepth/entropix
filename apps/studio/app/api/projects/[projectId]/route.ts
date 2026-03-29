@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { auth } from "@clerk/nextjs/server";
 import {
   getProject,
   getGenerations,
@@ -11,8 +12,13 @@ export async function GET(
   { params }: { params: Promise<{ projectId: string }> },
 ) {
   try {
+    const { userId } = await auth();
+    if (!userId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const { projectId } = await params;
-    const project = await getProject(projectId);
+    const project = await getProject(projectId, userId);
 
     if (!project) {
       return NextResponse.json(
@@ -35,8 +41,13 @@ export async function PATCH(
   { params }: { params: Promise<{ projectId: string }> },
 ) {
   try {
+    const { userId } = await auth();
+    if (!userId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const { projectId } = await params;
-    const existing = await getProject(projectId);
+    const existing = await getProject(projectId, userId);
 
     if (!existing) {
       return NextResponse.json(
@@ -51,7 +62,7 @@ export async function PATCH(
       description?: string;
     };
 
-    const project = await updateProject(projectId, { name, description });
+    const project = await updateProject(projectId, { name, description }, userId);
     return NextResponse.json({ project });
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : "Unknown error";
@@ -65,8 +76,13 @@ export async function DELETE(
   { params }: { params: Promise<{ projectId: string }> },
 ) {
   try {
+    const { userId } = await auth();
+    if (!userId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const { projectId } = await params;
-    const existing = await getProject(projectId);
+    const existing = await getProject(projectId, userId);
 
     if (!existing) {
       return NextResponse.json(
@@ -75,7 +91,7 @@ export async function DELETE(
       );
     }
 
-    await deleteProject(projectId);
+    await deleteProject(projectId, userId);
     return NextResponse.json({ success: true });
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : "Unknown error";

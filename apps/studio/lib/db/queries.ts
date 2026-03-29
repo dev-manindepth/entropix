@@ -1,4 +1,4 @@
-import { eq, asc, desc, count } from "drizzle-orm";
+import { eq, and, asc, desc, count } from "drizzle-orm";
 import { db, initDb } from "./index";
 import { projects, generations, shares, deployments } from "./schema";
 import { createId } from "../nanoid";
@@ -14,23 +14,31 @@ async function ensureDb() {
 
 /* ─── Projects ─── */
 
-export async function getProjects() {
+export async function getProjects(userId: string) {
   await ensureDb();
-  return db.select().from(projects).orderBy(desc(projects.updatedAt));
+  return db
+    .select()
+    .from(projects)
+    .where(eq(projects.userId, userId))
+    .orderBy(desc(projects.updatedAt));
 }
 
-export async function getProject(id: string) {
+export async function getProject(id: string, userId?: string) {
   await ensureDb();
-  const rows = await db.select().from(projects).where(eq(projects.id, id));
+  const conditions = userId
+    ? and(eq(projects.id, id), eq(projects.userId, userId))
+    : eq(projects.id, id);
+  const rows = await db.select().from(projects).where(conditions);
   return rows[0] ?? null;
 }
 
-export async function createProject(name: string, description?: string) {
+export async function createProject(userId: string, name: string, description?: string) {
   await ensureDb();
   const id = createId();
   const now = new Date();
   await db.insert(projects).values({
     id,
+    userId,
     name,
     description: description ?? null,
     currentSpecJson: null,
@@ -43,19 +51,26 @@ export async function createProject(name: string, description?: string) {
 export async function updateProject(
   id: string,
   data: { name?: string; description?: string; currentSpecJson?: string },
+  userId?: string,
 ) {
   await ensureDb();
+  const conditions = userId
+    ? and(eq(projects.id, id), eq(projects.userId, userId))
+    : eq(projects.id, id);
   await db
     .update(projects)
     .set({ ...data, updatedAt: new Date() })
-    .where(eq(projects.id, id));
+    .where(conditions);
   return getProject(id);
 }
 
-export async function deleteProject(id: string) {
+export async function deleteProject(id: string, userId?: string) {
   await ensureDb();
+  const conditions = userId
+    ? and(eq(projects.id, id), eq(projects.userId, userId))
+    : eq(projects.id, id);
   await db.delete(generations).where(eq(generations.projectId, id));
-  await db.delete(projects).where(eq(projects.id, id));
+  await db.delete(projects).where(conditions);
 }
 
 /* ─── Generations ─── */

@@ -55,4 +55,9 @@ export async function initDb() {
       created_at TIMESTAMP NOT NULL DEFAULT NOW()
     )
   `;
+
+  // Add user_id column for Clerk auth (safe for existing rows)
+  await sql`
+    ALTER TABLE projects ADD COLUMN IF NOT EXISTS user_id TEXT NOT NULL DEFAULT 'anonymous'
+  `;
 }

@@ -17,6 +17,7 @@
     "@entropix/data": "workspace:*",
     "@entropix/react": "workspace:*",
     "@entropix/tokens": "workspace:*",
+    "@clerk/nextjs": "^6.12.0",
     "@vercel/postgres": "^0.10.0",
     "drizzle-orm": "^0.40.0",
     "nanoid": "^5.1.5",

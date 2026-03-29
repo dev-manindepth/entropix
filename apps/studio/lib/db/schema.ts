@@ -2,6 +2,7 @@ import { pgTable, text, integer, timestamp, uniqueIndex } from "drizzle-orm/pg-c
 
 export const projects = pgTable("projects", {
   id: text("id").primaryKey(),
+  userId: text("user_id").notNull().default("anonymous"),
   name: text("name").notNull(),
   description: text("description"),
   currentSpecJson: text("current_spec_json"),

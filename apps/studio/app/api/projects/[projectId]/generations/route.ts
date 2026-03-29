@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { auth } from "@clerk/nextjs/server";
 import { generateUI, refineUI } from "@entropix/ai/generate";
 import { getAdapter } from "@/lib/ai";
 import {
@@ -13,6 +14,11 @@ export async function POST(
   { params }: { params: Promise<{ projectId: string }> },
 ) {
   try {
+    const { userId } = await auth();
+    if (!userId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const { projectId } = await params;
     const { prompt } = (await request.json()) as { prompt: string };
 
@@ -23,7 +29,7 @@ export async function POST(
       );
     }
 
-    const project = await getProject(projectId);
+    const project = await getProject(projectId, userId);
     if (!project) {
       return NextResponse.json(
         { error: "Project not found" },

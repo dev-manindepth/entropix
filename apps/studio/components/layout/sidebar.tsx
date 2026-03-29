@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
+import { UserButton } from "@clerk/nextjs";
 import { Button, Divider } from "@entropix/react";
 
 interface Project {
@@ -81,6 +82,9 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
             >
               All Projects
             </Button>
+            <div style={{ display: "flex", justifyContent: "center", paddingTop: "var(--entropix-spacing-3)" }}>
+              <UserButton />
+            </div>
           </div>
         </>
       )}

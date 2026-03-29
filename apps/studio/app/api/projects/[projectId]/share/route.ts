@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { auth } from "@clerk/nextjs/server";
 import { getProject, createShare } from "@/lib/db/queries";
 
 export async function POST(
@@ -6,9 +7,14 @@ export async function POST(
   { params }: { params: Promise<{ projectId: string }> },
 ) {
   try {
+    const { userId } = await auth();
+    if (!userId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const { projectId } = await params;
 
-    const project = await getProject(projectId);
+    const project = await getProject(projectId, userId);
     if (!project) {
       return NextResponse.json(
         { error: "Project not found" },

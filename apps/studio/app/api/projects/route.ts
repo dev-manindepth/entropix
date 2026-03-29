@@ -1,9 +1,15 @@
 import { NextResponse } from "next/server";
+import { auth } from "@clerk/nextjs/server";
 import { getProjects, createProject } from "@/lib/db/queries";
 
 export async function GET() {
   try {
-    const projects = await getProjects();
+    const { userId } = await auth();
+    if (!userId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const projects = await getProjects(userId);
     return NextResponse.json({ projects });
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : "Unknown error";
@@ -14,6 +20,11 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
+    const { userId } = await auth();
+    if (!userId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const body = await request.json();
     const { name, description } = body as {
       name: string;
@@ -27,7 +38,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const project = await createProject(name, description);
+    const project = await createProject(userId, name, description);
     return NextResponse.json({ project }, { status: 201 });
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : "Unknown error";
