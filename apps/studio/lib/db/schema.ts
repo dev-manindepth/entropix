@@ -1,19 +1,15 @@
-import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
+import { pgTable, text, integer, timestamp } from "drizzle-orm/pg-core";
 
-export const projects = sqliteTable("projects", {
+export const projects = pgTable("projects", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
   description: text("description"),
   currentSpecJson: text("current_spec_json"),
-  createdAt: integer("created_at", { mode: "timestamp" })
-    .notNull()
-    .$defaultFn(() => new Date()),
-  updatedAt: integer("updated_at", { mode: "timestamp" })
-    .notNull()
-    .$defaultFn(() => new Date()),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 
-export const generations = sqliteTable("generations", {
+export const generations = pgTable("generations", {
   id: text("id").primaryKey(),
   projectId: text("project_id")
     .notNull()
@@ -25,7 +21,5 @@ export const generations = sqliteTable("generations", {
   rawResponse: text("raw_response"),
   promptTokens: integer("prompt_tokens"),
   completionTokens: integer("completion_tokens"),
-  createdAt: integer("created_at", { mode: "timestamp" })
-    .notNull()
-    .$defaultFn(() => new Date()),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
 });

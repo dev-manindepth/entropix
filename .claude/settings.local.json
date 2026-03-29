@@ -74,7 +74,41 @@
       "Bash(pnpm --filter @entropix/core lint)",
       "Bash(pnpm --filter @entropix/react lint)",
       "Bash(pnpm --filter @entropix/react-native lint)",
-      "Bash(pnpm --filter @entropix/tokens check-types)"
+      "Bash(pnpm --filter @entropix/tokens check-types)",
+      "Bash(xargs -I {} find {} -type f -name \"*.ts\" -o -name \"*.tsx\")",
+      "Bash(find packages/*/src -type f \\\\\\( -name \"*.ts\" -o -name \"*.tsx\" \\\\\\))",
+      "WebSearch",
+      "Bash(npx turbo:*)",
+      "Bash(pnpm --filter @entropix/react run lint)",
+      "Bash(pnpm --filter @entropix/core run lint)",
+      "WebFetch(domain:ai-sdk.dev)",
+      "WebFetch(domain:ui.shadcn.com)",
+      "WebFetch(domain:json-render.dev)",
+      "WebFetch(domain:www.openui.com)",
+      "WebFetch(domain:a2ui.org)",
+      "WebFetch(domain:thenewstack.io)",
+      "WebFetch(domain:docs.ag-ui.com)",
+      "WebFetch(domain:openuispec.org)",
+      "WebFetch(domain:github.com)",
+      "Bash(ls /Users/manish/Projects/Entropix/tsconfig*.json)",
+      "Bash(npx tsup:*)",
+      "Bash(grep -rn 'from \"\"\"\"\\\\.\\\\/' src/)",
+      "Bash(while read:*)",
+      "Bash(do sed:*)",
+      "Bash(xargs sed:*)",
+      "Bash(pnpm --filter @entropix/ai run lint)",
+      "Bash(ls /Users/manish/Projects/Entropix/packages/core/eslint.config.*)",
+      "Bash(wc -l /Users/manish/Projects/Entropix/packages/ai/src/generate/*.ts)",
+      "Bash(curl -s -X POST http://localhost:3001/api/generate -H \"Content-Type: application/json\" -d '{\"\"\"\"prompt\"\"\"\":\"\"\"\"A dashboard with 3 stat cards and a bar chart showing monthly revenue\"\"\"\"}')",
+      "Bash(npx eslint:*)",
+      "Bash(/Users/manish/.nvm/versions/node/v22.17.0/bin/node -e \":*)",
+      "WebFetch(domain:developers.cloudflare.com)",
+      "Bash(vercel --version)"
+    ],
+    "deny": [
+      "Read(**/.env.local)",
+      "Read(**/.env)",
+      "Read(**/.env.production)"
     ]
   }
 }

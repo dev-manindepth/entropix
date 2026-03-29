@@ -3,7 +3,7 @@ import { getProjects, createProject } from "@/lib/db/queries";
 
 export async function GET() {
   try {
-    const projects = getProjects();
+    const projects = await getProjects();
     return NextResponse.json({ projects });
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : "Unknown error";
@@ -27,7 +27,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const project = createProject(name, description);
+    const project = await createProject(name, description);
     return NextResponse.json({ project }, { status: 201 });
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : "Unknown error";

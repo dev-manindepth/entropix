@@ -1,0 +1,13 @@
+node_modules
+.next
+dist
+*.db
+*.db-shm
+*.db-wal
+.turbo
+.expo
+apps/demo/.next
+apps/demo-mobile
+apps/EntroShop
+apps/storybook
+.git

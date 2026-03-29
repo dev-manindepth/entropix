@@ -12,7 +12,7 @@ export async function GET(
 ) {
   try {
     const { projectId } = await params;
-    const project = getProject(projectId);
+    const project = await getProject(projectId);
 
     if (!project) {
       return NextResponse.json(
@@ -21,8 +21,8 @@ export async function GET(
       );
     }
 
-    const generations = getGenerations(projectId);
-    return NextResponse.json({ project, generations });
+    const gens = await getGenerations(projectId);
+    return NextResponse.json({ project, generations: gens });
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : "Unknown error";
     console.error("GET /api/projects/[id] error:", message);
@@ -36,7 +36,7 @@ export async function PATCH(
 ) {
   try {
     const { projectId } = await params;
-    const existing = getProject(projectId);
+    const existing = await getProject(projectId);
 
     if (!existing) {
       return NextResponse.json(
@@ -51,7 +51,7 @@ export async function PATCH(
       description?: string;
     };
 
-    const project = updateProject(projectId, { name, description });
+    const project = await updateProject(projectId, { name, description });
     return NextResponse.json({ project });
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : "Unknown error";
@@ -66,7 +66,7 @@ export async function DELETE(
 ) {
   try {
     const { projectId } = await params;
-    const existing = getProject(projectId);
+    const existing = await getProject(projectId);
 
     if (!existing) {
       return NextResponse.json(
@@ -75,7 +75,7 @@ export async function DELETE(
       );
     }
 
-    deleteProject(projectId);
+    await deleteProject(projectId);
     return NextResponse.json({ success: true });
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : "Unknown error";

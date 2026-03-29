@@ -6,7 +6,7 @@ const nextConfig = {
     "@entropix/ai",
     "@entropix/data",
   ],
-  serverExternalPackages: ["better-sqlite3"],
+  serverExternalPackages: [],
 };
 
 export default nextConfig;

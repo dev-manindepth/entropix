@@ -23,7 +23,7 @@ export async function POST(
       );
     }
 
-    const project = getProject(projectId);
+    const project = await getProject(projectId);
     if (!project) {
       return NextResponse.json(
         { error: "Project not found" },
@@ -32,7 +32,7 @@ export async function POST(
     }
 
     const adapter = getAdapter();
-    const turnNumber = getNextTurnNumber(projectId);
+    const turnNumber = await getNextTurnNumber(projectId);
 
     let result;
     if (!project.currentSpecJson) {
@@ -56,7 +56,7 @@ export async function POST(
     }
 
     // Insert user message
-    createGeneration({
+    await createGeneration({
       projectId,
       turnNumber,
       role: "user",
@@ -68,7 +68,7 @@ export async function POST(
     });
 
     // Insert assistant message
-    createGeneration({
+    await createGeneration({
       projectId,
       turnNumber,
       role: "assistant",
@@ -80,7 +80,7 @@ export async function POST(
     });
 
     // Update project's current spec
-    updateProject(projectId, {
+    await updateProject(projectId, {
       currentSpecJson: JSON.stringify(result.spec),
     });
 

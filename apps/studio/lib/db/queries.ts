@@ -1,54 +1,75 @@
 import { eq, asc, desc, count } from "drizzle-orm";
-import { db } from "./index";
+import { db, initDb } from "./index";
 import { projects, generations } from "./schema";
 import { createId } from "../nanoid";
 
+let initialized = false;
+
+async function ensureDb() {
+  if (!initialized) {
+    await initDb();
+    initialized = true;
+  }
+}
+
 /* ─── Projects ─── */
 
-export function getProjects() {
-  return db.select().from(projects).orderBy(desc(projects.updatedAt)).all();
+export async function getProjects() {
+  await ensureDb();
+  return db.select().from(projects).orderBy(desc(projects.updatedAt));
 }
 
-export function getProject(id: string) {
-  return db.select().from(projects).where(eq(projects.id, id)).get();
+export async function getProject(id: string) {
+  await ensureDb();
+  const rows = await db.select().from(projects).where(eq(projects.id, id));
+  return rows[0] ?? null;
 }
 
-export function createProject(name: string, description?: string) {
+export async function createProject(name: string, description?: string) {
+  await ensureDb();
   const id = createId();
   const now = new Date();
-  db.insert(projects)
-    .values({ id, name, description: description ?? null, currentSpecJson: null, createdAt: now, updatedAt: now })
-    .run();
-  return getProject(id)!;
+  await db.insert(projects).values({
+    id,
+    name,
+    description: description ?? null,
+    currentSpecJson: null,
+    createdAt: now,
+    updatedAt: now,
+  });
+  return (await getProject(id))!;
 }
 
-export function updateProject(
+export async function updateProject(
   id: string,
   data: { name?: string; description?: string; currentSpecJson?: string },
 ) {
-  db.update(projects)
+  await ensureDb();
+  await db
+    .update(projects)
     .set({ ...data, updatedAt: new Date() })
-    .where(eq(projects.id, id))
-    .run();
+    .where(eq(projects.id, id));
   return getProject(id);
 }
 
-export function deleteProject(id: string) {
-  db.delete(projects).where(eq(projects.id, id)).run();
+export async function deleteProject(id: string) {
+  await ensureDb();
+  await db.delete(generations).where(eq(generations.projectId, id));
+  await db.delete(projects).where(eq(projects.id, id));
 }
 
 /* ─── Generations ─── */
 
-export function getGenerations(projectId: string) {
+export async function getGenerations(projectId: string) {
+  await ensureDb();
   return db
     .select()
     .from(generations)
     .where(eq(generations.projectId, projectId))
-    .orderBy(asc(generations.turnNumber), asc(generations.createdAt))
-    .all();
+    .orderBy(asc(generations.turnNumber), asc(generations.createdAt));
 }
 
-export function createGeneration(data: {
+export async function createGeneration(data: {
   projectId: string;
   turnNumber: number;
   role: "user" | "assistant";
@@ -58,19 +79,22 @@ export function createGeneration(data: {
   promptTokens: number | null;
   completionTokens: number | null;
 }) {
+  await ensureDb();
   const id = createId();
-  db.insert(generations)
-    .values({ id, ...data, createdAt: new Date() })
-    .run();
-  return db.select().from(generations).where(eq(generations.id, id)).get()!;
+  await db.insert(generations).values({ id, ...data, createdAt: new Date() });
+  const rows = await db
+    .select()
+    .from(generations)
+    .where(eq(generations.id, id));
+  return rows[0]!;
 }
 
-export function getNextTurnNumber(projectId: string) {
-  const result = db
+export async function getNextTurnNumber(projectId: string) {
+  await ensureDb();
+  const result = await db
     .select({ total: count() })
     .from(generations)
-    .where(eq(generations.projectId, projectId))
-    .get();
-  const total = result?.total ?? 0;
+    .where(eq(generations.projectId, projectId));
+  const total = result[0]?.total ?? 0;
   return Math.floor(total / 2) + 1;
 }
