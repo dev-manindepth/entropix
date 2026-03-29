@@ -1,6 +1,6 @@
 import { eq, asc, desc, count } from "drizzle-orm";
 import { db, initDb } from "./index";
-import { projects, generations } from "./schema";
+import { projects, generations, shares, deployments } from "./schema";
 import { createId } from "../nanoid";
 
 let initialized = false;
@@ -97,4 +97,59 @@ export async function getNextTurnNumber(projectId: string) {
     .where(eq(generations.projectId, projectId));
   const total = result[0]?.total ?? 0;
   return Math.floor(total / 2) + 1;
+}
+
+/* ─── Shares ─── */
+
+export async function createShare(projectId: string, specJson: string, title?: string) {
+  await ensureDb();
+  const id = createId();
+  await db.insert(shares).values({
+    id,
+    projectId,
+    specJson,
+    title: title ?? null,
+    createdAt: new Date(),
+  });
+  const rows = await db.select().from(shares).where(eq(shares.id, id));
+  return rows[0]!;
+}
+
+export async function getShare(id: string) {
+  await ensureDb();
+  const rows = await db.select().from(shares).where(eq(shares.id, id));
+  return rows[0] ?? null;
+}
+
+export async function getProjectShares(projectId: string) {
+  await ensureDb();
+  return db.select().from(shares).where(eq(shares.projectId, projectId)).orderBy(desc(shares.createdAt));
+}
+
+/* ─── Deployments ─── */
+
+export async function createDeployment(projectId: string, slug: string, specJson: string, title?: string) {
+  await ensureDb();
+  const id = createId();
+  await db.insert(deployments).values({
+    id,
+    projectId,
+    slug,
+    specJson,
+    title: title ?? null,
+    createdAt: new Date(),
+  });
+  const rows = await db.select().from(deployments).where(eq(deployments.id, id));
+  return rows[0]!;
+}
+
+export async function getDeploymentBySlug(slug: string) {
+  await ensureDb();
+  const rows = await db.select().from(deployments).where(eq(deployments.slug, slug));
+  return rows[0] ?? null;
+}
+
+export async function getProjectDeployments(projectId: string) {
+  await ensureDb();
+  return db.select().from(deployments).where(eq(deployments.projectId, projectId)).orderBy(desc(deployments.createdAt));
 }

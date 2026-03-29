@@ -1,10 +1,13 @@
 "use client";
 
+import { useState } from "react";
 import { Button } from "@entropix/react";
+import { ShareDialog } from "./share-dialog";
 
 type Viewport = "desktop" | "tablet" | "mobile";
 
 interface ToolbarProps {
+  projectId: string;
   projectName: string;
   onExport: () => void;
   viewport: Viewport;
@@ -20,6 +23,7 @@ const VIEWPORTS: { value: Viewport; label: string }[] = [
 ];
 
 export function Toolbar({
+  projectId,
   projectName,
   onExport,
   viewport,
@@ -27,6 +31,8 @@ export function Toolbar({
   fullscreen,
   onToggleFullscreen,
 }: ToolbarProps) {
+  const [isShareOpen, setIsShareOpen] = useState(false);
+
   return (
     <div className="workspace-toolbar">
       <div className="workspace-toolbar-name">{projectName}</div>
@@ -48,10 +54,25 @@ export function Toolbar({
           {fullscreen ? "Exit Fullscreen" : "⛶ Fullscreen"}
         </Button>
 
+        <Button
+          variant="secondary"
+          size="sm"
+          onPress={() => setIsShareOpen(true)}
+        >
+          Share
+        </Button>
+
         <Button variant="secondary" size="sm" onPress={onExport}>
           Export Code
         </Button>
       </div>
+
+      <ShareDialog
+        projectId={projectId}
+        projectName={projectName}
+        isOpen={isShareOpen}
+        onClose={() => setIsShareOpen(false)}
+      />
     </div>
   );
 }

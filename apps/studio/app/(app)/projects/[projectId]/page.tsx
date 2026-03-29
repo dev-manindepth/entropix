@@ -171,6 +171,7 @@ export default function WorkspacePage() {
   return (
     <div className={`workspace ${fullscreenPreview ? "workspace--fullscreen" : ""}`}>
       <Toolbar
+        projectId={projectId}
         projectName={project.name}
         onExport={handleExportCode}
         viewport={viewport}

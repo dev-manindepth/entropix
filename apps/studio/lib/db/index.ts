@@ -34,4 +34,25 @@ export async function initDb() {
       created_at TIMESTAMP NOT NULL DEFAULT NOW()
     )
   `;
+
+  await sql`
+    CREATE TABLE IF NOT EXISTS shares (
+      id TEXT PRIMARY KEY,
+      project_id TEXT NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
+      spec_json TEXT NOT NULL,
+      title TEXT,
+      created_at TIMESTAMP NOT NULL DEFAULT NOW()
+    )
+  `;
+
+  await sql`
+    CREATE TABLE IF NOT EXISTS deployments (
+      id TEXT PRIMARY KEY,
+      project_id TEXT NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
+      slug TEXT NOT NULL UNIQUE,
+      spec_json TEXT NOT NULL,
+      title TEXT,
+      created_at TIMESTAMP NOT NULL DEFAULT NOW()
+    )
+  `;
 }
