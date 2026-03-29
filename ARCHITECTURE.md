@@ -1,437 +1,314 @@
-# Entropix Design System — Architecture
+# Entropix Design System -- Architecture
 
 ## 1. Project Overview
 
-Entropix is a cross-platform React Design System spanning 6 published npm packages that serve both web (React) and mobile (React Native). It follows a **headless-core + styled-adapter** architecture inspired by Adobe React Spectrum's layered approach — separating interaction logic from presentation so the same behavioral hooks drive components on both platforms.
+Entropix is an AI-native cross-platform design system spanning 7 packages and 7 apps in a pnpm monorepo. It serves both web (React) and mobile (React Native) from a shared headless core, following a **headless-core + styled-adapter** architecture inspired by Adobe React Spectrum's layered approach. The AI layer (`@entropix/ai`) adds a component registry, JSON-driven renderer, and generation pipeline on top of the design system primitives.
 
-**Published packages (all at v1.0.1):**
+**Published packages:**
+
+| Package | Version | Purpose |
+|---------|---------|---------|
+| `@entropix/core` | 2.0.0 | Headless hooks, accessibility primitives, chart math, date utilities, i18n |
+| `@entropix/tokens` | 1.0.1 | W3C DTCG design tokens -- CSS variables, JS objects, multi-brand themes |
+| `@entropix/react` | 2.0.0 | Web components styled with CSS custom properties |
+| `@entropix/react-native` | 2.0.0 | Mobile components with StyleSheet theming |
+| `@entropix/data` | 2.0.0 | Web DataTable + Charts (Bar, Line, Area, Pie) |
+| `@entropix/data-native` | 2.0.0 | Mobile DataTable + Charts using react-native-svg |
+| `@entropix/ai` | 0.0.0 | AI-native layer -- registry, renderer, generation pipeline |
+
+**Internal packages (not published):**
 
 | Package | Purpose |
 |---------|---------|
-| `@entropix/core` | Headless hooks, accessibility primitives, chart math utilities |
-| `@entropix/tokens` | W3C DTCG design tokens, multi-brand, light/dark themes |
-| `@entropix/react` | Web components styled with CSS custom properties |
-| `@entropix/react-native` | Mobile components with StyleSheet theming |
-| `@entropix/data` | Web DataTable + Charts (Bar, Line, Area, Pie) |
-| `@entropix/data-native` | Mobile DataTable + Charts using react-native-svg |
+| `@entropix/eslint-config` | Shared ESLint configuration |
+| `@entropix/typescript-config` | Shared TypeScript configuration |
+| `@entropix/ui` | Internal shared UI utilities |
 
 ---
 
-## 2. Architecture — The Three-Layer Model
+## 2. Monorepo Structure
+
+### Dependency Graph
 
 ```
-┌──────────────────────────────────────────────────────┐
-│  Layer 3: Styled Components                          │
-│  @entropix/react          @entropix/react-native     │
-│  (DOM + CSS)              (Native Views + StyleSheet) │
-├──────────────────────────────────────────────────────┤
-│  Layer 2: Design Tokens                              │
-│  @entropix/tokens                                    │
-│  CSS Variables (web)  ·  JS Objects (RN)  ·  Types   │
-├──────────────────────────────────────────────────────┤
-│  Layer 1: Headless Core                              │
-│  @entropix/core                                      │
-│  Hooks · Accessibility · Keyboard · State · Charts   │
-└──────────────────────────────────────────────────────┘
+@entropix/core <-- @entropix/react
+@entropix/core <-- @entropix/react-native
+@entropix/core <-- @entropix/data
+@entropix/core <-- @entropix/data-native
+@entropix/core <-- @entropix/ai
+
+@entropix/tokens <-- @entropix/react-native
+@entropix/tokens <-- @entropix/data-native
 ```
 
-### Layer 1: Headless Core (`@entropix/core`)
+Web packages (`@entropix/react`, `@entropix/data`) consume tokens via CSS imports at the application level, so there is no hard npm dependency from those packages to `@entropix/tokens`. React Native packages import token JS objects directly, creating a real dependency.
 
-Platform-agnostic hooks that encapsulate all interaction logic:
+### Directory Layout
 
-`useButton`, `useToggle`, `useDialog`, `useTabs`, `useAccordion`, `useMenu`, `useInput`, `useSelect`, `useRadioGroup`, `useTable`
-
-Each hook returns:
-- **State** — current values (checked, expanded, selected, etc.)
-- **Accessibility props** — WAI-ARIA roles, states, and properties
-- **Keyboard handlers** — key-to-action mappings
-- **Event callbacks** — action functions for the platform layer to wire up
-
-The hooks use a **prop-getter pattern** (like Downshift / React Table). A consumer calls a function like `getToggleProps()` and receives a bag of props to spread onto their element:
-
-```ts
-// Inside @entropix/core — useToggle hook (simplified)
-export function useToggle(options: UseToggleOptions = {}): UseToggleReturn {
-  const [isChecked, setChecked] = useControllableState<boolean>({
-    value: options.checked,
-    defaultValue: options.defaultChecked ?? false,
-    onChange: options.onChange,
-  });
-
-  const getToggleProps = (overrides?) => ({
-    accessibility: {
-      role: options.role ?? "checkbox",
-      checked: isChecked,
-      disabled: options.disabled || undefined,
-      tabIndex: options.disabled ? -1 : 0,
-    },
-    keyboardConfig: options.disabled ? undefined : keyboardConfig,
-    onAction: options.disabled ? undefined : (overrides?.onAction ?? toggle),
-  });
-
-  return { isChecked, isDisabled: options.disabled, toggle, setChecked, getToggleProps };
-}
 ```
-
-Zero DOM or React Native dependencies — pure React state and logic. Chart math utilities (scales, ticks, geometry, normalization) also live here.
-
-#### Architectural Decision: Prop-Getter Pattern
-
-| | |
-|---|---|
-| **Chosen** | Prop-getter pattern (like Downshift, React Table) |
-| **Why** | Maximum flexibility — the consumer controls the DOM entirely. The hook returns `getToggleProps()` which gives you `role`, `aria-checked`, `onAction`, `keyboardConfig`. The platform layer decides how to apply them. |
-| **Tradeoff** | Slightly more verbose than compound components, but enables platform adaptation: same hook produces different JSX on web vs React Native. |
-| **Industry** | Adobe React Aria uses hooks. Radix uses compound components. Headless UI uses renderless components. We chose hooks because they work identically across web and RN — compound components assume a DOM. |
+Entropix/
+  apps/
+    studio/          # AI-native design studio (Next.js)
+    demo/            # Web component showcase (Vite + React)
+    demo-mobile/     # React Native component showcase (Expo)
+    web/             # Marketing / landing page (Next.js)
+    docs/            # Documentation site
+    storybook/       # Storybook 10 with Vite builder
+    mobile/          # React Native app shell (Expo)
+  packages/
+    core/            # Headless hooks and utilities
+    tokens/          # Design tokens (Style Dictionary)
+    react/           # Web components
+    react-native/    # Mobile components
+    data/            # Web data components (DataTable, Charts)
+    data-native/     # Mobile data components
+    ai/              # AI layer (registry, renderer, CLI)
+    eslint-config/   # Shared lint rules
+    typescript-config/ # Shared tsconfig
+    ui/              # Internal UI utilities
+  scripts/
+    verify-treeshake.mjs  # esbuild-based tree-shaking verification
+  .changeset/        # Changesets config for versioning
+  .github/workflows/ # CI and Publish workflows
+  .size-limit.json   # Bundle size budgets
+  turbo.json         # Turborepo task definitions
+  pnpm-workspace.yaml
+```
 
 ---
 
-### Layer 2: Design Tokens (`@entropix/tokens`)
-
-- **Source format:** W3C Design Token Community Group (DTCG) JSON
-- **Build tool:** Style Dictionary
-- **Outputs:** CSS custom properties (web), JS objects (RN), TypeScript type definitions
-- **Multi-brand:** `ocean` (teal), `sunset` (orange) — brands override primitive and semantic tokens
-- **Multi-theme:** light and dark per brand
-- **Scale:** 235 CSS custom properties per brand-theme combination
-
-Token structure:
+## 3. Three-Layer Architecture
 
 ```
-tokens/src/
-├── primitives/         # colors, spacing, typography, radii, shadows, motion
-├── semantic/           # colors, spacing, typography (reference primitives)
-├── themes/             # light.json, dark.json (map semantics to primitives)
-├── components/         # component-level tokens (button.json, etc.)
-└── brands/
-    ├── ocean/          # overrides primitives + semantics + themes
-    └── sunset/         # overrides primitives + semantics + themes
++------------------------------------------------------+
+|  Layer 3: Styled Components                          |
+|  @entropix/react          @entropix/react-native     |
+|  @entropix/data           @entropix/data-native      |
+|  (DOM + CSS)              (Native Views + StyleSheet) |
++------------------------------------------------------+
+|  Layer 2: Design Tokens                              |
+|  @entropix/tokens                                    |
+|  CSS Variables (web)  .  JS Objects (RN)  .  Types   |
++------------------------------------------------------+
+|  Layer 1: Headless Core                              |
+|  @entropix/core                                      |
+|  Hooks . Accessibility . Keyboard . State . Charts   |
++------------------------------------------------------+
+|  AI Layer (orthogonal)                               |
+|  @entropix/ai                                        |
+|  Registry . Renderer . Generation Pipeline . CLI     |
++------------------------------------------------------+
 ```
 
-Example brand token (ocean light theme):
+**Layer 1 -- Headless Core:** Platform-agnostic React hooks encapsulating interaction logic, state management, accessibility contracts, and keyboard handling. Zero DOM or React Native dependencies. Chart math and date utilities also live here.
+
+**Layer 2 -- Design Tokens:** W3C DTCG-format JSON tokens compiled by Style Dictionary into CSS custom properties (web) and JS objects (React Native). Supports multiple brands (default, ocean, sunset) and themes (light, dark).
+
+**Layer 3 -- Styled Components:** Platform-specific components that wire hooks to rendering. Web components use CSS classes and `mapAccessibilityToAria()`. RN components use StyleSheet and `mapAccessibilityToRN()`.
+
+**AI Layer:** Sits orthogonally across all three layers. Provides a component registry for AI code generation, a JSON spec renderer (`EntropixRenderer`), and a CLI for scaffolding.
+
+---
+
+## 4. Tech Stack
+
+| Concern | Tool | Why |
+|---------|------|-----|
+| Monorepo manager | pnpm 9.0 | Strict dependency resolution, disk-efficient via content-addressable store |
+| Task orchestrator | Turborepo 2.8 | Dependency-aware parallel builds, remote caching |
+| Package bundler | tsup (esbuild) | Fast ESM+CJS dual builds with declaration files, multi-entry support |
+| Token compiler | Style Dictionary v4 | W3C DTCG support, custom transforms, multi-platform output |
+| CSS minifier | lightningcss | Fastest CSS minification, 20-40% savings |
+| Testing (web) | Vitest + @testing-library/react | Fast, ESM-native, compatible with Jest API |
+| Testing (RN) | Jest + @testing-library/react-native | Standard RN testing stack |
+| Linting | ESLint 9 (flat config) | Shared config via `@entropix/eslint-config` |
+| Formatting | Prettier | Consistent code style across all packages |
+| Versioning | Changesets | Linked versioning, automated release PRs |
+| Bundle analysis | size-limit | Per-package size budgets enforced in CI |
+| TypeScript | 5.9.2 | Shared via `@entropix/typescript-config` |
+| Storybook | Storybook 10 + Vite | Component playground with a11y addon |
+
+---
+
+## 5. Build System
+
+### Turborepo Task Graph
+
+Defined in `turbo.json`:
+
+| Task | `dependsOn` | Caching | Description |
+|------|-------------|---------|-------------|
+| `build` | `^build` (upstream deps first) | Outputs: `dist/**`, `.next/**` | Full build of all packages and apps |
+| `lint` | `^lint` | Default | Lint with ESLint |
+| `check-types` | `^check-types` | Default | TypeScript type checking |
+| `test` | `^build` | Default | Tests depend on built packages |
+| `dev` | None | Disabled (`cache: false`) | Dev mode, persistent |
+
+When you run `turbo run build`, Turborepo resolves the dependency graph:
+1. `@entropix/tokens` builds first (no upstream deps)
+2. `@entropix/core` builds next
+3. `@entropix/react`, `@entropix/react-native`, `@entropix/data`, `@entropix/data-native`, `@entropix/ai` build in parallel (all depend on core)
+4. Apps build last (depend on packages)
+
+### Key Build Commands
+
+```bash
+pnpm build               # Build everything (packages + apps)
+pnpm build:packages       # Build only packages
+pnpm tokens:build         # Build only @entropix/tokens
+pnpm test:packages        # Test only packages
+pnpm release              # Build packages + changeset publish
+pnpm publish:dry          # Dry-run publish to verify package contents
+```
+
+---
+
+## 6. CI/CD
+
+Two GitHub Actions workflows in `.github/workflows/`:
+
+### CI (`ci.yml`)
+
+Triggered on push to main and pull requests.
+
+**Job 1: Build & Test** -- runs across a Node 18/20/22 matrix:
+- Install pnpm, checkout, `pnpm install --frozen-lockfile`
+- `turbo run build --filter='./packages/*'`
+- `turbo run lint --filter='./packages/*'`
+- `turbo run check-types --filter='./packages/*'`
+- `turbo run test --filter='./packages/*'`
+
+**Job 2: Build Apps** -- runs after Build & Test passes (Node 22 only):
+- Builds `web` and `demo` apps to verify integration
+
+**Job 3: Publish Dry Run** -- runs on PRs only:
+- Builds packages then runs `npm pack --dry-run` for tokens, core, react, react-native
+- Validates package contents before merge
+
+### Publish (`publish.yml`)
+
+Triggered on push to main. Uses `changesets/action@v1`:
+- Builds all packages, runs tests
+- Either creates a "Version Packages" PR (if changesets exist) or publishes to npm (if versions were bumped)
+- Environment: `GITHUB_TOKEN` for PR creation, `NPM_TOKEN` for npm publish
+
+---
+
+## 7. Package Versioning
+
+Managed via **Changesets** with linked versioning:
 
 ```json
+// .changeset/config.json
 {
-  "color": {
-    "action": {
-      "primary": {
-        "default": { "$value": "{color.teal.600}", "$type": "color" },
-        "hover":   { "$value": "{color.teal.700}", "$type": "color" },
-        "active":  { "$value": "{color.teal.800}", "$type": "color" }
-      }
-    }
-  }
+  "linked": [
+    ["@entropix/core", "@entropix/react", "@entropix/react-native",
+     "@entropix/tokens", "@entropix/data", "@entropix/data-native"]
+  ],
+  "access": "public",
+  "baseBranch": "main",
+  "updateInternalDependencies": "patch",
+  "ignore": ["@entropix/storybook"]
 }
 ```
 
-#### Architectural Decision: CSS Custom Properties
+All 6 published packages are linked -- when any one bumps, they all bump to the same version. This prevents version drift between tightly-coupled packages. Storybook is excluded from versioning since it is not published.
 
-| | |
-|---|---|
-| **Chosen** | CSS custom properties (CSS variables) |
-| **Why** | Zero runtime cost, works with any framework, SSR-friendly, cascade naturally handles theming via data attributes. |
-| **Tradeoff** | No type-safe style props (like Chakra's `<Box bg="blue.500">`). Requires importing CSS files. |
-| **Industry** | Shopify Polaris uses CSS variables. Ant Design uses CSS-in-JS (cssinjs). Chakra uses Emotion. We avoid runtime CSS-in-JS to keep bundle size minimal and enable SSR without hydration issues. |
+**Workflow:**
+1. Developer runs `pnpm changeset` and describes the change
+2. CI detects changeset files and opens a "Version Packages" PR
+3. On merge, `changesets/action` runs `pnpm release` to publish to npm
 
 ---
 
-### Layer 3: Styled Components (`@entropix/react`, `@entropix/react-native`)
+## 8. Bundle Size Strategy
 
-The styled layer connects hooks to platform-specific rendering:
+### Size Budgets (`.size-limit.json`)
 
-- **Web:** React components import headless hooks + CSS files with BEM classes
-- **RN:** React Native components import hooks + inline StyleSheet using token values from `useTheme()`
+| Entry | Limit | Ignores |
+|-------|-------|---------|
+| `@entropix/core` (barrel) | 20 KB | react |
+| `@entropix/react` (barrel) | 20 KB | react, react-dom, @entropix/core |
+| `@entropix/react/button` (single) | 5 KB | react, react-dom, @entropix/core |
+| `@entropix/data` (barrel) | 20 KB | react, react-dom, @entropix/core |
 
-Each component maps hook output to platform-specific JSX and accessibility attributes:
-- Web uses `mapAccessibilityToAria()` to convert the generic accessibility bag to `aria-*` attributes
-- RN uses `mapAccessibilityToRN()` to convert to `accessibilityRole`, `accessibilityState`, etc.
+Run `pnpm size` to measure, `pnpm size:check` to enforce limits.
 
-```tsx
-// @entropix/react — Toggle component (simplified)
-export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(
-  function Toggle(props, ref) {
-    const { isChecked, isDisabled, getToggleProps } = useToggle({
-      checked: props.checked,
-      defaultChecked: props.defaultChecked,
-      onChange: props.onChange,
-      disabled: props.disabled,
-      role: "checkbox",
-    });
+### Tree-Shaking Verification
 
-    const propGetterReturn = getToggleProps();
-    const ariaProps = mapAccessibilityToAria(propGetterReturn.accessibility);
+`scripts/verify-treeshake.mjs` uses esbuild to bundle single-component imports and asserts that unrelated code is excluded:
+- Importing only `Button` from `@entropix/react` must not include `useDialog`, `useMenu`, `useTabs`, or `useAccordion`
+- Importing only `useButton` from `@entropix/core` must not include `computeArcGeometry`, `computeBarGeometry`, or `useTable`
 
-    return (
-      <button
-        ref={ref}
-        type="button"
-        className={cn("entropix-toggle", props.className)}
-        {...ariaProps}
-        disabled={isDisabled || undefined}
-        onClick={() => propGetterReturn.onAction?.()}
-        data-state={isChecked ? "checked" : "unchecked"}
-      >
-        {props.children ?? props.label ?? (isChecked ? "On" : "Off")}
-      </button>
-    );
-  },
-);
-```
-
-#### Architectural Decision: Separate Packages per Platform
-
-| | |
-|---|---|
-| **Chosen** | Separate `@entropix/react` and `@entropix/react-native` |
-| **Why** | Web and RN have fundamentally different rendering models (DOM vs native views). A single package with platform switching adds complexity and increases bundle size for consumers targeting only one platform. |
-| **Tradeoff** | Code duplication in component wrappers — roughly 30% shared logic lives in hooks, 70% is platform-specific JSX and styling. |
-| **Industry** | Razorpay Blade uses a single package with platform detection. Adobe Spectrum has separate packages per component. We chose separate packages for cleaner tree shaking and simpler dependency trees. |
+All packages use `"sideEffects": false` (or `["**/*.css"]` for CSS-containing packages) to enable bundler tree-shaking.
 
 ---
 
-## 3. Multi-Brand Theming Architecture
+## 9. Development Workflow
 
-### Web Strategy
+### Adding a New Component (e.g., "Slider")
 
-Brand and theme switching is driven by CSS selector cascading with data attributes:
-
-```html
-<div data-brand="ocean" data-theme="dark">
-  <!-- All components inside automatically pick up ocean/dark tokens -->
-</div>
-```
-
-All brand CSS is pre-loaded. Switching is instant via DOM attribute change — no re-render needed, CSS variables cascade through the tree.
-
-```css
-/* Generated by Style Dictionary */
-[data-brand="ocean"][data-theme="light"] {
-  --color-bg-primary: #ffffff;
-  --color-action-primary-default: #0d9488;
-  /* ... 235 variables */
-}
-
-[data-brand="ocean"][data-theme="dark"] {
-  --color-bg-primary: #0f172a;
-  --color-action-primary-default: #2dd4bf;
-  /* ... */
-}
-```
-
-### React Native Strategy
-
-A brand registry pattern with a context-based provider:
-
-```ts
-import { registerBrand, EntropixProvider } from "@entropix/react-native";
-import { tokens as oceanLight } from "@entropix/tokens/brands/ocean/native/light";
-import { tokens as oceanDark } from "@entropix/tokens/brands/ocean/native/dark";
-
-// Register at app startup
-registerBrand("ocean", { light: oceanLight, dark: oceanDark });
-
-// Wrap the component tree
-<EntropixProvider brand="ocean" mode="dark">
-  <App />
-</EntropixProvider>
-```
-
-Components access tokens via `useTheme()` — context-based, triggers re-render on brand or mode change.
-
-#### Architectural Decision: Pre-Load All Brands
-
-| | |
-|---|---|
-| **Chosen** | Pre-load all brand CSS (web), registry pattern (RN) |
-| **Why** | Instant switching without network requests or FOUC. Brand CSS is small (~2-3KB per brand). |
-| **Tradeoff** | Initial payload includes all brands. For 10+ brands, lazy loading would be more appropriate. |
-| **Industry** | Shopify loads one theme at a time (single brand). Spectrum does not support multi-brand. Blade supports themes but not multi-brand. Our approach is closer to how large retail apps handle brand verticals. |
+1. **Core hook** -- Create `packages/core/src/hooks/use-slider.ts` with state, accessibility props, keyboard config
+2. **Types** -- Add any new types to `packages/core/src/types/`
+3. **Tests** -- Add `packages/core/src/__tests__/hooks/use-slider.test.ts`
+4. **React component** -- Create `packages/react/src/slider/` with `Slider.tsx` + `slider.css`
+5. **React Native component** -- Create `packages/react-native/src/slider/Slider.tsx`
+6. **CSS** -- Style using `--entropix-*` custom properties from tokens
+7. **Storybook story** -- Add `apps/storybook/stories/Slider.stories.tsx`
+8. **Exports** -- Add to `index.ts` barrels and `tsup.config.ts` entry points in core and react
+9. **Package exports** -- Add subpath export to `package.json` (e.g., `"./hooks/use-slider"`)
+10. **Changeset** -- Run `pnpm changeset` to describe the addition
 
 ---
 
-## 4. Data Components Architecture
+## 10. Apps
 
-### DataTable
-
-- **Headless:** `useTable` hook in `@entropix/core` handles sorting, filtering, pagination, and selection state
-- **Web:** Semantic HTML `<table>` with CSS
-- **RN:** FlatList-based with horizontal ScrollView for wide tables
-- **Features:** Multi-column sort, text/select filters, row selection with checkbox, pagination
-
-### Charts (Bar, Line, Area, Pie)
-
-- **Web:** Zero external dependencies — pure SVG rendering
-- **RN:** `react-native-svg` (unavoidable — RN has no native SVG)
-- **Shared math** in `@entropix/core`: linear/band scales, tick generation, arc geometry, line path computation
-- **Brand-aware:** Web charts use CSS variables (`var(--chart-series-1)`), RN charts use a `useChartColors()` hook that reads primary brand color from tokens
-
-#### Architectural Decision: Custom Chart Engine
-
-| | |
-|---|---|
-| **Chosen** | Custom SVG rendering from scratch |
-| **Why** | Full control, zero dependencies, brand-aware via token integration, SSR-safe. ~4KB bundle vs 50KB+ for Recharts. |
-| **Tradeoff** | Fewer chart types, no animations yet, less battle-tested than D3. |
-| **Industry** | Shopify Polaris Viz uses D3. Most design systems do not include charts at all. We chose custom for minimal bundle and tight token integration. |
+| App | Framework | Purpose |
+|-----|-----------|---------|
+| `studio` | Next.js | AI-native design studio -- visual spec builder, preview, code export |
+| `demo` | Vite + React | Interactive component showcase for web components |
+| `demo-mobile` | Expo | React Native component showcase |
+| `web` | Next.js | Marketing site and landing page |
+| `docs` | Vite | Documentation site |
+| `storybook` | Storybook 10 + Vite | Component playground with a11y addon, CSF3 with autodocs |
+| `mobile` | Expo | Full React Native app shell |
 
 ---
 
-## 5. Build and Optimization
+## 11. Design Principles
 
-### Multi-Entry Builds (tsup)
-
-Each package produces per-component entry points alongside a barrel index:
-
-```ts
-// Per-component import — only Button code (932B gzipped)
-import { Button } from "@entropix/react/button";
-
-// Barrel import — still works (backward compatible)
-import { Button } from "@entropix/react";
-```
-
-Shared utilities are automatically extracted to `chunk-*.js` files by the bundler.
-
-### Tree Shaking
-
-- `"sideEffects": false` on all non-CSS packages
-- `"sideEffects": ["**/*.css"]` on packages with CSS imports
-- Verified with esbuild-based test script (`scripts/verify-treeshake.mjs`)
-
-### CSS Minification
-
-lightningcss processes all CSS files during build:
-
-| Package | Before | After | Savings |
-|---------|--------|-------|---------|
-| `@entropix/react` | 35KB | 28KB | 20.8% |
-| `@entropix/data` | 17KB | 10KB | 41.9% |
-
-### Bundle Sizes (minified + brotli)
-
-| Package | Size |
-|---------|------|
-| `@entropix/core` | 5.69 KB |
-| `@entropix/react` (full barrel) | 4.72 KB |
-| `@entropix/react/button` (single) | 932 B |
-| `@entropix/data` | 4.16 KB |
-
-Sourcemaps are excluded from npm publish, saving ~940KB across all packages.
+1. **Headless first** -- All interaction logic lives in platform-agnostic hooks. Components are thin wrappers.
+2. **Platform-agnostic core** -- `@entropix/core` has zero DOM and zero React Native imports. It produces `PropGetterReturn` objects that platform adapters translate.
+3. **CSS custom properties over CSS-in-JS** -- Zero runtime cost, SSR-friendly, brand switching via `data-*` attribute swap. No Emotion, styled-components, or Stitches.
+4. **Prop-getter pattern** -- Hooks return functions like `getButtonProps()` that produce accessibility + keyboard + action bundles. Consumers spread these onto their elements.
+5. **Accessibility-first** -- Every interactive component starts with WAI-ARIA roles, states, and keyboard interactions. The `AccessibilityProps` type is the contract between core and platform layers.
+6. **Multi-entry builds** -- Every hook and component is importable individually (`@entropix/core/hooks/use-button`, `@entropix/react/button`) for minimal bundles.
+7. **Zero external dependencies for charts** -- Custom scale, tick, and geometry functions (~468 lines) instead of D3 (~500KB).
+8. **W3C DTCG tokens** -- Industry-standard token format with Style Dictionary compilation. Tokens are the source of truth for all visual properties.
 
 ---
 
-## 6. CI/CD Pipeline
+## 12. Key File Paths
 
-- **GitHub Actions:** CI runs lint, build, and test across Node 18, 20, and 22
-- **Changesets** for version management — creates a "Version Packages" PR automatically
-- **Automated npm publishing** on PR merge to main
-- **size-limit** enforced in CI to prevent bundle regressions
-
----
-
-## 7. Testing
-
-- **25 test files**, ~2,384 lines of test code
-- **Vitest** for web packages, **Jest** for RN packages
-- **@testing-library/react** and **@testing-library/react-native** for component tests
-- Coverage areas: hook behavior, accessibility attributes, keyboard interactions, state management
-
----
-
-## 8. Storybook
-
-- **16 component stories** (all UI components)
-- **Storybook 10** with Vite builder
-- **@storybook/addon-a11y** for accessibility auditing
-- **CSF3 format** with autodocs
-
----
-
-## 9. Components Matrix
-
-| Component | Web | RN | Headless Hook | Accessibility |
-|-----------|:---:|:---:|---------------|---------------|
-| Button | Y | Y | `useButton` | `role="button"`, `aria-disabled`, `aria-pressed` |
-| Toggle | Y | Y | `useToggle` | `role="checkbox"`, `aria-checked` |
-| Switch | Y | Y | `useToggle` | `role="switch"`, `aria-checked` |
-| Dialog | Y | Y | `useDialog` | `role="dialog"`, `aria-modal`, focus trap |
-| Tabs | Y | Y | `useTabs` | `role="tablist/tab/tabpanel"`, arrow key nav |
-| Accordion | Y | Y | `useAccordion` | `aria-expanded`, `aria-controls` |
-| Menu | Y | Y | `useMenu` | `role="menu/menuitem"`, typeahead |
-| Input | Y | Y | `useInput` | `aria-invalid`, `aria-required`, `aria-describedby` |
-| Textarea | Y | Y | `useInput` | Same as Input |
-| Checkbox | Y | Y | `useToggle` | `role="checkbox"`, `aria-checked`, indeterminate |
-| RadioGroup | Y | Y | `useRadioGroup` | `role="radiogroup/radio"`, arrow key nav |
-| Select | Y | Y | `useSelect` | `role="listbox"`, `aria-expanded` |
-| Stack | Y | Y | -- | Semantic layout |
-| Inline | Y | Y | -- | Semantic layout |
-| Container | Y | Y | -- | Max-width wrapper |
-| Divider | Y | Y | -- | `role="separator"` |
-| DataTable | Y | Y | `useTable` | Sort, filter, paginate, select |
-| BarChart | Y | Y | -- | SVG with tooltips |
-| LineChart | Y | Y | -- | SVG with data points |
-| AreaChart | Y | Y | -- | SVG filled regions |
-| PieChart | Y | Y | -- | SVG arcs with legend |
-
----
-
-## 10. Gap Analysis vs Production Design Systems
-
-Comparing Entropix against **Shopify Polaris**, **Razorpay Blade**, and **Adobe React Spectrum**.
-
-### What Entropix Has That Others Don't
-
-| Capability | Polaris | Blade | Spectrum | Entropix |
-|------------|:-------:|:-----:|:--------:|:--------:|
-| True cross-platform (web + RN) with shared headless core | -- | Partial | -- | Y |
-| Built-in chart library | Separate (Polaris Viz) | -- | -- | Y |
-| Multi-brand theming out of the box | -- | -- | -- | Y |
-| Custom SVG chart engine (zero deps) | -- | -- | -- | Y |
-
-### What Production Systems Have That Entropix Is Missing
-
-#### Critical Gaps
-
-| # | Gap | Notes |
-|---|-----|-------|
-| 1 | **Internationalization (i18n)** | Spectrum supports 30+ languages, RTL layout, date/number formatting. Entropix has none. |
-| 2 | **Comprehensive accessibility testing** | Spectrum tests across VoiceOver, NVDA, JAWS. Entropix has basic ARIA attributes but no automated a11y testing in CI (axe-core integration). |
-| 3 | **Visual regression testing** | Blade uses Chromatic for screenshot-based testing. Entropix has no visual regression tests. |
-| 4 | **Focus management system** | Spectrum has FocusScope, FocusRing, focus-visible polyfill. Entropix relies on browser defaults. |
-| 5 | **Animation system** | No transition/animation primitives. Production systems have enter/exit animations for Dialog, Menu, Accordion, Toast. |
-
-#### Component Gaps
-
-| # | Missing Component | Category |
-|---|-------------------|----------|
-| 6 | Toast / Notification | Feedback |
-| 7 | Popover / Tooltip | Overlay |
-| 8 | DatePicker / Calendar | Input |
-| 9 | Breadcrumb | Navigation |
-| 10 | Pagination (standalone) | Navigation |
-| 11 | Avatar | Display |
-| 12 | Badge / Tag | Status |
-| 13 | Progress Bar / Spinner | Loading |
-| 14 | Skeleton Loader | Loading |
-| 15 | Navigation / Sidebar | App-level |
-| 16 | Alert / Banner | Feedback |
-
-#### Infrastructure Gaps
-
-| # | Gap | Notes |
-|---|-----|-------|
-| 17 | **Figma integration** | Blade has a Figma plugin that syncs tokens. Spectrum has a Figma kit. Entropix has none. |
-| 18 | **Documentation site** | Polaris has extensive docs with live examples and do's/don'ts. Entropix has Storybook but no dedicated doc site. |
-| 19 | **Codemods** | Polaris provides codemods for major version migrations. |
-| 20 | **ESLint plugin** | Custom lint rules enforcing component usage patterns. |
-| 21 | **Design-to-dev workflow** | Figma-to-code token sync, coverage plugins. |
-| 22 | **Server Components support** | Explicit `"use client"` boundaries, RSC-optimized patterns. |
-| 23 | **Responsive props** | Spectrum/Chakra allow `<Button size={{ base: "sm", md: "lg" }}>`. Entropix has `useBreakpoint` but not responsive prop syntax. |
-
-### Recommended Next Priorities
-
-1. **Toast/Notification + Popover/Tooltip** — most commonly needed missing components
-2. **Animation system** — enter/exit transitions for Dialog, Menu, Accordion
-3. **axe-core integration in CI** — automated accessibility testing
-4. **Documentation site** with live examples
-5. **i18n foundation** — RTL support, locale-aware formatting
+| What | Path |
+|------|------|
+| Turborepo config | `turbo.json` |
+| pnpm workspace | `pnpm-workspace.yaml` |
+| Root package.json (scripts, devDeps) | `package.json` |
+| Changesets config | `.changeset/config.json` |
+| Size budgets | `.size-limit.json` |
+| Tree-shake verification | `scripts/verify-treeshake.mjs` |
+| CI workflow | `.github/workflows/ci.yml` |
+| Publish workflow | `.github/workflows/publish.yml` |
+| Core hooks | `packages/core/src/hooks/` |
+| Core types | `packages/core/src/types/` |
+| Core utilities | `packages/core/src/utils/` |
+| Chart math | `packages/core/src/utils/chart/` |
+| i18n | `packages/core/src/i18n/` |
+| Token sources | `packages/tokens/src/` |
+| Token build script | `packages/tokens/build.ts` |
+| Brand overrides | `packages/tokens/src/brands/{ocean,sunset}/` |
+| Web components | `packages/react/src/` |
+| RN components | `packages/react-native/src/` |
+| AI layer | `packages/ai/src/` |
+| Storybook stories | `apps/storybook/stories/` |
