@@ -12,6 +12,7 @@ interface PreviewPanelProps {
   exportedCode: string | null;
   onExportCode: () => void;
   viewport: "desktop" | "tablet" | "mobile";
+  isGenerating?: boolean;
 }
 
 export function PreviewPanel({
@@ -21,6 +22,7 @@ export function PreviewPanel({
   exportedCode,
   onExportCode,
   viewport,
+  isGenerating,
 }: PreviewPanelProps) {
   const [copied, setCopied] = useState(false);
 
@@ -51,6 +53,12 @@ export function PreviewPanel({
                   spec={spec as any}
                   components={COMPONENT_MAP}
                 />
+              </div>
+            ) : isGenerating ? (
+              <div className="preview-generating">
+                <div className="preview-generating-spinner" />
+                <p>Generating your UI...</p>
+                <p className="preview-generating-hint">This usually takes 5-15 seconds</p>
               </div>
             ) : (
               <div className="preview-empty">

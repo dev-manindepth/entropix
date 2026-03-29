@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-import { useParams } from "next/navigation";
+import { useState, useEffect, useCallback, useRef } from "react";
+import { useParams, useSearchParams } from "next/navigation";
 import { ChatPanel } from "@/components/workspace/chat-panel";
 import { PreviewPanel } from "@/components/workspace/preview-panel";
 import { Toolbar } from "@/components/workspace/toolbar";
 import { useLayout } from "@/lib/layout-context";
+import { TEMPLATES } from "@/lib/templates";
 
 type Viewport = "desktop" | "tablet" | "mobile";
 
@@ -31,7 +32,9 @@ interface Generation {
 
 export default function WorkspacePage() {
   const params = useParams<{ projectId: string }>();
+  const searchParams = useSearchParams();
   const projectId = params.projectId;
+  const templateSentRef = useRef(false);
 
   const [project, setProject] = useState<Project | null>(null);
   const [messages, setMessages] = useState<Generation[]>([]);
@@ -137,6 +140,24 @@ export default function WorkspacePage() {
     }
   }, [currentSpec, project?.name]);
 
+  // Auto-send template prompt if ?template= query param is present
+  useEffect(() => {
+    if (templateSentRef.current || !project || isGenerating) return;
+    const templateId = searchParams.get("template");
+    if (!templateId) return;
+
+    const template = TEMPLATES.find((t) => t.id === templateId);
+    if (!template) return;
+
+    // Only auto-send if project has no existing spec (fresh from template)
+    if (project.currentSpecJson || messages.length > 0) return;
+
+    templateSentRef.current = true;
+    // Remove the query param from URL without reload
+    window.history.replaceState({}, "", `/projects/${projectId}`);
+    handleSend(template.prompt);
+  }, [project, messages.length, isGenerating, searchParams, projectId, handleSend]);
+
   if (error && !project) {
     return (
       <div style={{
@@ -195,6 +216,7 @@ export default function WorkspacePage() {
         exportedCode={exportedCode}
         onExportCode={handleExportCode}
         viewport={viewport}
+        isGenerating={isGenerating}
       />
 
       {error && (

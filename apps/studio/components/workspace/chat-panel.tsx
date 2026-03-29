@@ -22,6 +22,7 @@ interface ChatPanelProps {
 
 export function ChatPanel({ messages, isGenerating, onSend }: ChatPanelProps) {
   const [input, setInput] = useState("");
+  const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const isInitialLoadRef = useRef(true);
@@ -46,6 +47,15 @@ export function ChatPanel({ messages, isGenerating, onSend }: ChatPanelProps) {
     if (isGenerating) {
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }
+  }, [isGenerating]);
+
+  useEffect(() => {
+    if (!isGenerating) {
+      setElapsedSeconds(0);
+      return;
+    }
+    const timer = setInterval(() => setElapsedSeconds((s) => s + 1), 1000);
+    return () => clearInterval(timer);
   }, [isGenerating]);
 
   function handleSubmit() {
@@ -108,7 +118,7 @@ export function ChatPanel({ messages, isGenerating, onSend }: ChatPanelProps) {
             <span className="chat-generating-dot" />
             <span className="chat-generating-dot" />
             <span className="chat-generating-dot" />
-            <span>Generating...</span>
+            <span>Generating...{elapsedSeconds > 0 ? ` (${elapsedSeconds}s)` : ""}</span>
           </div>
         )}
 
