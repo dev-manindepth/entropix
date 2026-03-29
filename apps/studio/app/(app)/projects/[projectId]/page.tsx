@@ -44,6 +44,8 @@ export default function WorkspacePage() {
   const [viewport, setViewport] = useState<Viewport>("desktop");
   const [exportedCode, setExportedCode] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [brand, setBrand] = useState<"default" | "ocean" | "sunset">("default");
+  const [theme, setTheme] = useState<"light" | "dark">("light");
 
   useEffect(() => {
     async function loadProject() {
@@ -140,6 +142,28 @@ export default function WorkspacePage() {
     }
   }, [currentSpec, project?.name]);
 
+  const handleRevert = useCallback(async (generationId: string) => {
+    try {
+      const res = await fetch(`/api/projects/${projectId}/revert`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ generationId }),
+      });
+
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({ error: "Revert failed" }));
+        throw new Error(errData.error || "Revert failed");
+      }
+
+      const data = await res.json();
+      setCurrentSpec(data.spec);
+      setActivePreviewTab("preview");
+      setExportedCode(null);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Revert failed");
+    }
+  }, [projectId]);
+
   // Auto-send template prompt if ?template= query param is present
   useEffect(() => {
     if (templateSentRef.current || !project || isGenerating) return;
@@ -199,6 +223,10 @@ export default function WorkspacePage() {
         onViewportChange={setViewport}
         fullscreen={fullscreenPreview}
         onToggleFullscreen={() => setFullscreenPreview(!fullscreenPreview)}
+        brand={brand}
+        onBrandChange={setBrand}
+        theme={theme}
+        onThemeChange={setTheme}
       />
 
       {!fullscreenPreview && (
@@ -206,6 +234,7 @@ export default function WorkspacePage() {
           messages={messages}
           isGenerating={isGenerating}
           onSend={handleSend}
+          onRevert={handleRevert}
         />
       )}
 
@@ -217,6 +246,8 @@ export default function WorkspacePage() {
         onExportCode={handleExportCode}
         viewport={viewport}
         isGenerating={isGenerating}
+        brand={brand}
+        theme={theme}
       />
 
       {error && (

@@ -18,9 +18,10 @@ interface ChatPanelProps {
   messages: Message[];
   isGenerating: boolean;
   onSend: (prompt: string) => void;
+  onRevert?: (generationId: string) => void;
 }
 
-export function ChatPanel({ messages, isGenerating, onSend }: ChatPanelProps) {
+export function ChatPanel({ messages, isGenerating, onSend, onRevert }: ChatPanelProps) {
   const [input, setInput] = useState("");
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -102,15 +103,44 @@ export function ChatPanel({ messages, isGenerating, onSend }: ChatPanelProps) {
         )}
 
         {messages.map((msg) => (
-          <MessageBubble
-            key={msg.id}
-            role={msg.role}
-            content={msg.role === "user" ? (msg.prompt ?? "") : "UI spec generated. See the preview panel."}
-            specPreview={msg.specJson ? "preview" : null}
-            timestamp={msg.createdAt}
-            promptTokens={msg.promptTokens}
-            completionTokens={msg.completionTokens}
-          />
+          <div key={msg.id}>
+            <MessageBubble
+              role={msg.role}
+              content={msg.role === "user" ? (msg.prompt ?? "") : "UI spec generated. See the preview panel."}
+              specPreview={msg.specJson ? "preview" : null}
+              timestamp={msg.createdAt}
+              promptTokens={msg.promptTokens}
+              completionTokens={msg.completionTokens}
+            />
+            {msg.role === "assistant" && msg.specJson && onRevert && (
+              <button
+                className="chat-restore-btn"
+                onClick={() => onRevert(msg.id)}
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: "var(--entropix-color-text-secondary)",
+                  fontSize: "0.75rem",
+                  cursor: "pointer",
+                  padding: "2px 8px",
+                  marginTop: "2px",
+                  marginLeft: "4px",
+                  borderRadius: "var(--entropix-radius-sm)",
+                  transition: "color 0.15s, background 0.15s",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = "var(--entropix-color-text-primary)";
+                  e.currentTarget.style.background = "var(--entropix-color-surface-secondary)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = "var(--entropix-color-text-secondary)";
+                  e.currentTarget.style.background = "none";
+                }}
+              >
+                &#x21A9; Restore
+              </button>
+            )}
+          </div>
         ))}
 
         {isGenerating && (

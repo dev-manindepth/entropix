@@ -1,6 +1,7 @@
 import { getShare } from "@/lib/db/queries";
 import type { UISpec } from "@entropix/ai";
 import { ShareRenderer } from "./share-renderer";
+import { ForkButton } from "./fork-button";
 
 export default async function SharePage({
   params,
@@ -32,6 +33,18 @@ export default async function SharePage({
 
   return (
     <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          padding: "var(--entropix-spacing-3) var(--entropix-spacing-4)",
+          borderBottom: "1px solid var(--entropix-color-border-default)",
+        }}
+      >
+        <span style={{ fontWeight: 600, fontSize: "0.875rem" }}>{title}</span>
+        <ForkButton shareId={shareId} />
+      </div>
       <div style={{ flex: 1 }}>
         <ShareRenderer spec={spec} title={title} />
       </div>

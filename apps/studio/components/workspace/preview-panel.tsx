@@ -13,6 +13,8 @@ interface PreviewPanelProps {
   onExportCode: () => void;
   viewport: "desktop" | "tablet" | "mobile";
   isGenerating?: boolean;
+  brand?: string;
+  theme?: string;
 }
 
 export function PreviewPanel({
@@ -23,6 +25,8 @@ export function PreviewPanel({
   onExportCode,
   viewport,
   isGenerating,
+  brand,
+  theme,
 }: PreviewPanelProps) {
   const [copied, setCopied] = useState(false);
 
@@ -48,7 +52,11 @@ export function PreviewPanel({
         <TabPanel value="preview">
           <div className="preview-panel-content">
             {spec ? (
-              <div className={`preview-container preview-container--${viewport}`}>
+              <div
+                className={`preview-container preview-container--${viewport}`}
+                data-brand={brand && brand !== "default" ? brand : undefined}
+                data-theme={theme || "light"}
+              >
                 <EntropixRenderer
                   spec={spec as any}
                   components={COMPONENT_MAP}
