@@ -28,7 +28,7 @@ export async function POST(request: Request) {
       prompt,
       adapter,
       contextMode: categories?.length ? "category" : "compact",
-      categories,
+      categories: categories as import("@entropix/ai").ComponentCategory[] | undefined,
       maxTokens: 8192,
     });
 
