@@ -17,7 +17,7 @@
     "@entropix/data": "workspace:*",
     "@entropix/react": "workspace:*",
     "@entropix/tokens": "workspace:*",
-    "better-sqlite3": "^11.0.0",
+    "@vercel/postgres": "^0.10.0",
     "drizzle-orm": "^0.40.0",
     "nanoid": "^5.1.5",
     "next": "16.1.5",
@@ -25,7 +25,6 @@
     "react-dom": "^19.2.0"
   },
   "devDependencies": {
-    "@types/better-sqlite3": "^7.6.0",
     "@types/node": "^22.15.3",
     "@types/react": "19.2.2",
     "@types/react-dom": "19.2.2",
